@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#06120f">
+<title>🌿 БиоЭкоКомбинат PRO — ДОННУЭТ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#06120f;--card:rgba(18,53,43,.72);--card2:rgba(13,37,29,.85);
+  --line:rgba(74,222,128,.22);--acc:#4ade80;--acc2:#22d3ee;
+  --gold:#fbbf24;--red:#f87171;--pink:#f472b6;--violet:#a78bfa;
+  --txt:#e7f6ee;--dim:#8fbfae;--glass:blur(14px) saturate(140%);
+}
+html,body{height:100%}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,'Roboto',sans-serif;
+  background:radial-gradient(circle at 20% -10%,#14493a 0%,#06120f 55%,#020806 100%);
+  color:var(--txt);min-height:100vh;overflow-x:hidden;line-height:1.4;
+  padding:8px 8px 110px;
+}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.85}
+.app{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+
+header{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+  margin-bottom:8px;padding:10px 12px;
+  background:linear-gradient(90deg,rgba(15,58,45,.85),rgba(18,63,82,.85));
+  border:1px solid var(--line);border-radius:16px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(74,222,128,.15);
+}
+.hbrand{flex:1;min-width:0}
+h1{font-size:.98rem;letter-spacing:.5px;display:flex;align-items:center;gap:6px;
+   background:linear-gradient(90deg,var(--acc),var(--acc2),var(--violet));
+   background-size:200% 100%;animation:flow 5s linear infinite;
+   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:900}
+h1 span{-webkit-text-fill-color:initial}
+.subtitle{font-size:.52rem;color:var(--dim);letter-spacing:.2px;line-height:1.35;margin-top:3px;
+   font-weight:600;text-transform:uppercase}
+.hbtns{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.icon-btn{
+  background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:10px;
+  color:var(--txt);padding:6px 9px;font-size:.9rem;cursor:pointer;font-family:inherit;
+  transition:.15s;line-height:1;
+}
+.icon-btn:active{transform:scale(.9);background:rgba(74,222,128,.15)}
+
+.ticker{
+  display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;padding-bottom:2px;
+  scrollbar-width:none;
+}
+.ticker::-webkit-scrollbar{display:none}
+.chip{
+  flex-shrink:0;background:rgba(8,37,29,.9);border:1px solid var(--line);
+  border-radius:10px;padding:5px 10px;font-size:.65rem;font-weight:700;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.chip.gold{border-color:rgba(251,191,36,.5);color:var(--gold)}
+.chip.cy{border-color:rgba(34,211,238,.5);color:var(--acc2)}
+.chip.violet{border-color:rgba(167,139,250,.5);color:var(--violet)}
+
+.res-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px}
+.res{
+  background:linear-gradient(160deg,var(--card),var(--card2));
+  border:1px solid var(--line);border-radius:11px;padding:6px 3px;
+  text-align:center;transition:.25s;backdrop-filter:var(--glass);
+  -webkit-backdrop-filter:var(--glass);position:relative;overflow:hidden;
+}
+.res .ico{font-size:.95rem;display:block;line-height:1.1}
+.res .val{font-size:.82rem;font-weight:900;letter-spacing:.1px;margin-top:1px}
+.res .lbl{font-size:.5rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px}
+.res.up{animation:upPulse .7s}
+.res.down{animation:downPulse .7s}
+@keyframes upPulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.7)}100%{box-shadow:0 0 0 14px rgba(74,222,128,0)}}
+@keyframes downPulse{0%{box-shadow:0 0 0 0 rgba(248,113,113,.7)}100%{box-shadow:0 0 0 14px rgba(248,113,113,0)}}
+.res.warn-pulse{animation:warnP .9s infinite}
+@keyframes warnP{0%,100%{border-color:rgba(251,191,36,.4)}50%{border-color:rgba(251,191,36,1);box-shadow:0 0 12px rgba(251,191,36,.4)}}
+
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.bar-box{
+  background:var(--card2);border:1px solid var(--line);border-radius:11px;
+  padding:6px 10px;display:flex;align-items:center;gap:8px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+}
+.bar-box .lbl{font-size:.62rem;color:var(--dim);white-space:nowrap;font-weight:700}
+.bar-track{flex:1;height:9px;background:rgba(3,20,15,.9);border-radius:6px;overflow:hidden;
+  border:1px solid rgba(30,79,63,.8)}
+.bar-fill{height:100%;width:50%;border-radius:6px;transition:width .6s cubic-bezier(.3,1.3,.5,1);
+  background-size:200% 100%;animation:flow 3s linear infinite}
+.eco-fill{background:linear-gradient(90deg,#f87171,#fbbf24,#4ade80,#22d3ee)}
+.brand-fill{background:linear-gradient(90deg,#a78bfa,#f472b6,#fbbf24)}
+@keyframes flow{0%{background-position:0 0}100%{background-position:200% 0}}
+.bar-num{font-weight:900;font-size:.82rem;min-width:32px;text-align:right}
+
+/* TABS */
+.tabs{
+  display:flex;gap:4px;margin-bottom:8px;background:rgba(5,22,17,.7);
+  border:1px solid var(--line);border-radius:12px;padding:4px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+}
+.tab{
+  flex:1;padding:9px 4px;border:none;border-radius:9px;cursor:pointer;
+  font-family:inherit;font-weight:800;font-size:.68rem;letter-spacing:.3px;
+  background:transparent;color:var(--dim);transition:.18s;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.tab.active{
+  background:linear-gradient(90deg,rgba(74,222,128,.18),rgba(34,211,238,.18));
+  color:var(--acc);border:1px solid rgba(74,222,128,.35);
+}
+.tab:active{transform:scale(.96)}
+
+.view{display:none}
+.view.active{display:block}
+
+.panel{
+  background:linear-gradient(170deg,rgba(16,48,39,.75),rgba(12,35,29,.85));
+  border:1px solid var(--line);border-radius:16px;padding:12px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(74,222,128,.08);
+  margin-bottom:10px;
+}
+.panel h2{font-size:.68rem;text-transform:uppercase;letter-spacing:1.3px;
+  color:var(--acc2);margin-bottom:10px;display:flex;align-items:center;gap:6px;font-weight:800}
+
+.grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:620px){.grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}}
+.bcard{
+  background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.9));
+  border:1px solid rgba(33,88,69,.9);border-radius:14px;padding:10px;
+  display:flex;flex-direction:column;gap:6px;transition:.22s cubic-bezier(.3,1.2,.5,1);
+  position:relative;overflow:hidden;
+}
+.bcard.built{border-color:rgba(34,211,238,.55)}
+.bhead{display:flex;align-items:center;gap:7px}
+.bhead .bi{font-size:1.3rem;filter:drop-shadow(0 0 6px rgba(74,222,128,.5))}
+.bhead .bn{font-size:.74rem;font-weight:800;flex:1;line-height:1.15}
+.lvl{background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:6px;
+  font-size:.6rem;font-weight:900;padding:2px 6px;color:var(--acc);white-space:nowrap}
+.bdesc{font-size:.63rem;color:var(--dim)}
+.beff{font-size:.6rem;color:#a7e8c8;background:rgba(10,35,28,.85);border-radius:8px;
+  padding:5px 7px;line-height:1.45}
+.buy{
+  margin-top:2px;border:none;border-radius:9px;padding:9px;cursor:pointer;
+  font-weight:900;font-size:.68rem;font-family:inherit;
+  background:linear-gradient(90deg,#16a34a,#22c55e,#4ade80);
+  color:#04210f;transition:.15s;letter-spacing:.2px;
+}
+.buy:not(:disabled):active{transform:scale(.95)}
+.buy.built{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a}
+.buy:disabled{background:rgba(28,58,48,.9);color:#4d7a68;cursor:not-allowed}
+
+/* STAFF */
+.staff-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:620px){.staff-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}}
+.scard{
+  background:linear-gradient(160deg,rgba(32,42,68,.85),rgba(22,28,52,.9));
+  border:1px solid rgba(99,102,241,.35);border-radius:14px;padding:10px;
+  display:flex;flex-direction:column;gap:6px;transition:.22s;
+}
+.scard.hired{border-color:rgba(167,139,250,.7);background:linear-gradient(160deg,rgba(74,50,130,.5),rgba(30,25,60,.9))}
+.shead{display:flex;align-items:center;gap:7px}
+.shead .si{font-size:1.35rem;filter:drop-shadow(0 0 6px rgba(167,139,250,.5))}
+.shead .sn{font-size:.76rem;font-weight:800;flex:1;line-height:1.15}
+.shead .sl{font-size:.6rem;color:var(--violet);font-weight:900}
+.sdesc{font-size:.63rem;color:var(--dim)}
+.sbonus{font-size:.62rem;color:#c7b8ff;background:rgba(30,20,55,.7);border-radius:8px;
+  padding:5px 7px;border:1px solid rgba(167,139,250,.2)}
+.hire{
+  margin-top:2px;border:none;border-radius:9px;padding:8px;cursor:pointer;
+  font-weight:900;font-size:.68rem;font-family:inherit;
+  background:linear-gradient(90deg,#7c3aed,#a78bfa);color:#fff;
+  transition:.15s;letter-spacing:.2px;
+}
+.hire:active{transform:scale(.95)}
+.hire.fired{background:rgba(46,20,20,.9);color:#f87171;border:1px solid rgba(248,113,113,.5)}
+.hire:disabled{background:rgba(28,28,48,.9);color:#5a5a8a;cursor:not-allowed}
+
+/* QUESTS */
+.quest-card{
+  background:linear-gradient(160deg,rgba(60,42,20,.85),rgba(40,28,14,.9));
+  border:1px solid rgba(251,191,36,.5);border-radius:14px;padding:12px;
+  margin-bottom:10px;position:relative;overflow:hidden;
+}
+.quest-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent,rgba(251,191,36,.08),transparent);
+  animation:qshine 3s linear infinite}
+@keyframes qshine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.qhead{display:flex;align-items:center;gap:8px;margin-bottom:6px;position:relative}
+.qhead .qi{font-size:1.6rem}
+.qtitle{font-size:.8rem;font-weight:900;line-height:1.2}
+.qsub{font-size:.62rem;color:var(--dim);margin-top:2px}
+.qreward{font-size:.72rem;color:var(--gold);font-weight:900;text-align:right;margin-top:6px}
+.qdone{background:linear-gradient(90deg,rgba(74,222,128,.15),rgba(34,211,238,.15));
+  border-color:rgba(74,222,128,.5)}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{
+  background:rgba(10,35,28,.85);border:1px solid var(--line);border-radius:11px;
+  padding:10px;text-align:center;
+}
+.stat .sv{font-size:1.05rem;font-weight:900;color:var(--acc2)}
+.stat .sl{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+
+/* MARKET */
+.market-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 10px;border-bottom:1px dashed rgba(74,222,128,.13);gap:8px;
+}
+.market-row:last-child{border-bottom:none}
+.market-row .mn{font-size:.72rem;font-weight:700;flex:1}
+.market-row .mp{font-size:.72rem;color:var(--gold);font-weight:900;white-space:nowrap}
+.market-row .mcat{font-size:.55rem;color:var(--dim);display:block;margin-top:1px}
+
+/* BATCH PANEL */
+.batch-panel{
+  background:linear-gradient(160deg,rgba(251,191,36,.1),rgba(13,37,29,.92));
+  border:1px solid rgba(251,191,36,.45);border-radius:16px;padding:12px;
+  margin-bottom:10px;backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 22px rgba(251,191,36,.1);
+  animation:batchIn .4s cubic-bezier(.3,1.3,.5,1);display:none;
+}
+@keyframes batchIn{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:none}}
+.batch-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.batch-icon{font-size:2rem;filter:drop-shadow(0 0 8px rgba(251,191,36,.5))}
+.batch-title{font-weight:900;font-size:.84rem;line-height:1.15}
+.batch-sub{font-size:.62rem;color:var(--dim);margin-top:2px}
+.batch-gost{font-size:.55rem;color:var(--acc2);margin-top:2px;font-family:monospace;font-weight:700}
+.batch-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.batch-btn{
+  flex:1 1 auto;min-width:90px;padding:10px 8px;border-radius:10px;
+  border:1px solid;font-family:inherit;font-weight:800;font-size:.66rem;
+  cursor:pointer;transition:.15s;letter-spacing:.2px;
+}
+.batch-btn:active{transform:scale(.96)}
+.batch-btn.accept{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;border-color:#4ade80}
+.batch-btn.exam{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a;border-color:#22d3ee}
+.batch-btn.reject{background:rgba(46,20,20,.9);color:#f87171;border-color:rgba(248,113,113,.6)}
+.exam-result{
+  background:rgba(5,22,17,.85);border-radius:10px;padding:8px 10px;margin-top:6px;
+  font-size:.68rem;border:1px solid rgba(74,222,128,.2);
+}
+.exam-head{font-size:.6rem;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;
+  font-weight:800;margin-bottom:5px}
+.exam-row{display:flex;justify-content:space-between;padding:3px 0;
+  border-bottom:1px dashed rgba(74,222,128,.13);gap:8px}
+.exam-row:last-child{border-bottom:none;padding-top:6px;font-weight:800}
+.exam-ok{color:#4ade80}
+.exam-warn{color:#fbbf24}
+.exam-bad{color:#f87171}
+.exam-items{font-size:.55rem;color:#5f8f7d;margin-top:2px}
+
+.main{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:900px){.main{grid-template-columns:1fr 320px}}
+
+.side{display:flex;flex-direction:column;gap:10px}
+.next{
+  border:none;border-radius:14px;padding:15px;cursor:pointer;font-family:inherit;
+  font-size:1rem;font-weight:900;letter-spacing:.8px;width:100%;
+  background:linear-gradient(90deg,#f59e0b,#fbbf24,#fde047);
+  color:#3b2100;box-shadow:0 8px 24px rgba(251,191,36,.35),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:.15s;position:relative;overflow:hidden;
+}
+.next::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
+  animation:shine 2.5s infinite}
+@keyframes shine{0%{left:-100%}60%,100%{left:150%}}
+.next:not(:disabled):active{transform:scale(.97)}
+.next:disabled{background:rgba(42,58,52,.9);color:#5d7a6e;box-shadow:none;animation:none}
+.next:disabled::after{display:none}
+@media(max-width:899px){
+  .next{position:fixed;left:10px;right:10px;bottom:12px;width:auto;z-index:40;
+        padding:17px;font-size:1.05rem;box-shadow:0 10px 32px rgba(0,0,0,.6),0 8px 24px rgba(251,191,36,.4)}
+}
+
+.chart{background:rgba(8,32,26,.8);border:1px solid var(--line);border-radius:10px;
+  padding:8px;margin-bottom:8px}
+.chart .cl{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.chart svg{width:100%;height:36px;display:block}
+
+.log{
+  background:rgba(5,22,17,.85);border:1px solid var(--line);border-radius:12px;
+  padding:8px;height:180px;overflow-y:auto;font-size:.65rem;
+  display:flex;flex-direction:column;gap:5px;
+}
+.log::-webkit-scrollbar{width:5px}
+.log::-webkit-scrollbar-thumb{background:#1f5a47;border-radius:4px}
+.le{padding:5px 8px;border-radius:8px;background:rgba(14,43,35,.9);
+  border-left:3px solid #2b6b56;animation:slide .32s cubic-bezier(.3,1.3,.5,1)}
+@keyframes slide{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.le.good{border-color:var(--acc);background:rgba(13,49,37,.9)}
+.le.bad{border-color:var(--red);background:rgba(46,20,20,.85)}
+.le.warn{border-color:var(--gold);background:rgba(46,37,16,.85)}
+.le.info{border-color:var(--acc2);background:rgba(11,40,48,.85)}
+.le.quest{border-color:var(--violet);background:rgba(35,25,60,.85)}
+
+#toasts{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:200;
+  display:flex;flex-direction:column;gap:6px;pointer-events:none;width:calc(100% - 20px);max-width:400px}
+.toast{
+  background:linear-gradient(135deg,rgba(20,60,48,.96),rgba(13,42,34,.96));
+  border:1px solid var(--acc);border-radius:12px;padding:10px 14px;
+  font-size:.78rem;font-weight:700;text-align:center;
+  box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(74,222,128,.2);
+  animation:tin .35s cubic-bezier(.3,1.4,.5,1);
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+}
+.toast.bad{border-color:var(--red);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(248,113,113,.25)}
+.toast.warn{border-color:var(--gold);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(251,191,36,.25)}
+.toast.violet{border-color:var(--violet);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(167,139,250,.25)}
+.toast.out{animation:tout .3s forwards}
+@keyframes tin{from{opacity:0;transform:translateY(-16px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes tout{to{opacity:0;transform:translateY(-14px) scale(.94)}}
+
+#fx{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
+.flt{position:absolute;font-weight:900;font-size:.95rem;text-shadow:0 2px 10px rgba(0,0,0,.9);
+  animation:flt 1.2s ease-out forwards;pointer-events:none;white-space:nowrap}
+.flt.plus{color:#4ade80}
+.flt.minus{color:#f87171}
+.flt.gold{color:#fbbf24}
+.flt.violet{color:#a78bfa}
+@keyframes flt{0%{opacity:1;transform:translate(-50%,0) scale(.7)}
+  20%{transform:translate(-50%,-14px) scale(1.15)}
+  100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
+
+.conf{position:fixed;top:-14px;width:9px;height:14px;z-index:300;pointer-events:none;
+  animation:cfall linear forwards}
+@keyframes cfall{to{transform:translateY(105vh) rotate(720deg);opacity:.3}}
+
+.overlay{
+  position:fixed;inset:0;background:rgba(3,12,9,.94);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;padding:14px;z-index:400;
+  overflow-y:auto;
+}
+.overlay.hide{display:none}
+.modal{
+  background:linear-gradient(165deg,rgba(20,58,46,.97),rgba(11,39,33,.98));
+  border:1px solid var(--line);border-radius:22px;padding:22px;
+  max-width:620px;width:100%;max-height:94vh;overflow-y:auto;
+  box-shadow:0 24px 70px rgba(0,0,0,.8),inset 0 1px 0 rgba(74,222,128,.2);
+  animation:min .4s cubic-bezier(.3,1.2,.5,1);
+}
+@keyframes min{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
+.modal h2{font-size:1.15rem;margin-bottom:10px;font-weight:900;letter-spacing:.3px;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.modal h3{font-size:.78rem;color:var(--gold);margin:14px 0 6px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.8px}
+.modal p{font-size:.8rem;color:#c4e6d6;margin-bottom:9px}
+.modal ul{margin:0 0 10px 16px;font-size:.76rem;color:#b8dfcd}
+.modal li{margin-bottom:4px}
+.modal .hl{color:var(--gold);font-weight:800}
+.modal .tag{
+  display:inline-block;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);
+  color:var(--acc);border-radius:6px;padding:2px 8px;font-size:.65rem;font-weight:700;
+  margin:2px 3px 2px 0;
+}
+.startbtn{
+  width:100%;border:none;border-radius:14px;padding:16px;cursor:pointer;
+  font-family:inherit;font-size:1rem;font-weight:900;letter-spacing:.6px;
+  background:linear-gradient(90deg,#16a34a,#4ade80,#a3e635);color:#04210f;
+  margin-top:8px;transition:.15s;box-shadow:0 8px 28px rgba(74,222,128,.35);
+}
+.startbtn:active{transform:scale(.97)}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.score-item{background:rgba(10,35,28,.9);border:1px solid var(--line);border-radius:12px;
+  padding:10px;text-align:center}
+.score-item .sv{font-size:1.05rem;font-weight:900;color:var(--acc)}
+.score-item .sl{font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.final{font-size:2.3rem;font-weight:900;text-align:center;letter-spacing:1px;
+  background:linear-gradient(90deg,#fbbf24,#fde047,#fbbf24);background-size:200% 100%;
+;color:var(--acc)
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#06120f">
+<title>🌿 БиоЭкоКомбинат PRO — ДОННУЭТ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#06120f;--card:rgba(18,53,43,.72);--card2:rgba(13,37,29,.85);
+  --line:rgba(74,222,128,.22);--acc:#4ade80;--acc2:#22d3ee;
+  --gold:#fbbf24;--red:#f87171;--pink:#f472b6;--violet:#a78bfa;
+  --txt:#e7f6ee;--dim:#8fbfae;--glass:blur(14px) saturate(140%);
+}
+html,body{height:100%}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,'Roboto',sans-serif;
+  background:radial-gradient(circle at 20% -10%,#14493a 0%,#06120f 55%,#020806 100%);
+  color:var(--txt);min-height:100vh;overflow-x:hidden;line-height:1.4;
+  padding:8px 8px 110px;
+}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.85}
+.app{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+
+header{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
+  margin-bottom:8px;padding:10px 12px;
+  background:linear-gradient(90deg,rgba(15,58,45,.85),rgba(18,63,82,.85));
+  border:1px solid var(--line);border-radius:16px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(74,222,128,.15);
+}
+.hbrand{flex:1;min-width:0}
+h1{font-size:.98rem;letter-spacing:.5px;display:flex;align-items:center;gap:6px;
+   background:linear-gradient(90deg,var(--acc),var(--acc2),var(--violet));
+   background-size:200% 100%;animation:flow 5s linear infinite;
+   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:900}
+h1 span{-webkit-text-fill-color:initial}
+.subtitle{font-size:.52rem;color:var(--dim);letter-spacing:.2px;line-height:1.35;margin-top:3px;
+   font-weight:600;text-transform:uppercase}
+.hbtns{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.icon-btn{
+  background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:10px;
+  color:var(--txt);padding:6px 9px;font-size:.9rem;cursor:pointer;font-family:inherit;
+  transition:.15s;line-height:1;
+}
+.icon-btn:active{transform:scale(.9);background:rgba(74,222,128,.15)}
+
+.ticker{
+  display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;padding-bottom:2px;
+  scrollbar-width:none;
+}
+.ticker::-webkit-scrollbar{display:none}
+.chip{
+  flex-shrink:0;background:rgba(8,37,29,.9);border:1px solid var(--line);
+  border-radius:10px;padding:5px 10px;font-size:.65rem;font-weight:700;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.chip.gold{border-color:rgba(251,191,36,.5);color:var(--gold)}
+.chip.cy{border-color:rgba(34,211,238,.5);color:var(--acc2)}
+.chip.violet{border-color:rgba(167,139,250,.5);color:var(--violet)}
+
+.res-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px}
+.res{
+  background:linear-gradient(160deg,var(--card),var(--card2));
+  border:1px solid var(--line);border-radius:11px;padding:6px 3px;
+  text-align:center;transition:.25s;backdrop-filter:var(--glass);
+  -webkit-backdrop-filter:var(--glass);position:relative;overflow:hidden;
+}
+.res .ico{font-size:.95rem;display:block;line-height:1.1}
+.res .val{font-size:.82rem;font-weight:900;letter-spacing:.1px;margin-top:1px}
+.res .lbl{font-size:.5rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px}
+.res.up{animation:upPulse .7s}
+.res.down{animation:downPulse .7s}
+@keyframes upPulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.7)}100%{box-shadow:0 0 0 14px rgba(74,222,128,0)}}
+@keyframes downPulse{0%{box-shadow:0 0 0 0 rgba(248,113,113,.7)}100%{box-shadow:0 0 0 14px rgba(248,113,113,0)}}
+.res.warn-pulse{animation:warnP .9s infinite}
+@keyframes warnP{0%,100%{border-color:rgba(251,191,36,.4)}50%{border-color:rgba(251,191,36,1);box-shadow:0 0 12px rgba(251,191,36,.4)}}
+
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.bar-box{
+  background:var(--card2);border:1px solid var(--line);border-radius:11px;
+  padding:6px 10px;display:flex;align-items:center;gap:8px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+}
+.bar-box .lbl{font-size:.62rem;color:var(--dim);white-space:nowrap;font-weight:700}
+.bar-track{flex:1;height:9px;background:rgba(3,20,15,.9);border-radius:6px;overflow:hidden;
+  border:1px solid rgba(30,79,63,.8)}
+.bar-fill{height:100%;width:50%;border-radius:6px;transition:width .6s cubic-bezier(.3,1.3,.5,1);
+  background-size:200% 100%;animation:flow 3s linear infinite}
+.eco-fill{background:linear-gradient(90deg,#f87171,#fbbf24,#4ade80,#22d3ee)}
+.brand-fill{background:linear-gradient(90deg,#a78bfa,#f472b6,#fbbf24)}
+@keyframes flow{0%{background-position:0 0}100%{background-position:200% 0}}
+.bar-num{font-weight:900;font-size:.82rem;min-width:32px;text-align:right}
+
+/* TABS */
+.tabs{
+  display:flex;gap:4px;margin-bottom:8px;background:rgba(5,22,17,.7);
+  border:1px solid var(--line);border-radius:12px;padding:4px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+}
+.tab{
+  flex:1;padding:9px 4px;border:none;border-radius:9px;cursor:pointer;
+  font-family:inherit;font-weight:800;font-size:.68rem;letter-spacing:.3px;
+  background:transparent;color:var(--dim);transition:.18s;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.tab.active{
+  background:linear-gradient(90deg,rgba(74,222,128,.18),rgba(34,211,238,.18));
+  color:var(--acc);border:1px solid rgba(74,222,128,.35);
+}
+.tab:active{transform:scale(.96)}
+
+.view{display:none}
+.view.active{display:block}
+
+.panel{
+  background:linear-gradient(170deg,rgba(16,48,39,.75),rgba(12,35,29,.85));
+  border:1px solid var(--line);border-radius:16px;padding:12px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(74,222,128,.08);
+  margin-bottom:10px;
+}
+.panel h2{font-size:.68rem;text-transform:uppercase;letter-spacing:1.3px;
+  color:var(--acc2);margin-bottom:10px;display:flex;align-items:center;gap:6px;font-weight:800}
+
+.grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:620px){.grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}}
+.bcard{
+  background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.9));
+  border:1px solid rgba(33,88,69,.9);border-radius:14px;padding:10px;
+  display:flex;flex-direction:column;gap:6px;transition:.22s cubic-bezier(.3,1.2,.5,1);
+  position:relative;overflow:hidden;
+}
+.bcard.built{border-color:rgba(34,211,238,.55)}
+.bhead{display:flex;align-items:center;gap:7px}
+.bhead .bi{font-size:1.3rem;filter:drop-shadow(0 0 6px rgba(74,222,128,.5))}
+.bhead .bn{font-size:.74rem;font-weight:800;flex:1;line-height:1.15}
+.lvl{background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:6px;
+  font-size:.6rem;font-weight:900;padding:2px 6px;color:var(--acc);white-space:nowrap}
+.bdesc{font-size:.63rem;color:var(--dim)}
+.beff{font-size:.6rem;color:#a7e8c8;background:rgba(10,35,28,.85);border-radius:8px;
+  padding:5px 7px;line-height:1.45}
+.buy{
+  margin-top:2px;border:none;border-radius:9px;padding:9px;cursor:pointer;
+  font-weight:900;font-size:.68rem;font-family:inherit;
+  background:linear-gradient(90deg,#16a34a,#22c55e,#4ade80);
+  color:#04210f;transition:.15s;letter-spacing:.2px;
+}
+.buy:not(:disabled):active{transform:scale(.95)}
+.buy.built{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a}
+.buy:disabled{background:rgba(28,58,48,.9);color:#4d7a68;cursor:not-allowed}
+
+/* STAFF */
+.staff-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:620px){.staff-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}}
+.scard{
+  background:linear-gradient(160deg,rgba(32,42,68,.85),rgba(22,28,52,.9));
+  border:1px solid rgba(99,102,241,.35);border-radius:14px;padding:10px;
+  display:flex;flex-direction:column;gap:6px;transition:.22s;
+}
+.scard.hired{border-color:rgba(167,139,250,.7);background:linear-gradient(160deg,rgba(74,50,130,.5),rgba(30,25,60,.9))}
+.shead{display:flex;align-items:center;gap:7px}
+.shead .si{font-size:1.35rem;filter:drop-shadow(0 0 6px rgba(167,139,250,.5))}
+.shead .sn{font-size:.76rem;font-weight:800;flex:1;line-height:1.15}
+.shead .sl{font-size:.6rem;color:var(--violet);font-weight:900}
+.sdesc{font-size:.63rem;color:var(--dim)}
+.sbonus{font-size:.62rem;color:#c7b8ff;background:rgba(30,20,55,.7);border-radius:8px;
+  padding:5px 7px;border:1px solid rgba(167,139,250,.2)}
+.hire{
+  margin-top:2px;border:none;border-radius:9px;padding:8px;cursor:pointer;
+  font-weight:900;font-size:.68rem;font-family:inherit;
+  background:linear-gradient(90deg,#7c3aed,#a78bfa);color:#fff;
+  transition:.15s;letter-spacing:.2px;
+}
+.hire:active{transform:scale(.95)}
+.hire.fired{background:rgba(46,20,20,.9);color:#f87171;border:1px solid rgba(248,113,113,.5)}
+.hire:disabled{background:rgba(28,28,48,.9);color:#5a5a8a;cursor:not-allowed}
+
+/* QUESTS */
+.quest-card{
+  background:linear-gradient(160deg,rgba(60,42,20,.85),rgba(40,28,14,.9));
+  border:1px solid rgba(251,191,36,.5);border-radius:14px;padding:12px;
+  margin-bottom:10px;position:relative;overflow:hidden;
+}
+.quest-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent,rgba(251,191,36,.08),transparent);
+  animation:qshine 3s linear infinite}
+@keyframes qshine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.qhead{display:flex;align-items:center;gap:8px;margin-bottom:6px;position:relative}
+.qhead .qi{font-size:1.6rem}
+.qtitle{font-size:.8rem;font-weight:900;line-height:1.2}
+.qsub{font-size:.62rem;color:var(--dim);margin-top:2px}
+.qreward{font-size:.72rem;color:var(--gold);font-weight:900;text-align:right;margin-top:6px}
+.qdone{background:linear-gradient(90deg,rgba(74,222,128,.15),rgba(34,211,238,.15));
+  border-color:rgba(74,222,128,.5)}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{
+  background:rgba(10,35,28,.85);border:1px solid var(--line);border-radius:11px;
+  padding:10px;text-align:center;
+}
+.stat .sv{font-size:1.05rem;font-weight:900;color:var(--acc2)}
+.stat .sl{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+
+/* MARKET */
+.market-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 10px;border-bottom:1px dashed rgba(74,222,128,.13);gap:8px;
+}
+.market-row:last-child{border-bottom:none}
+.market-row .mn{font-size:.72rem;font-weight:700;flex:1}
+.market-row .mp{font-size:.72rem;color:var(--gold);font-weight:900;white-space:nowrap}
+.market-row .mcat{font-size:.55rem;color:var(--dim);display:block;margin-top:1px}
+
+/* BATCH PANEL */
+.batch-panel{
+  background:linear-gradient(160deg,rgba(251,191,36,.1),rgba(13,37,29,.92));
+  border:1px solid rgba(251,191,36,.45);border-radius:16px;padding:12px;
+  margin-bottom:10px;backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  box-shadow:0 8px 28px rgba(0,0,0,.4),0 0 22px rgba(251,191,36,.1);
+  animation:batchIn .4s cubic-bezier(.3,1.3,.5,1);display:none;
+}
+@keyframes batchIn{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:none}}
+.batch-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.batch-icon{font-size:2rem;filter:drop-shadow(0 0 8px rgba(251,191,36,.5))}
+.batch-title{font-weight:900;font-size:.84rem;line-height:1.15}
+.batch-sub{font-size:.62rem;color:var(--dim);margin-top:2px}
+.batch-gost{font-size:.55rem;color:var(--acc2);margin-top:2px;font-family:monospace;font-weight:700}
+.batch-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.batch-btn{
+  flex:1 1 auto;min-width:90px;padding:10px 8px;border-radius:10px;
+  border:1px solid;font-family:inherit;font-weight:800;font-size:.66rem;
+  cursor:pointer;transition:.15s;letter-spacing:.2px;
+}
+.batch-btn:active{transform:scale(.96)}
+.batch-btn.accept{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;border-color:#4ade80}
+.batch-btn.exam{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a;border-color:#22d3ee}
+.batch-btn.reject{background:rgba(46,20,20,.9);color:#f87171;border-color:rgba(248,113,113,.6)}
+.exam-result{
+  background:rgba(5,22,17,.85);border-radius:10px;padding:8px 10px;margin-top:6px;
+  font-size:.68rem;border:1px solid rgba(74,222,128,.2);
+}
+.exam-head{font-size:.6rem;color:var(--acc2);text-transform:uppercase;letter-spacing:.8px;
+  font-weight:800;margin-bottom:5px}
+.exam-row{display:flex;justify-content:space-between;padding:3px 0;
+  border-bottom:1px dashed rgba(74,222,128,.13);gap:8px}
+.exam-row:last-child{border-bottom:none;padding-top:6px;font-weight:800}
+.exam-ok{color:#4ade80}
+.exam-warn{color:#fbbf24}
+.exam-bad{color:#f87171}
+.exam-items{font-size:.55rem;color:#5f8f7d;margin-top:2px}
+
+.main{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:900px){.main{grid-template-columns:1fr 320px}}
+
+.side{display:flex;flex-direction:column;gap:10px}
+.next{
+  border:none;border-radius:14px;padding:15px;cursor:pointer;font-family:inherit;
+  font-size:1rem;font-weight:900;letter-spacing:.8px;width:100%;
+  background:linear-gradient(90deg,#f59e0b,#fbbf24,#fde047);
+  color:#3b2100;box-shadow:0 8px 24px rgba(251,191,36,.35),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:.15s;position:relative;overflow:hidden;
+}
+.next::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
+  animation:shine 2.5s infinite}
+@keyframes shine{0%{left:-100%}60%,100%{left:150%}}
+.next:not(:disabled):active{transform:scale(.97)}
+.next:disabled{background:rgba(42,58,52,.9);color:#5d7a6e;box-shadow:none;animation:none}
+.next:disabled::after{display:none}
+@media(max-width:899px){
+  .next{position:fixed;left:10px;right:10px;bottom:12px;width:auto;z-index:40;
+        padding:17px;font-size:1.05rem;box-shadow:0 10px 32px rgba(0,0,0,.6),0 8px 24px rgba(251,191,36,.4)}
+}
+
+.chart{background:rgba(8,32,26,.8);border:1px solid var(--line);border-radius:10px;
+  padding:8px;margin-bottom:8px}
+.chart .cl{font-size:.58rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.chart svg{width:100%;height:36px;display:block}
+
+.log{
+  background:rgba(5,22,17,.85);border:1px solid var(--line);border-radius:12px;
+  padding:8px;height:180px;overflow-y:auto;font-size:.65rem;
+  display:flex;flex-direction:column;gap:5px;
+}
+.log::-webkit-scrollbar{width:5px}
+.log::-webkit-scrollbar-thumb{background:#1f5a47;border-radius:4px}
+.le{padding:5px 8px;border-radius:8px;background:rgba(14,43,35,.9);
+  border-left:3px solid #2b6b56;animation:slide .32s cubic-bezier(.3,1.3,.5,1)}
+@keyframes slide{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.le.good{border-color:var(--acc);background:rgba(13,49,37,.9)}
+.le.bad{border-color:var(--red);background:rgba(46,20,20,.85)}
+.le.warn{border-color:var(--gold);background:rgba(46,37,16,.85)}
+.le.info{border-color:var(--acc2);background:rgba(11,40,48,.85)}
+.le.quest{border-color:var(--violet);background:rgba(35,25,60,.85)}
+
+#toasts{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:200;
+  display:flex;flex-direction:column;gap:6px;pointer-events:none;width:calc(100% - 20px);max-width:400px}
+.toast{
+  background:linear-gradient(135deg,rgba(20,60,48,.96),rgba(13,42,34,.96));
+  border:1px solid var(--acc);border-radius:12px;padding:10px 14px;
+  font-size:.78rem;font-weight:700;text-align:center;
+  box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(74,222,128,.2);
+  animation:tin .35s cubic-bezier(.3,1.4,.5,1);
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+}
+.toast.bad{border-color:var(--red);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(248,113,113,.25)}
+.toast.warn{border-color:var(--gold);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(251,191,36,.25)}
+.toast.violet{border-color:var(--violet);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(167,139,250,.25)}
+.toast.out{animation:tout .3s forwards}
+@keyframes tin{from{opacity:0;transform:translateY(-16px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes tout{to{opacity:0;transform:translateY(-14px) scale(.94)}}
+
+#fx{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
+.flt{position:absolute;font-weight:900;font-size:.95rem;text-shadow:0 2px 10px rgba(0,0,0,.9);
+  animation:flt 1.2s ease-out forwards;pointer-events:none;white-space:nowrap}
+.flt.plus{color:#4ade80}
+.flt.minus{color:#f87171}
+.flt.gold{color:#fbbf24}
+.flt.violet{color:#a78bfa}
+@keyframes flt{0%{opacity:1;transform:translate(-50%,0) scale(.7)}
+  20%{transform:translate(-50%,-14px) scale(1.15)}
+  100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
+
+.conf{position:fixed;top:-14px;width:9px;height:14px;z-index:300;pointer-events:none;
+  animation:cfall linear forwards}
+@keyframes cfall{to{transform:translateY(105vh) rotate(720deg);opacity:.3}}
+
+.overlay{
+  position:fixed;inset:0;background:rgba(3,12,9,.94);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;padding:14px;z-index:400;
+  overflow-y:auto;
+}
+.overlay.hide{display:none}
+.modal{
+  background:linear-gradient(165deg,rgba(20,58,46,.97),rgba(11,39,33,.98));
+  border:1px solid var(--line);border-radius:22px;padding:22px;
+  max-width:620px;width:100%;max-height:94vh;overflow-y:auto;
+  box-shadow:0 24px 70px rgba(0,0,0,.8),inset 0 1px 0 rgba(74,222,128,.2);
+  animation:min .4s cubic-bezier(.3,1.2,.5,1);
+}
+@keyframes min{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
+.modal h2{font-size:1.15rem;margin-bottom:10px;font-weight:900;letter-spacing:.3px;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.modal h3{font-size:.78rem;color:var(--gold);margin:14px 0 6px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.8px}
+.modal p{font-size:.8rem;color:#c4e6d6;margin-bottom:9px}
+.modal ul{margin:0 0 10px 16px;font-size:.76rem;color:#b8dfcd}
+.modal li{margin-bottom:4px}
+.modal .hl{color:var(--gold);font-weight:800}
+.modal .tag{
+  display:inline-block;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);
+  color:var(--acc);border-radius:6px;padding:2px 8px;font-size:.65rem;font-weight:700;
+  margin:2px 3px 2px 0;
+}
+.startbtn{
+  width:100%;border:none;border-radius:14px;padding:16px;cursor:pointer;
+  font-family:inherit;font-size:1rem;font-weight:900;letter-spacing:.6px;
+  background:linear-gradient(90deg,#16a34a,#4ade80,#a3e635);color:#04210f;
+  margin-top:8px;transition:.15s;box-shadow:0 8px 28px rgba(74,222,128,.35);
+}
+.startbtn:active{transform:scale(.97)}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.score-item{background:rgba(10,35,28,.9);border:1px solid var(--line);border-radius:12px;
+  padding:10px;text-align:center}
+.score-item .sv{font-size:1.05rem;font-weight:900;color:var(--acc)}
+.score-item .sl{font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.final{font-size:2.3rem;font-weight:900;text-align:center;letter-spacing:1px;
+  background:linear-gradient(90deg,#fbbf24,#fde047,#fbbf24);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:flow 3s linear infinite;margin:6px 0}
+.rank{text-align:center;font-size:.92rem;margin-bottom:10px;color:#b8dfcd;font-weight:700}
+.tip{font-size:.65rem;color:var(--dim);margin-top:10px;text-align:center;font-style:italic}
+.ach-count{font-size:.62rem;color:var(--dim);text-align:center;padding:4px}
+
+footer{
+  margin-top:16px;padding:14px 12px 10px;text-align:center;
+  border-top:1px solid rgba(74,222,128,.15);
+}
+footer .uni{font-size:.7rem;font-weight:900;color:var(--acc);
+  letter-spacing:.4px;text-transform:uppercase}
+footer .kaf{font-size:.63rem;color:#a7e8c8;margin-top:3px;line-height:1.35;
+  max-width:600px;margin-left:auto;margin-right:auto}
+footer .copy{font-size:.55rem;color:#5f8f7d;margin-top:8px;font-style:italic}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="fx"></div>
+<div id="toasts"></div>
+
+<div class="app">
+  <header>
+    <div class="hbrand">
+      <h1><span>🌿</span> БиоЭкоКомбинат PRO</h1>
+      <div class="subtitle">ФГБОУ ВО «ДОННУЭТ» · кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
+    </div>
+    <div class="hbtns">
+      <button class="icon-btn" id="infoBtn">ℹ️</button>
+      <button class="icon-btn" id="bookBtn">📚</button>
+      <button class="icon-btn" id="soundBtn">🔊</button>
+    </div>
+  </header>
+
+  <div class="ticker" id="ticker"></div>
+
+  <div class="res-bar" id="resBar"></div>
+
+  <div class="bars">
+    <div class="bar-box">
+      <span class="lbl">🌍 Эко</span>
+      <div class="bar-track"><div class="bar-fill eco-fill" id="ecoFill"></div></div>
+      <span class="bar-num" id="ecoNum">50</span>
+    </div>
+    <div class="bar-box">
+      <span class="lbl">⭐ Бренд</span>
+      <div class="bar-track"><div class="bar-fill brand-fill" id="brandFill"></div></div>
+      <span class="bar-num" id="brandNum">50</span>
+    </div>
+  </div>
+
+  <div class="batch-panel" id="batchPanel"></div>
+
+  <div class="tabs">
+    <button class="tab active" data-view="view-build">🏗️ Модули</button>
+    <button class="tab" data-view="view-staff">👥 Команда</button>
+    <button class="tab" data-view="view-quest">📋 Задания</button>
+    <button class="tab" data-view="view-market">🛒 Рынок</button>
+  </div>
+
+  <div class="main">
+    <div>
+      <div class="view active" id="view-build">
+        <div class="panel">
+          <h2>🏗️ Производственные модули</h2>
+          <div class="grid" id="bgrid"></div>
+        </div>
+      </div>
+
+      <div class="view" id="view-staff">
+        <div class="panel">
+          <h2>👥 Команда экспертов</h2>
+          <div class="staff-grid" id="staffGrid"></div>
+        </div>
+        <div class="panel">
+          <h2>💸 Фонд оплаты труда</h2>
+          <div style="font-size:.75rem;color:var(--dim);text-align:center;padding:6px">
+            Зарплата в неделю: <b style="color:var(--gold);font-size:.9rem" id="salaryWeek">0 ₽</b>
+          </div>
+        </div>
+      </div>
+
+      <div class="view" id="view-quest">
+        <div class="panel">
+          <h2>🎯 Текущее задание</h2>
+          <div id="questBox"></div>
+        </div>
+        <div class="panel">
+          <h2>📊 Статистика сезона</h2>
+          <div class="stats-grid" id="statsGrid"></div>
+        </div>
+      </div>
+
+      <div class="view" id="view-market">
+        <div class="panel">
+          <h2>🛒 Рыночные цены (опт за кг/шт)</h2>
+          <div id="marketList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <button class="next" id="nextBtn">▶ Следующая неделя</button>
+      <div class="panel" style="padding:10px">
+        <h2 style="margin-bottom:6px">📈 Цена еды</h2>
+        <div class="chart">
+          <div class="cl" id="priceLabel">— ₽ / т</div>
+          <svg viewBox="0 0 200 40" preserveAspectRatio="none" id="priceChart"></svg>
+        </div>
+        <h2 style="margin-bottom:6px">📋 Журнал</h2>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="uni">ФГБОУ ВО «ДОННУЭТ»</div>
+    <div class="kaf">Кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
+    <div class="copy">Симулятор PRO по направлению «Биоэкономика пищевых систем» · 2025</div>
+  </footer>
+</div>
+
+<!-- START -->
+<div class="overlay" id="startScreen">
+  <div class="modal">
+    <h2>🌱 БиоЭкоКомбинат PRO</h2>
+    <p>Ты — директор <span class="hl">биоэкономического пищевого комбината</span> и главный товаровед-эксперт.</p>
+    <h3>Что нового в PRO</h3>
+    <ul>
+      <li>👥 <b>Найм персонала</b> — органолептик, микробиолог, химик, маркетолог, технолог. Каждый усиливает комбинат</li>
+      <li>🌸 <b>4 сезона</b> — лето и зима поднимают цены, осень — снижает</li>
+      <li>⭐ <b>Рейтинг бренда</b> — растёт от качественных партий, падает от брака</li>
+      <li>📋 <b>Квесты</b> — цель на 4 недели + награда до 150 000 ₽</li>
+      <li>📜 <b>Реальные ГОСТы</b> у каждой партии</li>
+    </ul>
+    <h3>Цель за 24 недели</h3>
+    <ul>
+      <li>💰 Заработать максимум денег</li>
+      <li>🌍 Держать эко-рейтинг высоким</li>
+      <li>⚗️ Провести все экспертизы правильно</li>
+      <li>📦 Продать как можно больше еды</li>
+    </ul>
+    <p style="color:#fbbf24">Старт: <b>500 000 ₽</b>, ферма и перерабатывающий цех</p>
+    <button class="startbtn" id="startBtn">▶ НАЧАТЬ РАБОТУ</button>
+    <div class="tip">📚 Справочник — узнаешь, как работают товароведы-эксперты</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="overlay hide" id="aboutScreen">
+  <div class="modal">
+    <h2>🏛️ О кафедре</h2>
+    <p><b>ФГБОУ ВО «ДОННУЭТ»</b><br>
+    Кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</p>
+    <h3>Что готовит кафедра</h3>
+    <ul>
+      <li>Товароведение и экспертиза продовольственных товаров</li>
+      <li>Экспертиза продукции сельского хозяйства</li>
+      <li>Биоэкономика пищевых систем</li>
+      <li>Управление качеством и безопасностью пищевой продукции</li>
+    </ul>
+    <h3>Чем занимается товаровед-эксперт</h3>
+    <p>
+      <span class="tag">👁️ Органолептика</span>
+      <span class="tag">🧪 Физико-химия</span>
+      <span class="tag">🧬 Микробиология</span>
+      <span class="tag">☣️ Токсикология</span>
+      <span class="tag">📜 Сертификация</span>
+      <span class="tag">♻️ Биоэкономика</span>
+    </p>
+    <p style="color:#fbbf24;text-align:center;margin-top:14px">В игре PRO ты управляешь командой экспертов и комбинатом!</p>
+    <button class="startbtn" id="aboutClose">Закрыть</button>
+  </div>
+</div>
+
+<!-- BOOK -->
+<div class="overlay hide" id="bookScreen">
+  <div class="modal">
+    <h2>📚 Справочник эксперта</h2>
+
+    <h3>🍎 Органолептические показатели (40 баллов)</h3>
+    <p><b>Внешний вид, цвет, запах, вкус, консистенция.</b> Первое, что проверяет эксперт. Максимум 40 баллов.</p>
+
+    <h3>🧪 Физико-химические (30 баллов)</h3>
+    <p><b>Влажность, кислотность, массовая доля жира, белка, сахара, соли.</b> Показывают соответствие рецептуре и ГОСТ.</p>
+
+    <h3>🧬 Микробиология и ☣️ токсикология (30 баллов)</h3>
+    <p><b>КМАФАнМ, БГКП, патогены, соли тяжёлых металлов, пестициды, микотоксины.</b> Безопасность — главный критерий допуска.</p>
+
+    <h3>📏 Ключевые ГОСТы</h3>
+    <ul>
+      <li><b>ГОСТ 26987-86</b> — Хлеб из пшеничной муки</li>
+      <li><b>ГОСТ 31450-2013</b> — Молоко питьевое</li>
+      <li><b>ГОСТ 32260-2013</b> — Сыры полутвёрдые</li>
+      <li><b>ГОСТ 34314-2017</b> — Мёд натуральный</li>
+      <li><b>ГОСТ 31778-2012</b> — Колбасы варёные</li>
+      <li><b>ГОСТ 814-2019</b> — Рыба копчёная</li>
+      <li><b>ГОСТ 5520-2017</b> — Крупа гречневая</li>
+      <li><b>ГОСТ 32102-2013</b> — Сок яблочный</li>
+      <li><b>ГОСТ 31453-2013</b> — Творог</li>
+      <li><b>ГОСТ 31721-2012</b> — Шоколад</li>
+      <li><b>ГОСТ 32573-2013</b> — Чай чёрный</li>
+      <li><b>ГОСТ 32261-2013</b> — Масло сливочное</li>
+    </ul>
+
+    <h3>⚖️ Итоговая оценка партии</h3>
+    <ul>
+      <li><b style="color:#4ade80">90–100</b> — премиум-качество</li>
+      <li><b style="color:#4ade80">70–89</b> — соответствует ГОСТ</li>
+      <li><b style="color:#fbbf24">40–69</b> — условно годна (со скидкой)</li>
+      <li><b style="color:#f87171">0–39</b> — брак, возврат / утилизация</li>
+    </ul>
+
+    <h3>👥 Роли в команде</h3>
+    <ul>
+      <li>👁️ <b>Органолептик</b> — видит качество по вкусу и запаху</li>
+      <li>🧬 <b>Микробиолог</b> — проверяет безопасность</li>
+      <li>⚗️ <b>Химик-аналитик</b> — физ-химия</li>
+      <li>📊 <b>Маркетолог</b> — поднимает цену продаж</li>
+      <li>🎓 <b>Технолог</b> — увеличивает производство</li>
+    </ul>
+
+    <h3>💡 Совет</h3>
+    <p>Сначала построй <span class="hl">Лабораторию товарной экспертизы</span> (снижает цену экспертизы в 2,5 раза). Потом <span class="hl">Маркетолога</span> — он поднимает выручку. И <span class="hl">Технолога</span> — он ускоряет производство.</p>
+
+    <button class="startbtn" id="bookClose">Понятно</button>
+  </div>
+</div>
+
+<!-- END -->
+<div class="overlay hide" id="endScreen">
+  <div class="modal">
+    <h2 id="endTitle">🏁 Итоги сезона</h2>
+    <div class="final" id="finalScore">0</div>
+    <div class="rank" id="rankText"></div>
+    <div class="score-grid" id="scoreGrid"></div>
+    <p id="endComment" style="text-align:center;color:#c4e6d6"></p>
+    <div class="ach-count" id="achCount"></div>
+    <button class="startbtn" id="restartBtn">🔄 ИГРАТЬ ЗАНОВО</button>
+    <div class="tip">ФГБОУ ВО «ДОННУЭТ» · Кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
+  </div>
+</div>
+
+<script>
+/* =========== HELPERS =========== */
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const fN=v=>Math.round(v).toLocaleString('ru-RU')+' ₽';
+const fSp=v=>Math.round(v).toLocaleString('ru-RU');
+
+/* =========== BUILDINGS =========== */
+const BUILDINGS = {
+  farm:{name:'Ферма микроводорослей',icon:'🌱',baseCost:120000,
+    desc:'Хлорелла и спирулина — белковое сырьё.',
+    output:{biomass:12,waste:1},energyUse:2},
+  greenhouse:{name:'Вертикальная теплица',icon:'🥬',baseCost:180000,
+    desc:'Свежая зелень круглый год, без пестицидов.',
+    output:{biomass:8,food:1},energyUse:4},
+  biogas:{name:'Биогазовый реактор',icon:'⚡',baseCost:150000,
+    desc:'Отходы → биогаз и биоудобрение.',
+    output:{waste:-10,biomass:2,eco:0.6},energyGain:18},
+  processing:{name:'Перерабатывающий цех',icon:'🏭',baseCost:250000,
+    desc:'Биомасса → готовые продукты питания.',
+    output:{biomass:-10,food:8,waste:3},energyUse:3},
+  bioplast:{name:'Цех биопластика',icon:'🧪',baseCost:220000,
+    desc:'Биоразлагаемая упаковка из отходов.',
+    output:{waste:-8,money:22000,eco:0.8},energyUse:2},
+  solar:{name:'Солнечная станция',icon:'☀️',baseCost:240000,
+    desc:'Чистая энергия для всего комбината.',
+    output:{},energyGain:25},
+  lab:{name:'Биолаборатория',icon:'🔬',baseCost:320000,
+    desc:'Селекция и биотех: +5% продукции за уровень.',
+    output:{eco:1},passive:true},
+  logistics:{name:'Экологичная логистика',icon:'🚛',baseCost:200000,
+    desc:'Электрогрузовики: +15% к цене еды за уровень.',
+    output:{},passive:true},
+  expert_lab:{name:'Лаборатория товарной экспертизы',icon:'⚗️',baseCost:280000,
+    desc:'Снижает стоимость экспертизы партий до 15 000 ₽.',
+    output:{eco:0.5},passive:true},
+  cert_center:{name:'Центр сертификации',icon:'📜',baseCost:340000,
+    desc:'+10% к цене принятых партий за уровень.',
+    output:{},passive:true},
+  tasting:{name:'Дегустационная комиссия',icon:'👅',baseCost:240000,
+    desc:'Органолептическая оценка: +2 эко/нед.',
+    output:{eco:2},passive:true}
+};
+
+/* =========== STAFF =========== */
+const STAFF = {
+  organoleptik:{name:'Органолептик',icon:'👁️',salary:35000,
+    desc:'Эксперт по вкусу, запаху, цвету. Видит качество сразу.',
+    bonus:'+10 к органолептике при экспертизе',effect:'organoleptic'},
+  microbiolog:{name:'Микробиолог',icon:'🧬',salary:45000,
+    desc:'Проверяет КМАФАнМ, БГКП, патогены.',
+    bonus:'+10 к безопасности при экспертизе',effect:'safety'},
+  chemist:{name:'Химик-аналитик',icon:'⚗️',salary:40000,
+    desc:'Определяет влажность, кислотность, жирность.',
+    bonus:'+10 к физ-химии при экспертизе',effect:'physChem'},
+  marketer:{name:'Маркетолог',icon:'📊',salary:30000,
+    desc:'Продвигает продукцию на рынке.',
+    bonus:'+12% к цене продаж еды',effect:'price'},
+  technologist:{name:'Технолог',icon:'🎓',salary:55000,
+    desc:'Оптимизирует производственные процессы.',
+    bonus:'+10% к производству еды',effect:'production'}
+};
+
+/* =========== BATCH POOL — с реальными ГОСТами =========== */
+const BATCH_POOL = [
+  {name:'Хлеб пшеничный',icon:'🍞',size:5000,value:45,gost:'ГОСТ 26987-86',cat:'Хлебобулочные'},
+  {name:'Молоко пастеризованное 3,2%',icon:'🥛',size:8000,value:85,gost:'ГОСТ 31450-2013',cat:'Молочные'},
+  {name:'Сыр «Российский» 50%',icon:'🧀',size:800,value:850,gost:'ГОСТ 32260-2013',cat:'Сыры'},
+  {name:'Яблоки свежие I сорт',icon:'🍎',size:10000,value:130,gost:'ГОСТ 34314-2017',cat:'Плоды'},
+  {name:'Мёд цветочный натуральный',icon:'🍯',size:500,value:700,gost:'ГОСТ 31766-2012',cat:'Мёд'},
+  {name:'Колбаса «Докторская»',icon:'🥓',size:1200,value:550,gost:'ГОСТ 31778-2012',cat:'Мясные'},
+  {name:'Скумбрия копчёная',icon:'🐟',size:900,value:750,gost:'ГОСТ 814-2019',cat:'Рыбные'},
+  {name:'Крупа гречневая ядрица',icon:'🌾',size:6000,value:100,gost:'ГОСТ 5520-2017',cat:'Крупы'},
+  {name:'Сок яблочный прямого отжима',icon:'🧃',size:5000,value:120,gost:'ГОСТ 32102-2013',cat:'Напитки'},
+  {name:'Творог 9%',icon:'🥣',size:1500,value:380,gost:'ГОСТ 31453-2013',cat:'Молочные'},
+  {name:'Шоколад горький 70%',icon:'🍫',size:600,value:1500,gost:'ГОСТ 31721-2012',cat:'Кондитерские'},
+  {name:'Чай чёрный листовой',icon:'🍵',size:400,value:2200,gost:'ГОСТ 32573-2013',cat:'Напитки'},
+  {name:'Масло сливочное 82,5%',icon:'🧈',size:600,value:1200,gost:'ГОСТ 32261-2013',cat:'Молочные'},
+  {name:'Консервы мясные (тушёнка)',icon:'🥫',size:5000,value:250,gost:'ГОСТ 32125-2013',cat:'Консервы'}
+];
+
+/* =========== EVENTS =========== */
+const EVENTS = [
+  {t:'🌧️ Засуха в регионе — цены на еду выросли.',f:s=>{s.foodPrice=Math.min(9000,s.foodPrice+800)},cls:'warn'},
+  {t:'📈 Спрос на растительный белок вырос! Цена еды +700 ₽',f:s=>{s.foodPrice=Math.min(9000,s.foodPrice+700)},cls:'good'},
+  {t:'🦠 Вспышка бактерий: потеря 6 т биомассы.',f:s=>{s.biomass=Math.max(0,s.biomass-6)},cls:'bad'},
+  {t:'🏆 Грант на биотехнологии: +250 000 ₽',f:s=>{s.money+=250000},cls:'good'},
+  {t:'🌍 Экологический штраф: −150 000 ₽, −4 эко.',f:s=>{s.money-=150000;s.eco=Math.max(0,s.eco-4)},cls:'bad'},
+  {t:'🔬 Научный прорыв кафедры ДОННУЭТ: +5 эко.',f:s=>{s.eco=Math.min(100,s.eco+5)},cls:'good'},
+  {t:'🚚 Скачок цен на топливо: −80 000 ₽',f:s=>{s.money-=80000},cls:'warn'},
+  {t:'🥗 Программа «Здоровое питание»: +180 000 ₽',f:s=>{s.money+=180000},cls:'good'},
+  {t:'⚡ Авария в энергосети: −12 энергии.',f:s=>{s.energy=Math.max(0,s.energy-12)},cls:'bad'},
+  {t:'♻️ Городская субсидия за переработку: +160 000 ₽',f:s=>{s.money+=160000},cls:'good'},
+  {t:'🌡️ Тепловой стресс: производство биомассы снижено.',f:s=>{s.biomass=Math.max(0,s.biomass-8)},cls:'bad'},
+  {t:'📰 Кафедра ДОННУЭТ отметила комбинат: +3 эко, +2 бренд.',f:s=>{s.eco=Math.min(100,s.eco+3);s.brand=Math.min(100,s.brand+2)},cls:'good'},
+  {t:'🎓 Студенты-товароведы на практике: +120 000 ₽',f:s=>{s.money+=120000},cls:'good'},
+  {t:'📋 Внеплановая проверка Роспотребнадзора: −90 000 ₽',f:s=>{s.money-=90000},cls:'warn'},
+  {t:'⭐ Удачная рекламная кампания: +6 бренд.',f:s=>{s.brand=Math.min(100,s.brand+6)},cls:'good'},
+  {t:'📉 Скандал в соцсетях: −7 бренд.',f:s=>{s.brand=Math.max(0,s.brand-7)},cls:'bad'}
+];
+
+/* =========== QUESTS =========== */
+const QUEST_POOL = [
+  {icon:'📦',text:'Продать 200 т еды за сезон',check:s=>s.delivered>=200,reward:80000},
+  {icon:'⚗️',text:'Провести 3 экспертизы партий',check:s=>s.examsDone>=3,reward:100000},
+  {icon:'🌿',text:'Достичь эко-рейтинга 75',check:s=>s.eco>=75,reward:120000},
+  {icon:'⭐',text:'Достичь бренд-рейтинга 70',check:s=>s.brand>=70,reward:90000},
+  {icon:'🏆',text:'Принять 2 премиум-партии',check:s=>s.perfectBatches>=2,reward:150000},
+  {icon:'🛡️',text:'Отклонить 2 партии брака',check:s=>s.rejectedBatches>=2,reward:70000},
+  {icon:'💰',text:'Накопить 1 500 000 ₽ в кассе',check:s=>s.money>=1500000,reward:110000},
+  {icon:'👥',text:'Нанять 3 сотрудников',check:s=>Object.keys(s.staff).length>=3,reward:100000}
+];
+
+/* =========== ACHIEVEMENTS =========== */
+const ACHIEVEMENTS = [
+  {id:'first_build',t:'🏗️ Первый модуль построен!',check:s=>Object.values(s.buildings).reduce((a,b)=>a+b,0)>2},
+  {id:'eco70',t:'🌿 Эко-рейтинг 70+!',check:s=>s.eco>=70},
+  {id:'eco90',t:'💚 Эко-рейтинг 90+!',check:s=>s.eco>=90},
+  {id:'brand70',t:'⭐ Бренд-рейтинг 70+!',check:s=>s.brand>=70},
+  {id:'brand90',t:'👑 Бренд-рейтинг 90+! Легенда рынка!',check:s=>s.brand>=90},
+  {id:'money2m',t:'💰 2 млн ₽ в кассе!',check:s=>s.money>=2000000},
+  {id:'clean',t:'✨ Комбинат без отходов (<5 т)!',check:s=>s.turn>6&&s.waste<5},
+  {id:'energy+',t:'⚡ Энергонезависимость (50+)!',check:s=>s.energy>=50},
+  {id:'tycoon',t:'🏆 Все модули построены!',check:s=>Object.values(s.buildings).every(v=>v>=1)},
+  {id:'expert',t:'⚗️ Первая экспертиза проведена!',check:s=>s.examsDone>=1},
+  {id:'expert5',t:'🔬 5 экспертиз — опытный товаровед!',check:s=>s.examsDone>=5},
+  {id:'perfect',t:'⭐ Партия премиум-качества принята!',check:s=>s.perfectBatches>=1},
+  {id:'reject3',t:'🛡️ Брак отклонён 3 раза — бдительность!',check:s=>s.rejectedBatches>=3},
+  {id:'staff3',t:'👥 Команда из 3+ сотрудников!',check:s=>Object.keys(s.staff).length>=3},
+  {id:'quest1',t:'📋 Первый квест выполнен!',check:s=>s.questsDone>=1},
+  {id:'quest3',t:'🎖️ 3 квеста — надёжный руководитель!',check:s=>s.questsDone>=3}
+];
+
+/* =========== STATE =========== */
+let state, soundOn=true, achievements=new Set(), priceHistory=[], currentTab='view-build';
+
+function resetState(){
+  state={
+    turn:1,maxTurns:24,
+    money:500000,biomass:15,food:0,energy:20,waste:0,eco:50,brand:50,
+    delivered:0,foodPrice:4500,log:[],
+    batch:null,
+    examsDone:0,perfectBatches:0,rejectedBatches:0,passedBatches:0,questsDone:0,
+    staff:{},
+    quest:null,
+    season:{name:'Весна',icon:'🌸',priceMod:1.0},
+    buildings:{farm:1,greenhouse:0,biogas:0,processing:1,bioplast:0,solar:0,
+               lab:0,logistics:0,expert_lab:0,cert_center:0,tasting:0}
+  };
+  achievements=new Set();
+  priceHistory=[4500];
+  state.quest=QUEST_POOL[0];
+}
+
+function getSeason(turn){
+  if(turn<=6) return {name:'Весна',icon:'🌸',priceMod:1.0};
+  if(turn<=12) return {name:'Лето',icon:'☀️',priceMod:1.15};
+  if(turn<=18) return {name:'Осень',icon:'🍂',priceMod:0.9};
+  return {name:'Зима',icon:'❄️',priceMod:1.25};
+}
+
+/* =========== AUDIO =========== */
+let actx;
+function initAudio(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}}
+function sfx(t){
+  if(!soundOn||!actx)return;
+  try{
+    const T=actx.currentTime;
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.connect(g);g.connect(actx.destination);
+    if(t==='click'){o.type='sine';o.frequency.setValueAtTime(600,T);
+      o.frequency.exponentialRampToValueAtTime(900,T+.06);
+      g.gain.setValueAtTime(.08,T);g.gain.exponentialRampToValueAtTime(.001,T+.08);
+      o.start(T);o.stop(T+.09);}
+    else if(t==='build'){o.type='triangle';o.frequency.setValueAtTime(300,T);
+      o.frequency.exponentialRampToValueAtTime(700,T+.12);
+      g.gain.setValueAtTime(.12,T);g.gain.exponentialRampToValueAtTime(.001,T+.2);
+      o.start(T);o.stop(T+.22);}
+    else if(t==='hire'){o.type='sine';o.frequency.setValueAtTime(400,T);
+      o.frequency.setValueAtTime(600,T+.06);o.frequency.setValueAtTime(800,T+.12);
+      g.gain.setValueAtTime(.09,T);g.gain.exponentialRampToValueAtTime(.001,T+.2);
+      o.start(T);o.stop(T+.22);}
+    else if(t==='coin'){[880,1320].forEach((f,i)=>{const o2=actx.createOscillator(),g2=actx.createGain();
+      o2.connect(g2);g2.connect(actx.destination);o2.type='square';o2.frequency.value=f;
+      g2.gain.setValueAtTime(.05,T+i*.05);g2.gain.exponentialRampToValueAtTime(.001,T+i*.05+.12);
+      o2.start(T+i*.05);o2.stop(T+i*.05+.14)})}
+    else if(t==='error'){o.type='sawtooth';o.frequency.setValueAtTime(180,T);
+      o.frequency.exponentialRampToValueAtTime(90,T+.2);
+      g.gain.setValueAtTime(.1,T);g.gain.exponentialRampToValueAtTime(.001,T+.22);
+      o.start(T);o.stop(T+.24);}
+    else if(t==='turn'){o.type='sine';o.frequency.setValueAtTime(400,T);
+      o.frequency.exponentialRampToValueAtTime(800,T+.15);
+      g.gain.setValueAtTime(.09,T);g.gain.exponentialRampToValueAtTime(.001,T+.18);
+      o.start(T);o.stop(T+.2);}
+    else if(t==='exam'){o.type='square';o.frequency.setValueAtTime(500,T);
+      o.frequency.setValueAtTime(700,T+.08);o.frequency.setValueAtTime(900,T+.16);
+      g.gain.setValueAtTime(.06,T);g.gain.exponentialRampToValueAtTime(.001,T+.24);
+      o.start(T);o.stop(T+.26);}
+    else if(t==='quest'){[659,880,1046,1318].forEach((f,i)=>{const o2=actx.createOscillator(),g2=actx.createGain();
+      o2.connect(g2);g2.connect(actx.destination);o2.type='triangle';o2.frequency.value=f;
+      g2.gain.setValueAtTime(.07,T+i*.08);g2.gain.exponentialRampToValueAtTime(.001,T+i*.08+.25);
+      o2.start(T+i*.08);o2.stop(T+i*.08+.27)})}
+    else if(t==='win'){[523,659,784,1046].forEach((f,i)=>{const o2=actx.createOscillator(),g2=actx.createGain();
+      o2.connect(g2);g2.connect(actx.destination);o2.type='triangle';o2.frequency.value=f;
+      g2.gain.setValueAtTime(.08,T+i*.13);g2.gain.exponentialRampToValueAtTime(.001,T+i*.13+.3);
+      o2.start(T+i*.13);o2.stop(T+i*.13+.32)})}
+  }catch(e){}
+}
+function vibrate(ms){if(navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}}
+
+/* =========== FX =========== */
+function toast(t,type=''){
+  const e=document.createElement('div');e.className='toast '+(type||'');e.textContent=t;
+  $('toasts').appendChild(e);
+  setTimeout(()=>{e.classList.add('out');setTimeout(()=>e.remove(),320)},2600);
+}
+function floatNum(el,txt,cls='plus'){
+  if(!el)return;
+  const r=el.getBoundingClientRect();
+  const d=document.createElement('div');d.className='flt '+cls;d.textContent=txt;
+  d.style.left=(r.left+r.width/2)+'px';d.style.top=(r.top+r.height/2)+'px';
+  $('fx').appendChild(d);setTimeout(()=>d.remove(),1250);
+}
+function confetti(){
+  const c=['#4ade80','#22d3ee','#a3e635','#fbbf24','#f87171','#fde047','#a78bfa','#f472b6'];
+  for(let i=0;i<80;i++){
+    const e=document.createElement('div');e.className='conf';
+    e.style.left=Math.random()*100+'vw';e.style.background=c[i%c.length];
+    e.style.animationDuration=(2+Math.random()*2)+'s';
+    e.style.animationDelay=(Math.random()*.6)+'s';
+    e.style.transform='rotate('+Math.random()*360+'deg)';
+    document.body.appendChild(e);setTimeout(()=>e.remove(),5000);
+  }
+}
+
+/* =========== BG =========== */
+(function(){
+  const c=$('bg'),ctx=c.getContext('2d');let W,H,p=[];
+  function rz(){W=c.width=innerWidth;H=c.height=innerHeight}
+  rz();addEventListener('resize',rz);
+  for(let i=0;i<50;i++)p.push({x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,
+    r:1+Math.random()*2,o:.15+Math.random()*.35,
+    c:Math.random()<.5?'74,222,128':'34,211,238'});
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    for(const q of p){
+      q.x+=q.vx;q.y+=q.vy;
+      if(q.x<0)q.x=W;if(q.x>W)q.x=0;
+      if(q.y<0)q.y=H;if(q.y>H)q.y=0;
+      const g=ctx.createRadialGradient(q.x,q.y,0,q.x,q.y,q.r*6);
+      g.addColorStop(0,'rgba('+q.c+','+q.o+')');
+      g.addColorStop(1,'rgba('+q.c+',0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(q.x,q.y,q.r*6,0,6.28);ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* =========== RENDER =========== */
+const RES_META=[
+  {k:'money',ico:'💰',lbl:'Касса',money:true},
+  {k:'biomass',ico:'🌾',lbl:'Биомасса,т'},
+  {k:'food',ico:'🍞',lbl:'Еда,т'},
+  {k:'energy',ico:'⚡',lbl:'Энергия'},
+  {k:'waste',ico:'♻️',lbl:'Отходы,т'},
+  {k:'delivered',ico:'📦',lbl:'Продано,т'}
+];
+let prevRes={};
+
+function renderRes(){
+  const bar=$('resBar');
+  if(!bar.dataset.init){
+    bar.innerHTML=RES_META.map(r=>
+      `<div class="res" id="res-${r.k}"><span class="ico">${r.ico}</span>
+       <div class="val">0</div><div class="lbl">${r.lbl}</div></div>`).join('');
+    bar.dataset.init='1';
+  }
+  RES_META.forEach(r=>{
+    const v=state[r.k];const el=$('res-'+r.k);const valEl=el.querySelector('.val');
+    const old=prevRes[r.k];
+    valEl.textContent=r.money?fN(v):fSp(v);
+    if(old!==undefined&&old!==v){
+      el.classList.remove('up','down');void el.offsetWidth;
+      el.classList.add(v>old?'up':'down');
+    }
+    el.classList.toggle('warn-pulse',r.k==='energy'&&state.energy<5&&state.turn>1);
+    prevRes[r.k]=v;
+  });
+  const eco=Math.round(state.eco);const br=Math.round(state.brand);
+  $('ecoFill').style.width=eco+'%';$('ecoNum').textContent=eco;
+  $('brandFill').style.width=br+'%';$('brandNum').textContent=br;
+}
+
+function renderTicker(){
+  const s=state.season;
+  const salary=Object.keys(state.staff).reduce((a,k)=>a+STAFF[k].salary,0);
+  $('ticker').innerHTML=`
+    <div class="chip gold">📅 Неделя ${state.turn}/${state.maxTurns}</div>
+    <div class="chip cy">${s.icon} ${s.name} · ×${s.priceMod.toFixed(2)} к цене</div>
+    <div class="chip violet">👥 Команда: ${Object.keys(state.staff).length}/5</div>
+    ${salary>0?`<div class="chip">💸 ЗП: ${fN(salary)}/нед</div>`:''}
+    <div class="chip">⭐ Бренд: ${Math.round(state.brand)}</div>
+  `;
+}
+
+function costOf(k,lvl){return Math.round(BUILDINGS[k].baseCost*Math.pow(1.55,lvl)/1000)*1000}
+
+function effectText(k,lvl){
+  const d=BUILDINGS[k];const p=[];
+  const out=d.output||{};
+  const n={biomass:'🌾',food:'🍞',waste:'♻️',eco:'🌍'};
+  for(const kk in out){
+    const v=Math.round(out[kk]*lvl*10)/10;
+    if(v===0)continue;
+    if(kk==='money')p.push('+'+fN(out[kk]*lvl));
+    else p.push((v>0?'+':'')+v+' '+n[kk]);
+  }
+  if(d.energyUse)p.push('−'+(d.energyUse*lvl)+' ⚡');
+  if(d.energyGain)p.push('+'+(d.energyGain*lvl)+' ⚡');
+  return p.join(' · ')||'—';
+}
+
+function renderBuildings(){
+  const g=$('bgrid');
+  g.innerHTML=Object.keys(BUILDINGS).map(k=>{
+    const d=BUILDINGS[k],lvl=state.buildings[k];
+    const cost=costOf(k,lvl),can=state.money>=cost;
+    return `<div class="bcard ${lvl>0?'built':''}">
+      <div class="bhead"><span class="bi">${d.icon}</span>
+        <span class="bn">${d.name}</span><span class="lvl">ур.${lvl}</span></div>
+      <div class="bdesc">${d.desc}</div>
+      <div class="beff">${effectText(k,Math.max(lvl,1))} <span style="color:#5f8f7d">/ур.</span></div>
+      <button class="buy ${lvl>0?'built':''}" data-key="${k}" ${can?'':'disabled'}>
+        ${lvl>0?'Улучшить':'Построить'} · ${fN(cost)}</button></div>`;
+  }).join('');
+  g.querySelectorAll('.buy').forEach(b=>b.addEventListener('click',()=>buy(b.dataset.key,b)));
+}
+
+function renderStaff(){
+  const g=$('staffGrid');
+  g.innerHTML=Object.keys(STAFF).map(k=>{
+    const d=STAFF[k],hired=state.staff[k];
+    return `<div class="scard ${hired?'hired':''}">
+      <div class="shead"><span class="si">${d.icon}</span>
+        <span class="sn">${d.name}</span><span class="sl">${fN(d.salary)}/нед</span></div>
+      <div class="sdesc">${d.desc}</div>
+      <div class="sbonus">💫 ${d.bonus}</div>
+      <button class="hire ${hired?'fired':''}" data-key="${k}">
+        ${hired?'❌ Уволить':'💼 Нанять'}</button></div>`;
+  }).join('');
+  g.querySelectorAll('.hire').forEach(b=>b.addEventListener('click',()=>toggleStaff(b.dataset.key)));
+  const salary=Object.keys(state.staff).reduce((a,k)=>a+STAFF[k].salary,0);
+  $('salaryWeek').textContent=fN(salary);
+}
+
+function renderQuest(){
+  const q=state.quest;
+  if(!q){$('questBox').innerHTML='<div style="text-align:center;color:var(--dim);font-size:.75rem">Все задания выполнены!</div>';return}
+  const done=q.check(state);
+  $('questBox').innerHTML=`
+    <div class="quest-card ${done?'qdone':''}">
+      <div class="qhead">
+        <span class="qi">${q.icon}</span>
+        <div><div class="qtitle">${q.text}</div>
+        <div class="qsub">${done?'✅ Выполнено! Награда получена':'Прогресс: проверяется каждую неделю'}</div></div>
+      </div>
+      <div class="qreward">🏆 Награда: ${fN(q.reward)}</div>
+    </div>`;
+}
+
+function renderStats(){
+  const salary=Object.keys(state.staff).reduce((a,k)=>a+STAFF[k].salary,0);
+  const topWeek=priceHistory[priceHistory.length-1]||0;
+  $('statsGrid').innerHTML=`
+    <div class="stat"><div class="sv">${fSp(state.delivered)} т</div><div class="sl">Продано еды</div></div>
+    <div class="stat"><div class="sv">${state.examsDone}</div><div class="sl">Экспертиз</div></div>
+    <div class="stat"><div class="sv">${state.perfectBatches}</div><div class="sl">Премиум</div></div>
+    <div class="stat"><div class="sv">${state.rejectedBatches}</div><div class="sl">Отклонено</div></div>
+    <div class="stat"><div class="sv">${state.questsDone}</div><div class="sl">Квестов</div></div>
+    <div class="stat"><div class="sv">${fN(salary)}</div><div class="sl">ФОТ/нед</div></div>
+    <div class="stat"><div class="sv">${fN(topWeek)}</div><div class="sl">Цена еды</div></div>
+    <div class="stat"><div class="sv">${Math.round(state.brand)}</div><div class="sl">Бренд</div></div>`;
+}
+
+function renderMarket(){
+  const s=state.season;
+  $('marketList').innerHTML=BATCH_POOL.map(b=>{
+    const price=Math.round(b.value*s.priceMod);
+    return `<div class="market-row">
+      <span class="mn">${b.icon} ${b.name}<span class="mcat">${b.cat} · ${b.gost}</span></span>
+      <span class="mp">${fN(price)}/ед.</span></div>`;
+  }).join('');
+}
+
+function renderChart(){
+  const svg=$('priceChart');
+  const h=priceHistory.slice(-18);
+  if(h.length<2){svg.innerHTML='';return}
+  const min=Math.min(...h)*.9,max=Math.max(...h)*1.1;
+  const pts=h.map((v,i)=>{
+    const x=(i/(h.length-1))*200;
+    const y=40-((v-min)/(max-min||1))*36-2;
+    return x+','+y;
+  }).join(' ');
+  svg.innerHTML=`
+    <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4ade80" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#4ade80" stop-opacity="0"/></linearGradient></defs>
+    <polyline points="${pts}" fill="none" stroke="#4ade80" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="0,40 ${pts} 200,40" fill="url(#pg)"/>`;
+  $('priceLabel').textContent=fN(state.foodPrice)+' / т';
+}
+
+function addLog(t,cls=''){
+  state.log.unshift({text:t,cls});
+  if(state.log.length>60)state.log.pop();
+  $('log').innerHTML=state.log.map(l=>`<div class="le ${l.cls}">${l.text}</div>`).join('');
+}
+
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{
+    if(!achievements.has(a.id)&&a.check(state)){
+      achievements.add(a.id);
+      setTimeout(()=>{toast(a.t,'');sfx('coin');vibrate([20,40,20])},300);
+    }
+  });
+}
+
+function checkQuest(){
+  if(state.quest&&state.quest.check(state)){
+    const reward=state.quest.reward;
+    state.money+=reward;
+    state.questsDone++;
+    addLog(`📋 Квест «${state.quest.text}» выполнен! +${fN(reward)}`,'quest');
+    toast('📋 Квест выполнен! +'+fN(reward),'violet');
+    sfx('quest');
+    // новый квест
+    const remaining=QUEST_POOL.filter(q=>q!==state.quest);
+    state.quest=remaining[Math.floor(Math.random()*remaining.length)];
+    checkAchievements();
+  }
+}
+
+function renderAll(){
+  renderRes();renderTicker();renderBuildings();renderStaff();
+  renderQuest();renderStats();renderMarket();renderChart();renderBatch();
+}
+
+/* =========== BATCH =========== */
+function spawnBatch(){
+  const t=BATCH_POOL[Math.floor(Math.random()*BATCH_POOL.length)];
+  const quality=20+Math.floor(Math.random()*76);
+  state.batch={...t,quality,revealed:false,
+    organoleptic:Math.round(quality*.4),
+    physChem:Math.round(quality*.3),
+    safety:Math.round(quality*.3)};
+  addLog(`📦 Прибыла ${t.name} (${t.gost}). Опт. стоимость ~${fN(t.size*t.value)}.`,'info');
+  toast('📦 Новая партия на экспертизу!');sfx('coin');
+  renderBatch();
+}
+
+function renderBatch(){
+  const p=$('batchPanel');
+  if(!state.batch){p.style.display='none';return}
+  p.style.display='block';
+  const b=state.batch;
+  const totalVal=b.size*b.value;
+  let html=`
+    <div class="batch-head">
+      <span class="batch-icon">${b.icon}</span>
+      <div style="flex:1;min-width:0">
+        <div class="batch-title">${b.name}</div>
+        <div class="batch-sub">${fSp(b.size)} ед. · ${b.cat} · опт ~${fN(totalVal)}</div>
+        <div class="batch-gost">📜 ${b.gost}</div>
+      </div>
+    </div>`;
+
+  if(b.revealed){
+    const q=b.quality;
+    const cls=q>=70?'exam-ok':q>=40?'exam-warn':'exam-bad';
+    const verdict=q>=90?'премиум':q>=70?'соответствует ГОСТ':q>=40?'условно годна':'НЕ соответствует';
+    // бонусы от команды (только визуальный эффект для интереса, влияет на итог)
+    html+=`
+      <div class="exam-result">
+        <div class="exam-head">📋 Протокол экспертизы</div>
+        <div class="exam-row"><span>👁️ Органолептика</span><span class="${b.organoleptic>=28?'exam-ok':b.organoleptic>=16?'exam-warn':'exam-bad'}">${b.organoleptic}/40</span></div>
+        <div class="exam-items">внешний вид · цвет · запах · вкус · консистенция</div>
+        <div class="exam-row"><span>🧪 Физико-химические</span><span class="${b.physChem>=22?'exam-ok':b.physChem>=12?'exam-warn':'exam-bad'}">${b.physChem}/30</span></div>
+        <div class="exam-items">влажность · кислотность · массовая доля</div>
+        <div class="exam-row"><span>🧬 Безопасность</span><span class="${b.safety>=22?'exam-ok':b.safety>=12?'exam-warn':'exam-bad'}">${b.safety}/30</span></div>
+        <div class="exam-items">КМАФАнМ · токсичные элементы · пестициды</div>
+        <div class="exam-row"><b>Итого: ${q}/100</b><b class="${cls}">${verdict}</b></div>
+      </div>
+      <div class="batch-actions">
+        <button class="batch-btn accept" onclick="window.acceptBatch()">✅ Принять</button>
+        <button class="batch-btn reject" onclick="window.rejectBatch()">❌ Отклонить</button>
+      </div>`;
+  } else {
+    const examCost=state.buildings.expert_lab?15000:40000;
+    html+=`
+      <div class="batch-actions">
+        <button class="batch-btn accept" onclick="window.acceptBatch()">Принять (риск!)</button>
+        <button class="batch-btn exam" onclick="window.examineBatch()">⚗️ Экспертиза · ${fN(examCost)}</button>
+        <button class="batch-btn reject" onclick="window.rejectBatch()">Отклонить</button>
+      </div>`;
+  }
+  p.innerHTML=html;
+}
+
+window.examineBatch=function(){
+  const b=state.batch;if(!b||b.revealed)return;
+  const cost=state.buildings.expert_lab?15000:40000;
+  if(state.money<cost){sfx('error');toast('Недостаточно средств','warn');return}
+  state.money-=cost;state.examsDone++;b.revealed=true;
+  sfx('exam');vibrate(30);
+  addLog(`⚗️ Экспертиза «${b.name}» (−${fN(cost)}). Качество: ${b.quality}/100.`,'info');
+  floatNum($('res-money'),'−'+fN(cost),'minus');
+  checkAchievements();renderAll();
+};
+
+window.acceptBatch=function(){
+  const b=state.batch;if(!b)return;
+  const qualityMult=.5+b.quality/100;
+  const certBonus=1+.10*(state.buildings.cert_center||0);
+  const marketerBonus=state.staff.marketer?1.12:1;
+  const totalVal=b.size*b.value;
+  let revenue=Math.round(totalVal*qualityMult*certBonus*marketerBonus/1000)*1000;
+
+  if(b.quality>=70){
+    state.money+=revenue;
+    state.eco=clamp(state.eco+2,0,100);
+    state.brand=clamp(state.brand+3,0,100);
+    if(b.quality>=90)state.perfectBatches++;
+    addLog(`✅ ${b.name} принята (${b.quality}/100). +${fN(revenue)}, эко+2, бренд+3.`,'good');
+    floatNum($('res-money'),'+'+fN(revenue),'plus');
+    sfx('coin');vibrate(40);
+  } else if(b.quality>=40){
+    revenue=Math.round(revenue*.7/1000)*1000;
+    state.money+=revenue;
+    state.brand=clamp(state.brand-1,0,100);
+    addLog(`⚠️ ${b.name} принята со скидкой. +${fN(revenue)}, бренд−1.`,'warn');
+    floatNum($('res-money'),'+'+fN(revenue),'gold');
+    sfx('coin');
+  } else {
+    const fine=Math.round(totalVal*.4/1000)*1000;
+    state.money-=fine;
+    state.eco=clamp(state.eco-8,0,100);
+    state.brand=clamp(state.brand-10,0,100);
+    addLog(`❌ ${b.name}: НЕ соответствует ГОСТ! Штраф ${fN(fine)}, эко−8, бренд−10.`,'bad');
+    floatNum($('res-money'),'−'+fN(fine),'minus');
+    sfx('error');vibrate([60,40,60]);
+  }
+  state.passedBatches++;state.batch=null;
+  checkAchievements();renderAll();
+};
+
+window.rejectBatch=function(){
+  const b=state.batch;if(!b)return;
+  state.rejectedBatches++;
+  state.eco=clamp(state.eco+1,0,100);
+  state.brand=clamp(state.brand+1,0,100);
+  addLog(`🛡️ ${b.name} отклонена. Эко+1, бренд+1.`,'info');
+  toast('🛡️ Партия отклонена','warn');
+  state.batch=null;
+  checkAchievements();renderAll();
+};
+
+/* =========== ACTIONS =========== */
+function buy(k,btn){
+  const lvl=state.buildings[k],cost=costOf(k,lvl);
+  if(state.money<cost){sfx('error');vibrate(40);toast('Недостаточно средств','warn');return}
+  state.money-=cost;state.buildings[k]++;
+  sfx('build');vibrate(30);
+  floatNum(btn,'−'+fN(cost),'gold');
+  addLog(`🏗️ Построен «${BUILDINGS[k].name}» (ур.${state.buildings[k]})`,'good');
+  checkAchievements();renderAll();
+}
+
+function toggleStaff(k){
+  if(state.staff[k]){
+    delete state.staff[k];
+    addLog(`👋 Уволен ${STAFF[k].name}`,'warn');
+    toast('👋 '+STAFF[k].name+' уволен','warn');
+    sfx('click');
+  } else {
+    state.staff[k]=true;
+    addLog(`👥 Нанят ${STAFF[k].name} (${fN(STAFF[k].salary)}/нед)`,'good');
+    toast('💼 '+STAFF[k].name+' в команде!','violet');
+    sfx('hire');vibrate([30,40,30]);
+  }
+  checkAchievements();renderAll();
+}
+
+/* =========== TABS =========== */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const v=$('view-'+t.dataset.view.replace('view-',''));
+    document.getElementById(t.dataset.view).classList.add('active');
+    currentTab=t.dataset.view;
+    sfx('click');
+  });
+});
+
+/* =========== TURN =========== */
+function nextTurn(){
+  const btn=$('nextBtn');
+  btn.disabled=true;
+  sfx('turn');vibrate(15);
+
+  const B=state.buildings;
+  const labBonus=1+.05*B.lab;
+  const techBonus=state.staff.technologist?1.10:1;
+  let gain=0,demand=0;
+  for(const k in B){const lvl=B[k];if(!lvl)continue;
+    const d=BUILDINGS[k];
+    if(d.energyGain)gain+=d.energyGain*lvl;
+    if(d.energyUse)demand+=d.energyUse*lvl;}
+  let ratio=1;
+  if(demand>0&&state.energy+gain<demand){
+    ratio=Math.max(0,(state.energy+gain)/demand);
+    if(ratio<.999){toast('⚡ Нехватка энергии!','warn');sfx('error');vibrate(60)}
+  }
+
+  const d={money:0,biomass:0,food:0,energy:0,waste:0,eco:0};
+  for(const k in B){
+    const lvl=B[k];if(!lvl)continue;
+    const def=BUILDINGS[k];const r=def.energyUse?ratio:1;
+    if(def.energyGain)d.energy+=def.energyGain*lvl;
+    if(def.energyUse)d.energy-=def.energyUse*lvl*r;
+    if(def.output)for(const res in def.output){
+      let v=def.output[res]*lvl*r;
+      if(v>0&&(res==='biomass'||res==='food'))v*=labBonus*techBonus;
+      d[res]+=v;
+    }
+  }
+
+  state.money+=d.money;
+  state.biomass=Math.max(0,state.biomass+d.biomass);
+  state.energy=Math.max(0,state.energy+d.energy);
+  state.waste=Math.max(0,state.waste+d.waste);
+  state.eco=clamp(state.eco+d.eco,0,100);
+  state.food=Math.max(0,state.food+d.food);
+
+  // Продажа еды
+  const logBonus=1+.15*B.logistics;
+  const ecoBonus=1+(state.eco-50)/200;
+  const brandBonus=1+(state.brand-50)/200;
+  const seasonMod=state.season.priceMod;
+  const price=Math.max(1500,Math.round(state.foodPrice*logBonus*ecoBonus*brandBonus*seasonMod));
+  const sold=Math.floor(state.food);
+  state.food-=sold;
+  const revenue=sold*price;
+  state.money+=revenue;
+  state.delivered+=sold;
+
+  if(sold>0){
+    addLog(`🍞 Продано ${fSp(sold)} т по ${fN(price)}/т → +${fN(revenue)}`,'good');
+    sfx('coin');
+    floatNum($('res-money'),'+'+fN(revenue),'plus');
+  } else {
+    addLog(`🍞 Еды для продажи нет.`,'warn');
+  }
+
+  // Отходы
+  if(state.waste>30){
+    const pen=Math.ceil((state.waste-30)/10);
+    state.eco=clamp(state.eco-pen,0,100);
+    addLog(`♻️ Отходы растут (${fSp(state.waste)} т). Эко −${pen}.`,'bad');
+  } else if(state.waste<5&&state.turn>3){
+    state.eco=clamp(state.eco+1,0,100);
+    addLog(`🌿 Замкнутый цикл. Эко +1.`,'good');
+  }
+
+  // Зарплата
+  const salary=Object.keys(state.staff).reduce((a,k)=>a+STAFF[k].salary,0);
+  if(salary>0){
+    state.money-=salary;
+    addLog(`💸 Выплачена ЗП команде: ${fN(salary)}`,'info');
+  }
+
+  // Случайное событие
+  if(Math.random()<.45){
+    const e=EVENTS[Math.floor(Math.random()*EVENTS.length)];
+    e.f(state);
+    state.money=Math.max(-500000,state.money);
+    state.eco=clamp(state.eco,0,100);state.brand=clamp(state.brand,0,100);
+    addLog(e.t,e.cls);
+    if(e.cls==='bad'){vibrate([50,30,50]);sfx('error')}
+    else if(e.cls==='good'){sfx('coin')}
+  }
+
+  // Цена
+  state.foodPrice=Math.round((3800+Math.random()*1800)/100)*100;
+  priceHistory.push(state.foodPrice);
+  if(priceHistory.length>24)priceHistory.shift();
+
+  state.turn++;
+
+  // Смена сезона
+  const newSeason=getSeason(state.turn);
+  if(newSeason.name!==state.season.name){
+    state.season=newSeason;
+    addLog(`${newSeason.icon} Наступил сезон: ${newSeason.name} (×${newSeason.priceMod.toFixed(2)} к цене)`,'info');
+    toast(`${newSeason.icon} ${newSeason.name}!`,'violet');
+  }
+
+  // Партия
+  if(!state.batch&&state.turn>1&&(state.turn===2||(state.turn-2)%3===0)){
+    spawnBatch();
+  }
+
+  // Квесты
+  checkQuest();
+  checkAchievements();
+  renderAll();
+
+  // Проверки конца
+  if(state.eco<=0){addLog('💀 Экологический коллапс!','bad');setTimeout(()=>endGame(true),400);return}
+  if(state.brand<=0){addLog('💀 Бренд уничтожен скандалами!','bad');setTimeout(()=>endGame(true),400);return}
+  if(state.money<-500000){addLog('💸 Банкротство!','bad');setTimeout(()=>endGame(true),400);return}
+
+  addLog(`— Неделя ${state.turn}. Цена еды: ${fN(state.foodPrice)}/т —`,'info');
+
+  if(state.turn>state.maxTurns){setTimeout(()=>endGame(false),400);return}
+  btn.disabled=false;
+}
+
+/* =========== END =========== */
+function endGame(failed){
+  $('nextBtn').disabled=true;
+  const moneyScore=Math.round(Math.max(0,state.money)/400);
+  const foodScore=Math.round(state.delivered*5);
+  const ecoScore=Math.round(state.eco*15);
+  const brandScore=Math.round(state.brand*15);
+  const wasteBonus=state.waste<20?200:0;
+  const expertBonus=Math.round(state.examsDone*80+state.perfectBatches*150+state.questsDone*100);
+  const total=moneyScore+foodScore+ecoScore+brandScore+wasteBonus+expertBonus;
+
+  $('finalScore').textContent=fSp(total)+' очк.';
+  let rank,comment;
+  if(failed){rank='⚠️ Комбинат не выжил';comment='Биоэкономика требует баланса. Попробуй снова!'}
+  else if(total>=9000){rank='🏆 Легенда биоэкономики';comment='Блестяще! Все системы работают идеально.'}
+  else if(total>=6000){rank='🥇 Ведущий товаровед-эксперт';comment='Отличный результат! Кафедра ДОННУЭТ гордится вами.'}
+  else if(total>=3500){rank='🥈 Уверенный специалист';comment='Хорошо! Улучши переработку и проводи больше экспертиз.'}
+  else if(total>=1800){rank='🥉 Начинающий эксперт';comment='Неплохо! Постройте лабораторию и наймите команду.'}
+  else {rank='🌱 Стажёр-товаровед';comment='Первая попытка! Изучите справочник и пробуйте снова.'}
+
+  $('endTitle').textContent=failed?'💀 Игра окончена':'🏁 Итоги 24 недель';
+  $('rankText').textContent=rank;
+  $('endComment').textContent=comment;
+  $('achCount').textContent=`Достижений: ${achievements.size}/${ACHIEVEMENTS.length} · Экспертиз: ${state.examsDone} · Квестов: ${state.questsDone}`;
+
+  $('scoreGrid').innerHTML=`
+    <div class="score-item"><div class="sv">${fSp(moneyScore)}</div><div class="sl">💰 Касса</div></div>
+    <div class="score-item"><div class="sv">${fSp(foodScore)}</div><div class="sl">📦 Еда (${fSp(state.delivered)} т)</div></div>
+    <div class="score-item"><div class="sv">${fSp(ecoScore)}</div><div class="sl">🌍 Эко (${Math.round(state.eco)})</div></div>
+    <div class="score-item"><div class="sv">${fSp(brandScore)}</div><div class="sl">⭐ Бренд (${Math.round(state.brand)})</div></div>
+    <div class="score-item"><div class="sv">${fSp(wasteBonus)}</div><div class="sl">♻️ Чистота</div></div>
+    <div class="score-item"><div class="sv">${fSp(expertBonus)}</div><div class="sl">⚗️ Экспертизы + квесты</div></div>`;
+
+  $('endScreen').classList.remove('hide');
+  if(!failed){confetti();sfx('win');vibrate([100,50,100,50,200])}
+}
+
+/* =========== INIT =========== */
+function startGame(){
+  initAudio();
+  if(actx&&actx.state==='suspended')actx.resume();
+  resetState();
+  prevRes={};
+  $('log').innerHTML='';
+  $('startScreen').classList.add('hide');
+  $('endScreen').classList.add('hide');
+  $('aboutScreen').classList.add('hide');
+  $('bookScreen').classList.add('hide');
+  $('nextBtn').disabled=false;
+
+  addLog('🌱 Комбинат PRO запущен! Стартовый капитал: '+fN(500000),'good');
+  addLog('💡 Совет: построй солнечную станцию и лабораторию экспертизы.','info');
+  addLog('👥 Нанимай команду — она усилит комбинат!','info');
+  addLog('📦 Первая партия придёт на 2-й неделе.','info');
+  addLog(`— Неделя 1 · ${state.season.icon} ${state.season.name}. Цена еды: ${fN(state.foodPrice)}/т —`,'info');
+
+  renderAll();
+  sfx('coin');
+}
+
+$('startBtn').addEventListener('click',startGame);
+$('restartBtn').addEventListener('click',startGame);
+$('nextBtn').addEventListener('click',nextTurn);
+$('soundBtn').addEventListener('click',e=>{
+  soundOn=!soundOn;e.target.textContent=soundOn?'🔊':'🔇';
+  if(soundOn){initAudio();sfx('click')}
+});
+$('infoBtn').addEventListener('click',()=>$('aboutScreen').classList.remove('hide'));
+$('bookBtn').addEventListener('click',()=>$('bookScreen').classList.remove('hide'));
+$('aboutClose').addEventListener('click',()=>$('aboutScreen').classList.add('hide'));
+$('bookClose').addEventListener('click',()=>$('bookScreen').classList.add('hide'));
+
+resetState();
+renderRes();
+</script>
+</body>
+</html>
+```
