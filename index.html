@@ -4,308 +4,432 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#06120f">
-<meta name="description" content="Товароведная экспертиза — учебный симулятор ДОННУЭТ">
-<title>🔬 Лаборатория качества — ДОННУЭТ</title>
+<title>🌿 БиоЭкоКомбинат PRO — ДОННУЭТ</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --card:rgba(18,53,43,.75);--card2:rgba(13,37,29,.9);
+  --card:rgba(18,53,43,.78);--card2:rgba(13,37,29,.92);
   --line:rgba(74,222,128,.22);--acc:#4ade80;--acc2:#22d3ee;
-  --gold:#fbbf24;--red:#f87171;--purple:#c084fc;--txt:#e7f6ee;--dim:#8fbfae;
+  --gold:#fbbf24;--red:#f87171;--purple:#c084fc;--brown:#d97706;
+  --txt:#e7f6ee;--dim:#8fbfae;
   --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
 }
 body{
   font-family:'Segoe UI',system-ui,-apple-system,'Roboto',sans-serif;
   background:radial-gradient(circle at 20% -10%,#14493a 0%,#06120f 55%,#020806 100%);
   color:var(--txt);min-height:100vh;overflow-x:hidden;line-height:1.45;
-  padding:10px;padding-bottom:24px;
+  padding:8px;padding-bottom:88px;
 }
-#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.7}
-.app{position:relative;z-index:1;max-width:720px;margin:0 auto}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.6}
+.app{position:relative;z-index:1;max-width:900px;margin:0 auto}
 .app.shake{animation:shake .4s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 
+/* HEADER */
 .header{
   display:flex;justify-content:space-between;align-items:center;gap:8px;
-  padding:10px 12px;margin-bottom:10px;
-  background:linear-gradient(90deg,rgba(15,58,45,.9),rgba(18,63,82,.9));
-  border:1px solid var(--line);border-radius:16px;
+  padding:8px 10px;margin-bottom:8px;
+  background:linear-gradient(90deg,rgba(15,58,45,.92),rgba(18,63,82,.92));
+  border:1px solid var(--line);border-radius:14px;
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(74,222,128,.15);
 }
-.brand{flex:1;min-width:0}
-.brand-row{display:flex;align-items:center;gap:9px}
-.brand-logo{
-  flex-shrink:0;width:52px;height:52px;
-  filter:drop-shadow(0 0 8px rgba(74,222,128,.35));
-  transition:.3s;
-}
-.brand-logo:hover{transform:scale(1.08) rotate(-3deg)}
-@media(min-width:520px){.brand-logo{width:58px;height:58px}}
+.brand{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.brand-logo{flex-shrink:0;width:40px;height:40px;
+  filter:drop-shadow(0 0 8px rgba(74,222,128,.35))}
 .brand h1{
-  font-size:.9rem;font-weight:900;letter-spacing:.3px;
+  font-size:.82rem;font-weight:900;letter-spacing:.3px;
   background:linear-gradient(90deg,var(--acc),var(--acc2));
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  display:flex;align-items:center;gap:5px;
+  line-height:1.1;
 }
 .brand h1 span{-webkit-text-fill-color:initial}
-.brand .sub{font-size:.48rem;color:var(--dim);text-transform:uppercase;
-  letter-spacing:.3px;margin-top:2px;font-weight:600;line-height:1.3}
-.stats{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
-.stat-chip{
-  background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:9px;
-  padding:4px 8px;font-size:.68rem;font-weight:900;font-family:var(--mono);
-  display:flex;align-items:center;gap:3px;white-space:nowrap;
+.brand .sub{font-size:.44rem;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.2px;margin-top:1px;font-weight:600;line-height:1.2}
+.hbtns{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.icon-btn{background:rgba(8,37,29,.9);border:1px solid var(--line);
+  border-radius:8px;color:var(--txt);padding:4px 7px;font-size:.8rem;
+  cursor:pointer;font-family:inherit;line-height:1;transition:.15s}
+.icon-btn:active{transform:scale(.9)}
+.turn-chip{
+  background:rgba(8,37,29,.95);border:1px solid var(--line);border-radius:8px;
+  padding:5px 8px;font-family:var(--mono);font-weight:900;font-size:.6rem;
+  color:var(--acc);white-space:nowrap;
 }
-.stat-chip.gold{color:var(--gold);border-color:rgba(251,191,36,.4)}
-.stat-chip.xp{color:var(--purple);border-color:rgba(192,132,252,.4)}
-.stat-chip.level{color:var(--acc2);border-color:rgba(34,211,238,.4)}
-.sound-btn{
-  background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:9px;
-  color:var(--txt);padding:4px 8px;font-size:.85rem;cursor:pointer;
-  font-family:inherit;line-height:1;transition:.15s;
-}
-.sound-btn:active{transform:scale(.9)}
 
-.progress-bar{
-  background:var(--card2);border:1px solid var(--line);border-radius:12px;
-  padding:7px 11px;margin-bottom:9px;display:flex;align-items:center;gap:9px;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+/* RESOURCES */
+.res-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:7px}
+@media(min-width:640px){.res-bar{grid-template-columns:repeat(6,1fr)}}
+.res{
+  background:linear-gradient(160deg,var(--card),var(--card2));
+  border:1px solid var(--line);border-radius:10px;padding:5px 3px;
+  text-align:center;transition:.2s;position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
-.progress-bar .lbl{font-size:.58rem;color:var(--dim);text-transform:uppercase;
-  letter-spacing:.5px;font-weight:800;white-space:nowrap}
-.progress-track{flex:1;height:8px;background:rgba(3,20,15,.9);border-radius:6px;
+.res .ico{font-size:.85rem;display:block;line-height:1.1}
+.res .val{font-size:.68rem;font-weight:900;font-family:var(--mono);
+  letter-spacing:.1px;margin-top:1px;font-variant-numeric:tabular-nums}
+.res .lbl{font-size:.46rem;color:var(--dim);text-transform:uppercase;letter-spacing:.3px}
+.res.up{animation:upPulse .7s}
+.res.down{animation:downPulse .7s}
+@keyframes upPulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.7)}100%{box-shadow:0 0 0 12px rgba(74,222,128,0)}}
+@keyframes downPulse{0%{box-shadow:0 0 0 0 rgba(248,113,113,.7)}100%{box-shadow:0 0 0 12px rgba(248,113,113,0)}}
+.res.warn-pulse{animation:warnP .9s infinite}
+@keyframes warnP{0%,100%{border-color:rgba(251,191,36,.4)}50%{border-color:rgba(251,191,36,1);box-shadow:0 0 10px rgba(251,191,36,.4)}}
+
+/* ECO */
+.eco-wrap{background:var(--card2);border:1px solid var(--line);border-radius:10px;
+  padding:5px 10px;margin-bottom:8px;display:flex;align-items:center;gap:8px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.eco-wrap .lbl{font-size:.58rem;color:var(--dim);white-space:nowrap;font-weight:700}
+.eco-track{flex:1;height:8px;background:rgba(3,20,15,.9);border-radius:5px;
   overflow:hidden;border:1px solid rgba(30,79,63,.8)}
-.progress-fill{height:100%;width:0%;border-radius:6px;
-  transition:width .5s cubic-bezier(.3,1.3,.5,1);
-  background:linear-gradient(90deg,#4ade80,#22d3ee,#c084fc);
+.eco-fill{height:100%;width:50%;border-radius:5px;
+  transition:width .6s cubic-bezier(.3,1.3,.5,1);
+  background:linear-gradient(90deg,#f87171,#fbbf24,#4ade80,#22d3ee);
   background-size:200% 100%;animation:flow 3s linear infinite}
 @keyframes flow{0%{background-position:0 0}100%{background-position:200% 0}}
-.progress-num{font-size:.68rem;font-family:var(--mono);font-weight:900;
-  color:var(--acc2);white-space:nowrap}
+.eco-num{font-weight:900;font-size:.75rem;min-width:26px;text-align:right;font-family:var(--mono)}
 
-.boss-panel{
-  background:linear-gradient(160deg,rgba(251,191,36,.1),rgba(13,37,29,.95));
-  border:1px solid rgba(251,191,36,.4);border-radius:16px;padding:12px;
-  margin-bottom:9px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  box-shadow:0 8px 28px rgba(0,0,0,.4);
-  display:flex;gap:10px;align-items:flex-start;
-}
-.boss-avatar{
-  width:42px;height:42px;border-radius:50%;flex-shrink:0;
-  background:radial-gradient(circle at 30% 30%,#4ade80,#0891b2);
-  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
-  box-shadow:0 0 20px rgba(74,222,128,.4),inset 0 -3px 8px rgba(0,0,0,.3);
-}
-.boss-content{flex:1;min-width:0}
-.boss-name{font-size:.58rem;color:var(--gold);text-transform:uppercase;
-  letter-spacing:1px;font-weight:900;margin-bottom:3px}
-.boss-message{font-size:.78rem;color:#e7f6ee;line-height:1.5}
+/* TABS */
+.tabs{display:flex;gap:3px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;
+  -webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:7px 11px;border-radius:9px;background:rgba(8,37,29,.9);
+  border:1px solid var(--line);color:var(--dim);font-size:.64rem;font-weight:800;
+  cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s;letter-spacing:.2px}
+.tab.active{background:linear-gradient(90deg,rgba(34,211,238,.25),rgba(74,222,128,.2));
+  color:var(--acc);border-color:var(--acc)}
+.tab:active{transform:scale(.95)}
 
-.level-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:5px 11px;border-radius:20px;margin-bottom:9px;
-  background:linear-gradient(90deg,rgba(34,211,238,.2),rgba(74,222,128,.15));
-  border:1px solid rgba(34,211,238,.5);
-  font-size:.66rem;font-weight:900;color:var(--acc2);
-  letter-spacing:.4px;text-transform:uppercase;
+/* PANEL */
+.panel{
+  background:linear-gradient(170deg,rgba(16,48,39,.82),rgba(12,35,29,.92));
+  border:1px solid var(--line);border-radius:13px;padding:10px;
+  margin-bottom:8px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(74,222,128,.08);
 }
+.panel h2{font-size:.64rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--acc2);margin-bottom:8px;display:flex;justify-content:space-between;
+  align-items:center;gap:6px;font-weight:800}
+.panel h3{font-size:.6rem;color:var(--gold);margin:10px 0 5px;
+  text-transform:uppercase;letter-spacing:.5px;font-weight:800}
 
-.task-panel{
-  background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.95));
-  border:1px solid var(--line);border-radius:16px;padding:14px;
-  margin-bottom:10px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  box-shadow:0 8px 28px rgba(0,0,0,.4);
-}
-.task-title{font-size:.9rem;font-weight:900;color:var(--txt);margin-bottom:9px;line-height:1.3}
-.task-desc{
-  font-size:.73rem;color:#c4e6d6;margin-bottom:12px;line-height:1.55;
-  padding:9px 11px;background:rgba(5,22,17,.7);border-radius:10px;
-  border-left:3px solid var(--acc2);
-}
-.task-desc b{color:var(--acc2)}
-.task-desc .mono{font-family:var(--mono);color:var(--gold)}
+/* GRID */
+.grid{display:grid;grid-template-columns:1fr;gap:6px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
 
-.options{display:flex;flex-direction:column;gap:7px}
-.option{
-  text-align:left;padding:11px 12px;border-radius:12px;
-  background:linear-gradient(160deg,rgba(20,58,47,.7),rgba(14,42,34,.85));
-  border:1.5px solid rgba(33,88,69,.9);color:var(--txt);
-  font-family:inherit;font-size:.78rem;cursor:pointer;
-  transition:.18s cubic-bezier(.3,1.2,.5,1);line-height:1.4;
-  display:flex;align-items:center;gap:9px;
+/* CARDS */
+.card{
+  background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.9));
+  border:1px solid rgba(33,88,69,.9);border-radius:11px;padding:8px;
+  display:flex;flex-direction:column;gap:4px;transition:.2s;
 }
-.option:hover:not(:disabled){border-color:var(--acc);transform:translateX(3px)}
-.option:active:not(:disabled){transform:scale(.98)}
-.option .key{
-  background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:7px;
-  width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;
-  justify-content:center;font-family:var(--mono);font-weight:900;
-  font-size:.68rem;color:var(--acc2);
-}
-.option.correct{
-  background:linear-gradient(160deg,rgba(74,222,128,.25),rgba(20,80,60,.9));
-  border-color:var(--acc);box-shadow:0 0 16px rgba(74,222,128,.3);
-}
-.option.correct .key{background:var(--acc);color:#04210f;border-color:var(--acc)}
-.option.wrong{
-  background:linear-gradient(160deg,rgba(248,113,113,.25),rgba(60,20,20,.9));
-  border-color:var(--red);box-shadow:0 0 16px rgba(248,113,113,.3);
-}
-.option.wrong .key{background:var(--red);color:#2a0808;border-color:var(--red)}
-.option:disabled{cursor:not-allowed;opacity:.7}
-
-.feedback{
-  margin-top:12px;padding:11px 13px;border-radius:12px;
-  font-size:.74rem;line-height:1.55;
-  animation:fbIn .35s cubic-bezier(.3,1.3,.5,1);
-}
-@keyframes fbIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-.feedback.correct{
-  background:linear-gradient(160deg,rgba(74,222,128,.15),rgba(13,49,37,.9));
-  border:1px solid var(--acc);color:#d1fae5;
-}
-.feedback.wrong{
-  background:linear-gradient(160deg,rgba(248,113,113,.15),rgba(46,20,20,.9));
-  border:1px solid var(--red);color:#fee2e2;
-}
-.feedback .fb-title{font-weight:900;margin-bottom:5px;font-size:.82rem;
-  display:flex;align-items:center;gap:5px}
-.feedback.correct .fb-title{color:var(--acc)}
-.feedback.wrong .fb-title{color:var(--red)}
-.feedback .fb-text{font-size:.72rem;line-height:1.6;color:#e7f6ee}
-
-.next-btn{
-  width:100%;border:none;border-radius:14px;padding:14px;
-  margin-top:12px;cursor:pointer;font-family:inherit;
-  font-size:.92rem;font-weight:900;letter-spacing:.4px;
-  background:linear-gradient(90deg,#16a34a,#4ade80,#a3e635);
+.card.built{border-color:rgba(34,211,238,.55)}
+.card.ready{border-color:var(--gold);box-shadow:0 0 14px rgba(251,191,36,.35);
+  animation:glowReady 1.5s infinite}
+@keyframes glowReady{0%,100%{box-shadow:0 0 12px rgba(251,191,36,.3)}
+  50%{box-shadow:0 0 20px rgba(251,191,36,.6)}}
+.card.legendary{border-color:var(--purple);
+  box-shadow:0 0 18px rgba(192,132,252,.4)}
+.chead{display:flex;align-items:center;gap:5px}
+.chead .ci{font-size:1.15rem}
+.chead .cn{font-size:.68rem;font-weight:800;flex:1;line-height:1.15}
+.lvl{background:rgba(8,37,29,.9);border:1px solid var(--line);border-radius:5px;
+  font-size:.54rem;font-weight:900;padding:1px 5px;color:var(--acc);
+  font-family:var(--mono);white-space:nowrap}
+.cdesc{font-size:.56rem;color:var(--dim);line-height:1.3}
+.ceff{font-size:.54rem;color:#a7e8c8;background:rgba(10,35,28,.9);
+  border-radius:6px;padding:4px 6px;font-family:var(--mono);line-height:1.4}
+.cbtn{
+  margin-top:2px;border:none;border-radius:8px;padding:7px;cursor:pointer;
+  font-weight:900;font-size:.6rem;font-family:inherit;
+  background:linear-gradient(90deg,#16a34a,#4ade80);
   color:#04210f;transition:.15s;
-  box-shadow:0 8px 24px rgba(74,222,128,.3);
-  display:none;
+  box-shadow:0 3px 10px rgba(34,197,94,.25);
 }
-.next-btn.show{display:block;animation:fbIn .35s}
-.next-btn:active{transform:scale(.97)}
+.cbtn:not(:disabled):active{transform:scale(.95)}
+.cbtn.built{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a}
+.cbtn:disabled{background:rgba(28,58,48,.9);color:#4d7a68;cursor:not-allowed;box-shadow:none}
+.cbtn.orange{background:linear-gradient(90deg,#d97706,#f59e0b);color:#2b1600}
+.cbtn.purple{background:linear-gradient(90deg,#9333ea,#c084fc);color:#2a0845}
 
-.overlay{
-  position:fixed;inset:0;background:rgba(3,12,9,.95);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  display:flex;align-items:center;justify-content:center;padding:14px;
-  z-index:100;overflow-y:auto;
+/* LOG */
+.log{
+  background:rgba(5,22,17,.9);border:1px solid var(--line);border-radius:10px;
+  padding:7px;height:140px;overflow-y:auto;font-size:.58rem;
+  display:flex;flex-direction:column;gap:3px;font-family:var(--mono);
 }
+.log::-webkit-scrollbar{width:4px}
+.log::-webkit-scrollbar-thumb{background:#1f5a47;border-radius:3px}
+.le{padding:4px 7px;border-radius:6px;background:rgba(14,43,35,.9);
+  border-left:2px solid #2b6b56;line-height:1.4;
+  animation:logIn .3s}
+@keyframes logIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+.le.good{border-color:var(--acc)}
+.le.bad{border-color:var(--red)}
+.le.warn{border-color:var(--gold)}
+.le.info{border-color:var(--acc2)}
+.le.epic{border-color:var(--purple)}
+
+/* NEXT */
+.next-btn{
+  position:fixed;left:8px;right:8px;bottom:8px;z-index:40;
+  border:none;border-radius:12px;padding:14px;
+  cursor:pointer;font-family:inherit;
+  font-size:.95rem;font-weight:900;letter-spacing:.5px;
+  background:linear-gradient(90deg,#f59e0b,#fbbf24,#fde047);
+  color:#3b2100;transition:.15s;
+  box-shadow:0 10px 32px rgba(0,0,0,.6),0 8px 24px rgba(251,191,36,.4);
+}
+.next-btn:not(:disabled):active{transform:scale(.97)}
+.next-btn:disabled{background:rgba(42,58,52,.9);color:#5d7a6e;
+  box-shadow:none;cursor:not-allowed}
+
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(3,12,9,.95);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:10px;
+  z-index:100;overflow-y:auto}
 .overlay.hide{display:none}
 .modal{
   background:linear-gradient(165deg,rgba(20,58,46,.98),rgba(11,39,33,.99));
-  border:1px solid var(--line);border-radius:22px;padding:22px;
-  max-width:600px;width:100%;max-height:92vh;overflow-y:auto;
+  border:1px solid var(--line);border-radius:18px;padding:18px;
+  max-width:620px;width:100%;max-height:94vh;overflow-y:auto;
   box-shadow:0 24px 70px rgba(0,0,0,.85),inset 0 1px 0 rgba(74,222,128,.2);
-  animation:modalIn .45s cubic-bezier(.3,1.2,.5,1);
+  animation:modalIn .4s;
 }
-@keyframes modalIn{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
-.modal h2{
-  font-size:1.2rem;margin-bottom:11px;font-weight:900;
+@keyframes modalIn{from{opacity:0;transform:scale(.94) translateY(12px)}to{opacity:1;transform:none}}
+.modal h2{font-size:1.05rem;margin-bottom:9px;font-weight:900;
   background:linear-gradient(90deg,var(--acc),var(--acc2));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-}
-.modal h3{font-size:.8rem;color:var(--gold);margin:14px 0 7px;
-  font-weight:900;text-transform:uppercase;letter-spacing:.5px}
-.modal p{font-size:.8rem;color:#c4e6d6;margin-bottom:9px;line-height:1.55}
-.modal ul{margin:0 0 11px 17px;font-size:.76rem;color:#b8dfcd;line-height:1.55}
-.modal li{margin-bottom:4px}
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.modal h3{font-size:.7rem;color:var(--gold);margin:11px 0 5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.5px}
+.modal p{font-size:.72rem;color:#c4e6d6;margin-bottom:7px;line-height:1.55}
+.modal ul{margin:0 0 9px 15px;font-size:.68rem;color:#b8dfcd;line-height:1.5}
+.modal li{margin-bottom:3px}
 .modal .hl{color:var(--gold);font-weight:800}
-.modal .code{
-  background:rgba(8,37,29,.9);border:1px solid var(--line);
-  border-radius:5px;padding:1px 6px;font-family:var(--mono);
-  font-size:.68rem;color:var(--acc);
-}
+.modal .code{background:rgba(8,37,29,.9);border:1px solid var(--line);
+  border-radius:4px;padding:1px 5px;font-family:var(--mono);
+  font-size:.64rem;color:var(--acc)}
+.modal-logo{display:flex;justify-content:center;align-items:center;gap:14px;
+  margin:6px 0 14px;flex-wrap:wrap}
+.modal-logo svg{filter:drop-shadow(0 4px 12px rgba(74,222,128,.3))}
+.modal-logo .lg-uni{width:60px;height:60px}
+.modal-logo .lg-kaf{width:70px;height:44px}
 .startbtn{
-  width:100%;border:none;border-radius:14px;padding:15px;
-  cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:900;
-  letter-spacing:.5px;background:linear-gradient(90deg,#16a34a,#4ade80,#a3e635);
-  color:#04210f;margin-top:9px;transition:.15s;
-  box-shadow:0 8px 28px rgba(74,222,128,.35);
+  width:100%;border:none;border-radius:12px;padding:13px;
+  cursor:pointer;font-family:inherit;font-size:.9rem;font-weight:900;
+  letter-spacing:.4px;
+  background:linear-gradient(90deg,#16a34a,#4ade80,#a3e635);
+  color:#04210f;margin-top:8px;transition:.15s;
+  box-shadow:0 8px 24px rgba(74,222,128,.35);
 }
 .startbtn:active{transform:scale(.97)}
-.startbtn.secondary{
-  background:rgba(8,37,29,.9);border:1px solid var(--line);
-  color:var(--txt);box-shadow:none;
-}
+.startbtn.sec{background:rgba(8,37,29,.9);border:1px solid var(--line);
+  color:var(--txt);box-shadow:none}
 
-/* ЛОГОТИП В МОДАЛЬНЫХ ОКНАХ */
-.modal-logo{
-  display:flex;justify-content:center;align-items:center;gap:14px;
-  margin:8px 0 18px;flex-wrap:wrap;
-}
-.modal-logo svg{
-  filter:drop-shadow(0 4px 12px rgba(74,222,128,.3));
-}
-.modal-logo .lg-uni{width:70px;height:70px}
-.modal-logo .lg-kaf{width:80px;height:52px}
+/* RESULTS */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}
+.score-item{background:rgba(10,35,28,.9);border:1px solid var(--line);
+  border-radius:10px;padding:8px;text-align:center}
+.score-item .sv{font-size:.9rem;font-weight:900;color:var(--acc);
+  font-family:var(--mono)}
+.score-item .sl{font-size:.5rem;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.4px;margin-top:2px}
+.final{font-size:2rem;font-weight:900;text-align:center;letter-spacing:1px;
+  background:linear-gradient(90deg,#fbbf24,#fde047,#fbbf24);
+  background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:flow 3s linear infinite;margin:5px 0;font-family:var(--mono)}
+.rank{text-align:center;font-size:.82rem;margin-bottom:8px;color:#b8dfcd;font-weight:700}
 
-.score-list{display:flex;flex-direction:column;gap:7px;margin:14px 0}
-.score-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:9px 13px;background:rgba(5,22,17,.85);border-radius:10px;
-  border:1px solid var(--line);
-}
-.score-row .sk{font-size:.72rem;color:var(--dim)}
-.score-row .sv{font-size:.85rem;font-weight:900;font-family:var(--mono);color:var(--acc2)}
-.score-row.win .sv{color:var(--acc)}
-.score-row.lose .sv{color:var(--red)}
-.final-rank{
-  font-size:1.05rem;font-weight:900;text-align:center;
-  padding:13px;border-radius:12px;margin:12px 0;
-  background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(74,222,128,.1));
-  border:1px solid var(--gold);color:var(--gold);
-  letter-spacing:.4px;
-}
-
-#fx{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
-.flt{
-  position:absolute;font-weight:900;font-size:1.05rem;
-  text-shadow:0 2px 10px rgba(0,0,0,.9);
-  animation:flt 1.2s ease-out forwards;pointer-events:none;
-  font-family:var(--mono);
-}
-.flt.plus{color:#4ade80}.flt.minus{color:#f87171}.flt.gold{color:#fbbf24}
-@keyframes flt{
-  0%{opacity:1;transform:translate(-50%,0) scale(.7)}
-  20%{transform:translate(-50%,-14px) scale(1.15)}
-  100%{opacity:0;transform:translate(-50%,-70px) scale(1)}
-}
-
-#toasts{position:fixed;top:10px;left:50%;transform:translateX(-50%);
-  z-index:200;display:flex;flex-direction:column;gap:6px;
-  pointer-events:none;width:calc(100% - 20px);max-width:400px}
+/* TOASTS */
+#toasts{position:fixed;top:8px;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;flex-direction:column;gap:4px;
+  pointer-events:none;width:calc(100% - 16px);max-width:360px}
 .toast{
   background:linear-gradient(135deg,rgba(20,60,48,.97),rgba(13,42,34,.97));
-  border:1px solid var(--acc);border-radius:12px;padding:9px 13px;
-  font-size:.74rem;font-weight:700;text-align:center;color:var(--txt);
+  border:1px solid var(--acc);border-radius:10px;padding:8px 12px;
+  font-size:.68rem;font-weight:700;text-align:center;color:var(--txt);
   box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(74,222,128,.2);
-  animation:tin .35s cubic-bezier(.3,1.4,.5,1);
+  animation:tin .3s;
 }
-.toast.gold{border-color:var(--gold);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(251,191,36,.3)}
+.toast.bad{border-color:var(--red);box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(248,113,113,.25)}
+.toast.warn{border-color:var(--gold)}
+.toast.epic{border-color:var(--purple)}
 .toast.out{animation:tout .3s forwards}
-@keyframes tin{from{opacity:0;transform:translateY(-16px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes tin{from{opacity:0;transform:translateY(-14px) scale(.92)}to{opacity:1;transform:none}}
 @keyframes tout{to{opacity:0;transform:translateY(-14px) scale(.94)}}
 
+/* FX */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
+.flt{position:absolute;font-weight:900;font-size:.95rem;
+  text-shadow:0 2px 10px rgba(0,0,0,.9);
+  animation:flt 1.2s ease-out forwards;pointer-events:none;
+  font-family:var(--mono);white-space:nowrap}
+.flt.plus{color:#4ade80}.flt.minus{color:#f87171}.flt.gold{color:#fbbf24}
+@keyframes flt{0%{opacity:1;transform:translate(-50%,0) scale(.7)}
+  20%{transform:translate(-50%,-14px) scale(1.15)}
+  100%{opacity:0;transform:translate(-50%,-65px) scale(1)}}
 .conf{position:fixed;top:-14px;width:9px;height:14px;z-index:300;
   pointer-events:none;animation:cfall linear forwards}
 @keyframes cfall{to{transform:translateY(105vh) rotate(720deg);opacity:.3}}
 
-footer{
-  margin-top:18px;padding:13px 11px;text-align:center;
-  border-top:1px solid rgba(74,222,128,.15);
+/* BATCH */
+.batch-card{
+  background:linear-gradient(160deg,rgba(251,191,36,.12),rgba(13,37,29,.94));
+  border:1px solid rgba(251,191,36,.5);border-radius:12px;padding:10px;
+  margin-bottom:8px;
 }
-footer .uni{font-size:.68rem;font-weight:900;color:var(--acc);
-  letter-spacing:.4px;text-transform:uppercase}
-footer .kaf{font-size:.6rem;color:#a7e8c8;margin-top:4px;line-height:1.4;
-  max-width:600px;margin-left:auto;margin-right:auto}
+.bhead{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px}
+.bicon{font-size:1.6rem}
+.btitle{font-weight:900;font-size:.74rem;line-height:1.15}
+.bsub{font-size:.56rem;color:var(--dim);margin-top:2px;font-family:var(--mono)}
+.bdocs{font-size:.54rem;color:var(--acc2);margin-top:3px;font-family:var(--mono)}
+.bdesc{font-size:.62rem;color:#c4e6d6;line-height:1.5;margin-bottom:6px;
+  padding:6px 8px;background:rgba(5,22,17,.7);border-radius:7px;
+  border-left:2px solid var(--acc2)}
+.bactions{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.bbtn{flex:1 1 auto;min-width:80px;padding:8px 6px;border-radius:8px;
+  border:1px solid;font-family:inherit;font-weight:800;font-size:.6rem;
+  cursor:pointer;transition:.15s}
+.bbtn:active{transform:scale(.95)}
+.bbtn.green{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;border-color:#4ade80}
+.bbtn.cyan{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a;border-color:#22d3ee}
+.bbtn.red{background:rgba(46,20,20,.9);color:#f87171;border-color:rgba(248,113,113,.6)}
 
-@media(min-width:520px){
-  .brand h1{font-size:1rem}
-  .task-title{font-size:.98rem}
+/* PROTOCOL */
+.protocol{
+  background:rgba(5,22,17,.95);border-radius:9px;padding:9px;
+  margin-top:6px;border:1px solid rgba(74,222,128,.25);
+  font-family:var(--mono);font-size:.6rem;
 }
+.prow{display:grid;grid-template-columns:1.4fr auto auto;gap:5px;padding:3px 0;
+  border-bottom:1px dotted rgba(74,222,128,.1);align-items:center}
+.prow:last-child{border-bottom:none}
+.pname{color:#b8dfcd;font-size:.56rem}
+.pmethod{color:#5f8f7d;font-size:.48rem;font-style:italic}
+.pval{font-weight:900;text-align:right;font-size:.6rem;white-space:nowrap}
+.pval.ok{color:var(--acc)}.pval.warn{color:var(--gold)}.pval.bad{color:var(--red)}
+.pnorm{font-size:.5rem;color:var(--dim);text-align:right}
+
+/* FARM */
+.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+@media(min-width:560px){.fields{grid-template-columns:repeat(4,1fr)}}
+.field{
+  background:linear-gradient(160deg,rgba(30,58,45,.85),rgba(15,42,34,.9));
+  border:1px solid rgba(33,88,69,.9);border-radius:11px;padding:7px;
+  min-height:120px;display:flex;flex-direction:column;gap:3px;
+}
+.field.sown{border-color:rgba(217,119,6,.6)}
+.field.ready{border-color:var(--gold);animation:glowReady 1.5s infinite}
+.fnum{font-size:.5rem;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.5px;font-weight:800;font-family:var(--mono)}
+.fcrop{font-size:1.3rem;text-align:center;line-height:1}
+.fname{font-size:.58rem;font-weight:800;text-align:center;line-height:1.1;
+  min-height:20px}
+.fprog{font-size:.54rem;color:var(--acc2);text-align:center;font-weight:800;
+  font-family:var(--mono)}
+.fbar{height:4px;background:rgba(3,20,15,.9);border-radius:3px;overflow:hidden;
+  border:1px solid rgba(30,79,63,.6)}
+.fbar-fill{height:100%;background:linear-gradient(90deg,#d97706,#fbbf24);
+  border-radius:3px;transition:width .5s}
+.fselect{width:100%;background:rgba(3,20,15,.9);color:var(--txt);
+  border:1px solid var(--line);border-radius:6px;padding:5px;
+  font-size:.58rem;font-family:inherit;font-weight:700;margin-top:2px}
+
+/* LAB */
+.lab-mini{
+  background:rgba(5,22,17,.9);border-radius:10px;padding:10px;
+  border:1px solid rgba(34,211,238,.3);
+}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px}
+.method-btn{
+  background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.9));
+  border:1px solid var(--line);border-radius:9px;padding:8px 6px;
+  color:var(--txt);font-family:inherit;font-size:.62rem;font-weight:800;
+  cursor:pointer;transition:.15s;text-align:center;line-height:1.25;
+}
+.method-btn:not(:disabled):active{transform:scale(.95)}
+.method-btn:disabled{opacity:.5;cursor:not-allowed}
+.method-btn.selected{border-color:var(--acc);background:rgba(74,222,128,.15)}
+.method-btn.done{border-color:var(--acc2);background:rgba(34,211,238,.12)}
+.method-emoji{font-size:1.3rem;display:block;margin-bottom:3px}
+
+/* ACH */
+.ach-grid{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.ach{
+  background:rgba(41,20,58,.5);border:1px solid rgba(192,132,252,.35);
+  border-radius:7px;padding:4px 8px;font-size:.56rem;font-weight:700;
+  color:#e9d5ff;
+}
+.ach.locked{opacity:.3;filter:grayscale(1)}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;
+  margin-bottom:8px}
+@media(min-width:520px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-item{background:rgba(5,22,17,.9);border:1px solid var(--line);
+  border-radius:9px;padding:6px 5px;text-align:center}
+.stat-item .sv{font-size:.76rem;font-weight:900;color:var(--acc2);
+  font-family:var(--mono)}
+.stat-item .sl{font-size:.48rem;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.3px;margin-top:1px}
+.stat-item.warn .sv{color:var(--gold)}
+.stat-item.bad .sv{color:var(--red)}
+
+/* CHART */
+.chart-box{background:rgba(5,22,17,.9);border:1px solid var(--line);
+  border-radius:9px;padding:8px;margin-bottom:6px}
+.chart-box svg{width:100%;height:120px;display:block}
+.chart-title{font-size:.55rem;color:var(--acc2);text-transform:uppercase;
+  letter-spacing:.6px;font-weight:800;margin-bottom:5px;
+  display:flex;justify-content:space-between}
+.chart-legend{display:flex;gap:8px;flex-wrap:wrap;font-size:.5rem;
+  color:var(--dim);margin-top:5px;font-family:var(--mono)}
+.chart-legend span{display:flex;align-items:center;gap:3px}
+.chart-legend i{display:inline-block;width:10px;height:2px;border-radius:1px}
+
+/* PARETO */
+.par-row{display:grid;grid-template-columns:1fr auto;gap:5px;
+  padding:3px 0;border-bottom:1px dotted rgba(74,222,128,.1);font-size:.58rem}
+.par-name{color:#b8dfcd}
+.par-bar{height:6px;background:rgba(74,222,128,.15);border-radius:3px;
+  overflow:hidden;margin-top:2px}
+.par-fill{height:100%;background:linear-gradient(90deg,#f87171,#fbbf24);
+  border-radius:3px;transition:width .6s}
+.par-val{font-weight:900;color:var(--gold);font-family:var(--mono);font-size:.58rem}
+
+/* ACADEMY */
+.lesson{
+  background:rgba(5,22,17,.9);border:1px solid var(--line);
+  border-radius:10px;padding:10px;margin-bottom:7px;
+}
+.lesson-q{font-size:.72rem;font-weight:800;margin-bottom:7px;line-height:1.35}
+.lesson-options{display:flex;flex-direction:column;gap:4px}
+.lesson-opt{
+  text-align:left;padding:8px 10px;border-radius:8px;
+  background:rgba(20,58,47,.7);border:1px solid rgba(33,88,69,.9);
+  color:var(--txt);font-family:inherit;font-size:.68rem;
+  cursor:pointer;transition:.15s;
+}
+.lesson-opt:hover:not(:disabled){border-color:var(--acc)}
+.lesson-opt:disabled{cursor:not-allowed;opacity:.7}
+.lesson-opt.correct{border-color:var(--acc);
+  background:rgba(74,222,128,.2);font-weight:800}
+.lesson-opt.wrong{border-color:var(--red);
+  background:rgba(248,113,113,.15)}
+.lesson-exp{margin-top:8px;padding:8px 10px;border-radius:8px;
+  background:rgba(34,211,238,.08);border-left:2px solid var(--acc2);
+  font-size:.66rem;color:#c4e6d6;line-height:1.55}
+
+footer{margin-top:12px;padding:10px;text-align:center;
+  border-top:1px solid rgba(74,222,128,.15)}
+footer .uni{font-size:.6rem;font-weight:900;color:var(--acc);
+  letter-spacing:.4px;text-transform:uppercase}
+footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
 </style>
 </head>
 <body>
@@ -316,165 +440,193 @@ footer .kaf{font-size:.6rem;color:#a7e8c8;margin-top:4px;line-height:1.4;
 <div class="app" id="appRoot">
   <header class="header">
     <div class="brand">
-      <div class="brand-row">
-        <!-- ======= ЛОГОТИП КАФЕДРЫ ======= -->
-        <svg class="brand-logo" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" aria-label="Логотип кафедры">
-          <defs>
-            <linearGradient id="kafGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#1a6b3d"/>
-              <stop offset="1" stop-color="#0d4a2c"/>
-            </linearGradient>
-          </defs>
-          <!-- Внешний тёмно-зелёный контур бесконечности -->
-          <path d="M 50 30 C 50 15, 25 15, 25 30 C 25 45, 50 45, 50 30 C 50 15, 75 15, 75 30 C 75 45, 50 45, 50 30 Z"
-                fill="none" stroke="url(#kafGrad)" stroke-width="7" stroke-linecap="round"/>
-          <!-- Светлый внутренний контур -->
-          <path d="M 50 30 C 50 15, 25 15, 25 30 C 25 45, 50 45, 50 30 C 50 15, 75 15, 75 30 C 75 45, 50 45, 50 30 Z"
-                fill="none" stroke="#7cbf8e" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- Академическая шапочка -->
-          <polygon points="50,5 39,12 50,19 61,12" fill="#0e7c7c"/>
-          <polygon points="46,14 50,16 54,14 54,23 46,23" fill="#0e7c7c"/>
-          <line x1="59" y1="13" x2="59" y2="22" stroke="#0e7c7c" stroke-width="1.2"/>
-          <circle cx="59" cy="23" r="1.8" fill="#0e7c7c"/>
-          <!-- Весы (левая петля) -->
-          <g transform="translate(25, 32)">
-            <line x1="-8" y1="-4" x2="8" y2="-4" stroke="#1a3d5c" stroke-width="1.3"/>
-            <line x1="0" y1="-7" x2="0" y2="0" stroke="#1a3d5c" stroke-width="1.3"/>
-            <circle cx="0" cy="-7" r="1.2" fill="#1a3d5c"/>
-            <polygon points="-8,-4 -5,1 -11,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.7"/>
-            <polygon points="8,-4 5,1 11,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.7"/>
-            <!-- Основание / продукт на весах -->
-            <rect x="-6" y="3" width="12" height="4" fill="#c9a94a" stroke="#1a3d5c" stroke-width="0.5" rx="0.5"/>
-            <line x1="-4" y1="4" x2="4" y2="4" stroke="#1a3d5c" stroke-width="0.3"/>
-            <line x1="-4" y1="5.5" x2="4" y2="5.5" stroke="#1a3d5c" stroke-width="0.3"/>
-          </g>
-          <!-- Колба / продукт (правая петля) -->
-          <g transform="translate(75, 32)">
-            <path d="M -5 -6 L -6 3 L 6 3 L 5 -6 Z" fill="#f4f4f4" stroke="#1a3d5c" stroke-width="0.8"/>
-            <rect x="-5" y="-7" width="10" height="1.5" fill="#1a3d5c" rx="0.5"/>
-            <path d="M -6 -2 L 6 -2 L 6 3 L -6 3 Z" fill="#4ade80" opacity="0.6"/>
-            <circle cx="-2" cy="0.5" r="1" fill="#2d6a4f"/>
-            <circle cx="2" cy="1" r="0.9" fill="#2d6a4f"/>
-            <circle cx="0" cy="2" r="0.7" fill="#2d6a4f"/>
-          </g>
-        </svg>
-        <div>
-          <h1><span>🔬</span> Лаборатория качества</h1>
-          <div class="sub">ФГБОУ ВО «ДОННУЭТ» · кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
-        </div>
+      <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="kafGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1a6b3d"/>
+            <stop offset="1" stop-color="#0d4a2c"/>
+          </linearGradient>
+        </defs>
+        <path d="M 50 52 C 50 30, 12 30, 12 52 C 12 74, 50 74, 50 52 C 50 30, 88 30, 88 52 C 88 74, 50 74, 50 52 Z"
+              fill="none" stroke="url(#kafGrad)" stroke-width="11" stroke-linecap="round"/>
+        <path d="M 50 52 C 50 30, 12 30, 12 52 C 12 74, 50 74, 50 52 C 50 30, 88 30, 88 52 C 88 74, 50 74, 50 52 Z"
+              fill="none" stroke="#7cbf8e" stroke-width="3" stroke-linecap="round"/>
+        <polygon points="50,10 30,22 50,34 70,22" fill="#0e7c7c"/>
+        <polygon points="44,26 50,29 56,26 56,42 44,42" fill="#0e7c7c"/>
+        <g transform="translate(20, 52)">
+          <line x1="-11" y1="-5" x2="11" y2="-5" stroke="#1a3d5c" stroke-width="1.8"/>
+          <line x1="0" y1="-9" x2="0" y2="0" stroke="#1a3d5c" stroke-width="1.8"/>
+          <polygon points="-11,-5 -7,1 -15,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.9"/>
+          <polygon points="11,-5 7,1 15,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.9"/>
+        </g>
+        <g transform="translate(80, 52)">
+          <path d="M -6 -7 L -7 4 L 7 4 L 6 -7 Z" fill="#f4f4f4" stroke="#1a3d5c" stroke-width="1"/>
+          <path d="M -7 -3 L 7 -3 L 7 4 L -7 4 Z" fill="#4ade80" opacity="0.7"/>
+        </g>
+      </svg>
+      <div>
+        <h1>🌿 БиоЭкоКомбинат PRO</h1>
+        <div class="sub">ФГБОУ ВО «ДОННУЭТ» · кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
       </div>
     </div>
-    <div class="stats">
-      <div class="stat-chip level" id="chipLevel">Ур. 1</div>
-      <div class="stat-chip gold" id="chipCoins">💰 0</div>
-      <div class="stat-chip xp" id="chipXp">✦ 0</div>
-      <button class="sound-btn" id="soundBtn" title="Звук">🔊</button>
+    <div class="hbtns">
+      <button class="icon-btn" id="helpBtn">📖</button>
+      <button class="icon-btn" id="achBtn">🏆</button>
+      <button class="icon-btn" id="soundBtn">🔊</button>
+      <div class="turn-chip" id="turnChip">1/30</div>
     </div>
   </header>
 
-  <div class="progress-bar">
-    <div class="lbl">Прогресс</div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-num" id="progressNum">0 / 38</div>
+  <div class="res-bar" id="resBar"></div>
+
+  <div class="eco-wrap">
+    <div class="lbl">🌍 Эко</div>
+    <div class="eco-track"><div class="eco-fill" id="ecoFill"></div></div>
+    <div class="eco-num" id="ecoNum">50</div>
   </div>
 
-  <div class="level-badge" id="levelBadge">🌾 Уровень 1 · Зерно и продукты переработки</div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="farm">🌾 Ферма</button>
+    <button class="tab" data-tab="prod">🏭 Цех</button>
+    <button class="tab" data-tab="lab">🔬 Лаб</button>
+    <button class="tab" data-tab="batch">📦 Партии</button>
+    <button class="tab" data-tab="contracts">💼 Контракты</button>
+    <button class="tab" data-tab="stats">📊 Анализ</button>
+    <button class="tab" data-tab="academy">🎓 Академия</button>
+  </div>
 
-  <div class="boss-panel">
-    <div class="boss-avatar" id="bossAvatar">👩‍🔬</div>
-    <div class="boss-content">
-      <div class="boss-name" id="bossName">Гл. эксперт — Мария Ивановна</div>
-      <div class="boss-message" id="bossMessage">Привет! Начнём с зерна.</div>
+  <div id="tab-farm" class="tab-content">
+    <div class="panel">
+      <h2>🌾 Опытные поля</h2>
+      <div class="fields" id="fieldsGrid"></div>
+    </div>
+    <div class="panel">
+      <h2>📋 Журнал</h2>
+      <div class="log" id="log"></div>
     </div>
   </div>
 
-  <div class="task-panel">
-    <div class="task-title" id="taskTitle">Загрузка...</div>
-    <div class="task-desc" id="taskDesc"></div>
-    <div class="options" id="options"></div>
-    <div class="feedback" id="feedback" style="display:none"></div>
-    <button class="next-btn" id="nextBtn">Продолжить ▶</button>
+  <div id="tab-prod" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>🏭 Технологические модули</h2>
+      <div class="grid" id="bgrid"></div>
+    </div>
+  </div>
+
+  <div id="tab-lab" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>🔬 Испытательная лаборатория</h2>
+      <div id="labContent"></div>
+    </div>
+  </div>
+
+  <div id="tab-batch" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>📦 Входящие партии на экспертизу</h2>
+      <div id="batchContent"></div>
+    </div>
+  </div>
+
+  <div id="tab-contracts" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>💼 Договоры поставки</h2>
+      <div id="contractsContent"></div>
+    </div>
+  </div>
+
+  <div id="tab-stats" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>📊 Статистический анализ</h2>
+      <div id="statsContent"></div>
+    </div>
+  </div>
+
+  <div id="tab-academy" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>🎓 Обучающие задания</h2>
+      <div id="academyContent"></div>
+    </div>
   </div>
 
   <footer>
     <div class="uni">ФГБОУ ВО «ДОННУЭТ»</div>
     <div class="kaf">Кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
   </footer>
+
+  <button class="next-btn" id="nextBtn">▶ Следующая неделя</button>
 </div>
 
+<!-- START -->
 <div class="overlay" id="startScreen">
   <div class="modal">
-    <!-- Логотипы на стартовом экране -->
     <div class="modal-logo">
       <svg class="lg-uni" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="uniGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#1a3d8c"/>
-            <stop offset="1" stop-color="#0d2456"/>
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="uniGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1a3d8c"/><stop offset="1" stop-color="#0d2456"/>
+        </linearGradient></defs>
         <path d="M 50 8 L 85 22 L 85 60 Q 85 85 50 95 Q 15 85 15 60 L 15 22 Z"
               fill="url(#uniGrad)" stroke="#d4a04a" stroke-width="2.5"/>
         <circle cx="50" cy="45" r="20" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
         <ellipse cx="50" cy="45" rx="20" ry="8" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
         <ellipse cx="50" cy="45" rx="8" ry="20" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
-        <line x1="30" y1="45" x2="70" y2="45" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
         <path d="M 38 62 Q 50 58 50 62 Q 50 58 62 62 L 62 72 Q 50 68 50 72 Q 50 68 38 72 Z"
               fill="#f4f4f4" stroke="#d4a04a" stroke-width="0.8"/>
-        <path d="M 20 45 Q 15 60 22 78" fill="none" stroke="#d4a04a" stroke-width="2"/>
-        <path d="M 80 45 Q 85 60 78 78" fill="none" stroke="#d4a04a" stroke-width="2"/>
-        <text x="50" y="18" text-anchor="middle" fill="#f4f4f4" font-size="7" font-weight="bold">ДОННУЭТ</text>
+        <text x="50" y="18" text-anchor="middle" fill="#f4f4f4" font-size="6" font-weight="bold">ДОННУЭТ</text>
       </svg>
       <svg class="lg-kaf" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 50 30 C 50 15, 25 15, 25 30 C 25 45, 50 45, 50 30 C 50 15, 75 15, 75 30 C 75 45, 50 45, 50 30 Z"
+        <path d="M 50 30 C 50 15, 20 15, 20 30 C 20 45, 50 45, 50 30 C 50 15, 80 15, 80 30 C 80 45, 50 45, 50 30 Z"
               fill="none" stroke="#0d4a2c" stroke-width="7" stroke-linecap="round"/>
-        <path d="M 50 30 C 50 15, 25 15, 25 30 C 25 45, 50 45, 50 30 C 50 15, 75 15, 75 30 C 75 45, 50 45, 50 30 Z"
-              fill="none" stroke="#7cbf8e" stroke-width="2.5" stroke-linecap="round"/>
-        <polygon points="50,5 39,12 50,19 61,12" fill="#0e7c7c"/>
-        <polygon points="46,14 50,16 54,14 54,23 46,23" fill="#0e7c7c"/>
-        <g transform="translate(25, 32)">
-          <line x1="-8" y1="-4" x2="8" y2="-4" stroke="#1a3d5c" stroke-width="1.3"/>
-          <line x1="0" y1="-7" x2="0" y2="0" stroke="#1a3d5c" stroke-width="1.3"/>
-          <polygon points="-8,-4 -5,1 -11,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.7"/>
-          <polygon points="8,-4 5,1 11,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.7"/>
-          <rect x="-6" y="3" width="12" height="4" fill="#c9a94a" stroke="#1a3d5c" stroke-width="0.5" rx="0.5"/>
-        </g>
-        <g transform="translate(75, 32)">
-          <path d="M -5 -6 L -6 3 L 6 3 L 5 -6 Z" fill="#f4f4f4" stroke="#1a3d5c" stroke-width="0.8"/>
-          <rect x="-5" y="-7" width="10" height="1.5" fill="#1a3d5c" rx="0.5"/>
-          <path d="M -6 -2 L 6 -2 L 6 3 L -6 3 Z" fill="#4ade80" opacity="0.6"/>
-        </g>
+        <path d="M 50 30 C 50 15, 20 15, 20 30 C 20 45, 50 45, 50 30 C 50 15, 80 15, 80 30 C 80 45, 50 45, 50 30 Z"
+              fill="none" stroke="#7cbf8e" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="50,5 40,11 50,17 60,11" fill="#0e7c7c"/>
       </svg>
     </div>
-    <h2>🔬 Товароведная экспертиза</h2>
-    <p>Ты — <b>стажёр-лаборант</b> в испытательной лаборатории ДОННУЭТ. Главный эксперт Мария Ивановна проведёт тебя через <b>10 уровней</b> и <b>38 заданий</b> — по всем группам продовольственных товаров.</p>
-    <h3>Все группы товаров</h3>
+    <h2>🌿 БиоЭкоКомбинат PRO</h2>
+    <p>Комплексный тренажёр-симулятор: <b>сельское хозяйство</b> + <b>биоэкономика</b> + <b>лабораторная экспертиза</b> продовольственных товаров.</p>
+    <h3>Ты управляешь:</h3>
     <ul>
-      <li>🌾 Зерно и продукты переработки</li>
-      <li>🥕 Плодоовощные товары</li>
-      <li>🍵 Вкусовые товары</li>
-      <li>🍫 Кондитерские товары</li>
-      <li>🫒 Пищевые жиры</li>
-      <li>🥛 Молочные товары</li>
-      <li>🥩 Мясные товары</li>
-      <li>🐟 Рыбные товары</li>
-      <li>🥚 Яйца и пищевые концентраты</li>
-      <li>🏆 Финальная экспертиза</li>
+      <li>🌾 <b>Фермой</b> — 4 поля, 6 культур с ГОСТ, сезонность</li>
+      <li>🏭 <b>12 модулями</b> — от биогаза до солнечной станции</li>
+      <li>🔬 <b>Лабораторией</b> — проводи реальные испытания</li>
+      <li>📦 <b>Партиями</b> — принимай решения по ГОСТ</li>
+      <li>💼 <b>Контрактами</b> — выполняй заказы покупателей</li>
+      <li>🎓 <b>Академией</b> — учись на мини-уроках</li>
     </ul>
-    <button class="startbtn" id="startBtn">▶ НАЧАТЬ СТАЖИРОВКУ</button>
+    <h3>Цель</h3>
+    <p>За <b>30 недель</b> набрать максимум очков и получить звание <span class="hl">«Эксперт ДОННУЭТ»</span>.</p>
+    <button class="startbtn" id="startBtn">▶ НАЧАТЬ РАБОТУ</button>
   </div>
 </div>
 
-<div class="overlay hide" id="levelScreen">
+<!-- HELP -->
+<div class="overlay hide" id="helpScreen">
   <div class="modal">
-    <h2 id="levelTitle">✅ Уровень пройден!</h2>
-    <p id="levelSubtitle"></p>
-    <div class="score-list" id="levelScores"></div>
-    <button class="startbtn" id="levelNextBtn">▶ Следующий уровень</button>
+    <h2>📖 Справочник</h2>
+    <h3>🌾 Ферма</h3>
+    <p>4 поля, 6 культур. Выбирай под сезон: 🌸×1.0 · ☀️×1.3 · 🍂×1.4 · ❄️×0.6.</p>
+    <h3>🏭 Модули</h3>
+    <p>12 зданий: ферма, теплица, биогаз, переработка, биопластик, солнечная станция, лаборатории, логистика и др.</p>
+    <h3>🔬 Лаборатория</h3>
+    <p>Выбирай образец → проводи методы испытаний (органолептика, физ-химия, микробиология) → получай протокол.</p>
+    <h3>📦 Партии</h3>
+    <p>Раз в 3 недели — новая партия. Принять вслепую / провести экспертизу / отклонить.</p>
+    <h3>🎓 Академия</h3>
+    <p>Мини-уроки по группам товаров с проверкой. +XP за правильные ответы.</p>
+    <button class="startbtn" id="helpClose">Понятно</button>
   </div>
 </div>
 
-<div class="overlay hide" id="finalScreen">
+<!-- ACHIEVEMENTS -->
+<div class="overlay hide" id="achScreen">
+  <div class="modal">
+    <h2>🏆 Достижения</h2>
+    <div class="ach-grid" id="achList"></div>
+    <button class="startbtn" id="achClose">Закрыть</button>
+  </div>
+</div>
+
+<!-- END -->
+<div class="overlay hide" id="endScreen">
   <div class="modal">
     <div class="modal-logo">
       <svg class="lg-uni" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -483,185 +635,1120 @@ footer .kaf{font-size:.6rem;color:#a7e8c8;margin-top:4px;line-height:1.4;
         <circle cx="50" cy="45" r="20" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
         <path d="M 38 62 Q 50 58 50 62 Q 50 58 62 62 L 62 72 Q 50 68 50 72 Q 50 68 38 72 Z"
               fill="#f4f4f4" stroke="#d4a04a" stroke-width="0.8"/>
-        <text x="50" y="18" text-anchor="middle" fill="#f4f4f4" font-size="7" font-weight="bold">ДОННУЭТ</text>
+        <text x="50" y="18" text-anchor="middle" fill="#f4f4f4" font-size="6" font-weight="bold">ДОННУЭТ</text>
       </svg>
     </div>
-    <h2 id="finalTitle">🏁 Стажировка завершена!</h2>
-    <div class="final-rank" id="finalRank">—</div>
-    <div class="score-list" id="finalScores"></div>
-    <p id="finalComment" style="text-align:center;color:#c4e6d6;font-size:.78rem"></p>
-    <button class="startbtn" id="restartBtn">🔄 Пройти заново</button>
-    <button class="startbtn secondary" id="reviewBtn">📖 Все ответы и объяснения</button>
-  </div>
-</div>
-
-<div class="overlay hide" id="reviewScreen">
-  <div class="modal">
-    <h2>📖 Все задания и правильные ответы</h2>
-    <div id="reviewList"></div>
-    <button class="startbtn" id="reviewClose">Закрыть</button>
+    <h2 id="endTitle">🏁 Итоги сезона</h2>
+    <div class="final" id="finalScore">0</div>
+    <div class="rank" id="rankText"></div>
+    <div class="score-grid" id="scoreGrid"></div>
+    <p id="endComment" style="text-align:center;color:#c4e6d6;font-size:.72rem"></p>
+    <button class="startbtn" id="restartBtn">🔄 Играть заново</button>
   </div>
 </div>
 
 <script>
-const LEVELS = [
-  {id:1,title:'🌾 Уровень 1 · Зерно и продукты переработки',boss:'Начнём с зерна. Основа хлеба, муки, круп и макарон.',tasks:[
-    {title:'Что такое сырая клейковина в пшенице?',desc:'Ключевой показатель хлебопекарной пшеницы. По <b>ГОСТ 27839</b>.',options:['Комплекс белков, образующих эластичную массу при замесе','Остаток после отмывания крахмала водой','Крахмальная фракция зерна','Минеральная примесь в муке'],correct:0,explanation:'<b>Клейковина</b> — комплекс белков (глиадин + глютенин), образует эластичную массу. Норма для хлебопекарной пшеницы — <b>не менее 23%</b>.'},
-    {title:'Норма влажности муки по ГОСТ 26574-2017?',desc:'Критический показатель при хранении.',options:['Не более 15%','Не более 20%','Не более 10%','Не более 25%'],correct:0,explanation:'Норма — <b>не более 15%</b>. Больше — плесень, слёживание, микотоксины.'},
-    {title:'Что показывает стекловидность зерна?',desc:'Определяет консистенцию эндосперма.',options:['Прозрачность оболочки','Консистенцию эндосперма','Содержание влаги','Количество примесей'],correct:1,explanation:'<b>Стекловидность</b> — консистенция эндосперма. Стекловидное зерно даёт муку с высоким белком.'},
-    {title:'Что такое натура зерна?',desc:'Масса 1 литра. По ГОСТ 9353-2016.',options:['Не менее 500 г/л','Не менее 650 г/л','Не менее 750 г/л','Не менее 900 г/л'],correct:2,explanation:'Натура для сильной пшеницы — <b>≥750 г/л</b>. Высокая — больше выхода муки.'}
-  ]},
-  {id:2,title:'🥕 Уровень 2 · Плодоовощные товары',boss:'Овощи, плоды, ягоды. Смотрим свежесть, лёжкоспособность, нитраты.',tasks:[
-    {title:'Что такое лёжкоспособность?',desc:'Ключевое свойство для хранения.',options:['Способность долго сохранять качество','Скорость созревания','Масса плода','Твёрдость кожуры'],correct:0,explanation:'<b>Лёжкоспособность</b> — способность сохранять товарные качества при хранении.'},
-    {title:'Норма нитратов для картофеля?',desc:'ТР ТС 021/2011.',options:['≤250 мг/кг','≤500 мг/кг','≤1000 мг/кг','Не нормируются'],correct:0,explanation:'Для картофеля — <b>≤250 мг/кг</b>. Нитраты превращаются в нитриты и нитрозамины.'},
-    {title:'Что НЕ является показателем товарного сорта яблок?',desc:'ГОСТ 34314-2017.',options:['Размер плода','Отсутствие повреждений','Цена за 1 кг','Типичность формы и окраски'],correct:2,explanation:'Сорт определяют по размеру, свежести, окраске, форме, отсутствию повреждений. Цена — не входит.'},
-    {title:'Партия яблок I сорта, 8% повреждено паршой. Норма — 5%.',desc:'По ГОСТ 34314-2017.',options:['Принять как I сорт','Перевести во II сорт или отклонить','Принять со скидкой 50%','Отправить на переработку без изменений'],correct:1,explanation:'<b>8% > 5%</b> — не I сорт. Переаттестовать во II или отклонить.'}
-  ]},
-  {id:3,title:'🍵 Уровень 3 · Вкусовые товары',boss:'Чай, кофе, пряности, напитки. Здесь важны экстрактивность, кофеин, влажность.',tasks:[
-    {title:'Что такое экстрактивные вещества чая?',desc:'ГОСТ 32573-2013.',options:['Красящие пигменты','Растворимые вещества, переходящие в настой','Минеральные примеси','Остатки эфирных масел'],correct:1,explanation:'<b>Экстрактивные вещества</b> — танины, кофеин, аминокислоты. Для чёрного чая <b>≥32%</b>.'},
-    {title:'Кофеина в чае по сравнению с кофе?',desc:'Неочевидный факт.',options:['Больше','Столько же','Меньше в настое, но действует мягче','Нет вообще'],correct:2,explanation:'В сухом чае кофеина больше, но в настой переходит меньше, действует <b>мягче</b>.'},
-    {title:'Норма влажности чёрного чая?',desc:'ГОСТ 32573-2013.',options:['≤3%','≤7%','≤15%','≤20%'],correct:1,explanation:'Влажность чёрного чая — <b>≤7%</b>. Больше — плесень.'},
-    {title:'Что такое пряности?',desc:'Группа вкусовых товаров.',options:['Продукты растительного происхождения с сильным ароматом','Синтетические ароматизаторы','Смеси сахара и красителей','Заменители соли'],correct:0,explanation:'<b>Пряности</b> — кора, корень, лист, плод, семя с эфирными маслами. Действуют в малых дозах.'}
-  ]},
-  {id:4,title:'🍫 Уровень 4 · Кондитерские товары',boss:'Сахар, мёд, шоколад, карамель. Смотрим сахарозу, влажность, какао-продукты.',tasks:[
-    {title:'Минимум какао-продуктов в горьком шоколаде?',desc:'ГОСТ 31721-2012.',options:['≥35%','≥55%','≥70%','≥90%'],correct:1,explanation:'<b>Горький шоколад</b> — <b>≥55%</b> какао-продуктов. Тёмный — ≥40%.'},
-    {title:'Норма влажности сахара-песка?',desc:'ГОСТ 33222-2015.',options:['≤0,14%','≤1,5%','≤5%','≤10%'],correct:0,explanation:'Влажность сахара — <b>≤0,14%</b>. Больше — слёживание.'},
-    {title:'Главный показатель натурального мёда?',desc:'ГОСТ 31766-2012.',options:['Вода ≤20% и диастазное число ≥8','Только цвет','Только вкус','Только сахар'],correct:0,explanation:'Ключевые: <b>вода ≤20%</b>, <b>диастазное число ≥8 ед. Готе</b>, ОМФ ≤25 мг/кг.'},
-    {title:'Карамель: влажность 4%, норма ≤3%. Решение?',desc:'Товароведная оценка.',options:['Принять','Отклонить — не соответствует','Продать со скидкой','Повторный анализ'],correct:1,explanation:'<b>4% > 3%</b> — несоответствие ГОСТ. Возврат производителю.'}
-  ]},
-  {id:5,title:'🫒 Уровень 5 · Пищевые жиры',boss:'Масла, маргарин, майонез. Смотрим перекисное и кислотное число.',tasks:[
-    {title:'Что показывает перекисное число?',desc:'ГОСТ 26593-85.',options:['Свободные жирные кислоты','Первичные продукты окисления','Цвет','Температуру плавления'],correct:1,explanation:'<b>Перекисное число</b> — первичные продукты окисления. Норма для масла — <b>≤10 ммоль/кг</b>.'},
-    {title:'Что такое кислотное число?',desc:'ГОСТ 52110-2003.',options:['Мг KOH на 1 г жира для нейтрализации СЖК','pH жира','Содержание витаминов','Влажность'],correct:0,explanation:'<b>Кислотное число</b> — мг KOH на 1 г жира. Для подсолнечного масла — <b>≤0,6</b>.'},
-    {title:'Что такое маргарин по ГОСТ 32188-2013?',desc:'Эмульсионный продукт.',options:['Смесь животных жиров','Эмульсия «вода в масле»','Растительное масло','Продукт из молока'],correct:1,explanation:'<b>Маргарин</b> — эмульсия «вода в масле» из растительных и животных жиров.'},
-    {title:'Норма жира в майонезе «Провансаль»?',desc:'ГОСТ 31761-2012.',options:['≥30%','≥50%','≥67%','≥90%'],correct:2,explanation:'«Провансаль» — <b>≥67%</b> жира. Эмульсия «масло в воде».'}
-  ]},
-  {id:6,title:'🥛 Уровень 6 · Молочные товары',boss:'Молоко, сыр, творог, масло. Много ГОСТов и точных норм.',tasks:[
-    {title:'Единица измерения кислотности молока?',desc:'ГОСТ 3624.',options:['%','°Т (Тернера)','моль/л','pH'],correct:1,explanation:'Кислотность молока — <b>°Т</b>. Норма пастеризованного — <b>16–21 °Т</b>.'},
-    {title:'Норма жира в молоке 3,2%?',desc:'ГОСТ 31450-2013.',options:['Ровно 3,2','3,2 ± 0,1','3,2 ± 0,5','≥3,0'],correct:1,explanation:'Норма — <b>3,2 ± 0,1%</b>. Определяют по методу Гербера.'},
-    {title:'Творог 250 °Т, норма ≤200 °Т. Решение?',desc:'ГОСТ 31453-2013.',options:['Принять','Отклонить — перекис','Продать как «домашний»','Разбавить'],correct:1,explanation:'<b>250 > 200</b> — продукт перекис. Возврат. Разбавлять запрещено — это фальсификация.'},
-    {title:'Метод определения жира в молоке?',desc:'Основной в РФ.',options:['Кьельдаля','Гербера','Сокслета','Рефрактометрия'],correct:1,explanation:'<b>Метод Гербера</b> (ГОСТ 5867): серная кислота + изоамиловый спирт + центрифуга.'}
-  ]},
-  {id:7,title:'🥩 Уровень 7 · Мясные товары',boss:'Мясо, колбасы, копчёности. Смотрим свежесть, нитриты, PSE/DFD.',tasks:[
-    {title:'Что такое PSE-мясо?',desc:'Дефект из-за стресса животного.',options:['Бледное, мягкое, водянистое','Тёмное, жёсткое, сухое','С признаками порчи','С высоким содержанием жира'],correct:0,explanation:'<b>PSE</b> — Pale, Soft, Exudative. DFD — Dark, Firm, Dry.'},
-    {title:'Основной показатель свежести мяса?',desc:'ГОСТ 7269-2015.',options:['Массовая доля белка','pH и реакция с CuSO₄','Цвет упаковки','Цена'],correct:1,explanation:'Свежесть — по <b>pH (5,7–6,2)</b> и реакции с сернокислой медью.'},
-    {title:'Зачем в колбасу добавляют нитрит натрия?',desc:'ТР ТС 034/2013.',options:['Для массы','Фиксация цвета + подавление ботулизма','Для вкуса','Для аромата'],correct:1,explanation:'<b>NaNO₂</b>: фиксирует розовый цвет + подавляет <b>Clostridium botulinum</b>. Норма ≤50 мг/кг.'},
-    {title:'Колбаса: КМАФАнМ 5×10³, норма ≤1×10³. Решение?',desc:'ТР ТС 021/2011.',options:['Принять','Отклонить — превышение в 5 раз','Продать со скидкой','Переработать'],correct:1,explanation:'Превышение — <b>несоответствие</b>. Возврат + уведомление Роспотребнадзора.'}
-  ]},
-  {id:8,title:'🐟 Уровень 8 · Рыбные товары',boss:'Рыба, икра, морепродукты. Важен гистамин, паразиты, свежесть.',tasks:[
-    {title:'Что такое гистамин в рыбе?',desc:'Токсичное вещество.',options:['Краситель','Продукт распада гистидина при порче','Витамин','Минеральная соль'],correct:1,explanation:'<b>Гистамин</b> — при разложении гистидина (скумбрия, тунец). Вызывает «сардинную болезнь». Норма ≤100 мг/кг.'},
-    {title:'Признак свежей рыбы?',desc:'ГОСТ 7631.',options:['Жабры тёмные, глаза мутные','Жабры ярко-красные, глаза прозрачные','Мякоть мягкая','Запах аммиака'],correct:1,explanation:'Свежая: <b>жабры ярко-красные, глаза прозрачные выпуклые, мякоть упругая</b>.'},
-    {title:'Опасность паразитов в рыбе?',desc:'Особенно для слабосолёной.',options:['Только портится вкус','Заражение гельминтами','Никакой','Потеря массы'],correct:1,explanation:'<b>Описторхоз, дифиллоботриоз, анизакидоз</b>. Безопасна: −18 °C ≥7 суток или проварка.'},
-    {title:'Что такое консистенция филе после разморозки?',desc:'Органолептический показатель.',options:['Плотность и упругость','Цвет','Запах','Масса'],correct:0,explanation:'После разморозки консистенция <b>ухудшается</b> — повреждение волокон кристаллами льда.'}
-  ]},
-  {id:9,title:'🥚 Уровень 9 · Яйца и пищевые концентраты',boss:'Яйца, меланж, яичный порошок. И пищевые концентраты.',tasks:[
-    {title:'Как делятся яйца по категориям?',desc:'ГОСТ 31654-2012.',options:['По цвету скорлупы','По массе (СВ, С0, С1, С2, С3)','По размеру желтка','По вкусу'],correct:1,explanation:'Категории: <b>СВ</b> ≥75 г, <b>С0</b> 65–74,9, <b>С1</b> 55–64,9, <b>С2</b> 45–54,9, <b>С3</b> 35–44,9.'},
-    {title:'Что такое меланж?',desc:'Продукт переработки яиц.',options:['Замороженная смесь белка и желтка','Варёное яйцо','Сухой порошок','Скорлупа'],correct:0,explanation:'<b>Меланж</b> — замороженная смесь белка и желтка. Хранят при −18 °C до 15 мес.'},
-    {title:'Что относится к пищевым концентратам?',desc:'Большая группа продуктов.',options:['Только супы','Сухие завтраки, концентраты супов, кисели, полуфабрикаты теста','Только приправы','Только детское питание'],correct:1,explanation:'<b>Пищевые концентраты</b> — обезвоженные продукты быстрого приготовления. Влажность обычно ≤10%.'}
-  ]},
-  {id:10,title:'🏆 Уровень 10 · Финальная экспертиза',boss:'Последние три задания. Здесь примешь настоящие экспертные решения.',tasks:[
-    {title:'Итог: O=32/40, F=20/30, S=18/30. Заключение?',desc:'Q = 0,4·O + 0,3·F + 0,3·S. Пороги: ≥70 соотв., 40–69 условно, <40 не соотв.',options:['Соответствует','Условно годен','НЕ соответствует','Доп. испытания'],correct:1,explanation:'Q = 0,4·32 + 0,3·20 + 0,3·18 = <b>24,2</b>. Формально <40. Но при хорошей органолептике — переработка. «Условно годен».'},
-    {title:'Творог с истекающим сроком (2 дня). Твоё действие?',desc:'Хранение +4 °C, признаки свежести сохранены.',options:['Утилизировать','Провести экспертизу и решить по результатам','Продать со скидкой 70%','Оставить ещё на неделю'],correct:1,explanation:'Правильно — <b>провести экспертизу</b>. Если соответствует ТР ТС — реализация со скидкой.'},
-    {title:'Самый критичный показатель безопасности творога?',desc:'Прямая угроза здоровью.',options:['Массовая доля белка','Массовая доля влаги','БГКП','Цвет и консистенция'],correct:2,explanation:'<b>БГКП</b> — санитарный показатель. При обнаружении партия <b>немедленно отзывается</b>.'}
-  ]}
+/* ==================== ДАННЫЕ ==================== */
+const CROPS={
+  wheat:{n:'Пшеница озимая',i:'🌾',cost:60000,weeks:5,yield:5,gost:'ГОСТ 9353'},
+  corn:{n:'Кукуруза',i:'🌽',cost:45000,weeks:4,yield:8,gost:'ГОСТ 13634'},
+  sunflower:{n:'Подсолнечник',i:'🌻',cost:50000,weeks:4,yield:3,gost:'ГОСТ 22391'},
+  soy:{n:'Соя',i:'🌱',cost:55000,weeks:4,yield:4,gost:'ГОСТ 17109'},
+  beet:{n:'Сахарная свёкла',i:'🥕',cost:70000,weeks:5,yield:40,gost:'ГОСТ 33884'},
+  rye:{n:'Рожь озимая',i:'🌿',cost:40000,weeks:5,yield:4,gost:'ГОСТ 16990'}
+};
+
+const BUILDINGS={
+  farm:{n:'Ферма микроводорослей',i:'🌱',cost:120000,d:'Chlorella и спирулина',
+    out:{biomass:12,waste:1},e:2},
+  greenhouse:{n:'Вертикальная теплица',i:'🥬',cost:180000,d:'Свежая зелень круглый год',
+    out:{biomass:8,food:1},e:4},
+  biogas:{n:'Биогазовый реактор',i:'⚡',cost:150000,d:'Отходы → энергия + биомасса',
+    out:{waste:-10,biomass:2,eco:0.6},eg:18},
+  processing:{n:'Перерабатывающий цех',i:'🏭',cost:250000,d:'Биомасса → готовая еда',
+    out:{biomass:-10,food:8,waste:3},e:3},
+  bioplast:{n:'Цех биопластика',i:'🧪',cost:220000,d:'Отходы → биоупаковка',
+    out:{waste:-8,money:22000,eco:0.8},e:2},
+  solar:{n:'Солнечная станция',i:'☀️',cost:240000,d:'Чистая энергия 300 кВт',
+    out:{},eg:25},
+  lab:{n:'Биолаборатория',i:'🔬',cost:320000,d:'+5% выхода продукции/ур.',
+    out:{eco:1},passive:true},
+  logistics:{n:'Экологичная логистика',i:'🚛',cost:200000,d:'+15% к цене еды/ур.',
+    out:{},passive:true},
+  expert_lab:{n:'Лаборатория экспертизы',i:'⚗️',cost:280000,d:'Экспертиза дешевле в 3 раза',
+    out:{eco:0.5},passive:true},
+  cert_center:{n:'Центр сертификации',i:'📜',cost:340000,d:'+10% к цене партий/ур.',
+    out:{},passive:true},
+  qc_dept:{n:'Отдел контроля качества',i:'👥',cost:290000,d:'Авто-протокол партий',
+    out:{eco:0.5},passive:true},
+  tasting:{n:'Дегустационная комиссия',i:'👅',cost:240000,d:'+2 эко/нед.',
+    out:{eco:2},passive:true}
+};
+
+const BATCH_POOL=[
+  {n:'Хлеб пшеничный в/с',i:'🍞',size:5000,v:45,gost:'ГОСТ 26987-86',trts:'ТР ТС 021/2011',
+   inds:[{n:'Влажность мякиша',m:'ГОСТ 21094',u:'%',norm:'≤42,0',rev:false,dev:2},
+         {n:'Кислотность мякиша',m:'ГОСТ 21094',u:'°Т',norm:'≤3,0',rev:false,dev:.3},
+         {n:'Пористость',m:'ГОСТ 5669',u:'%',norm:'≥72',rev:true,dev:3},
+         {n:'КМАФАнМ',m:'ГОСТ 10444.15',u:'КОЕ/г',norm:'≤1×10³',rev:false,dev:.3}]},
+  {n:'Молоко пастеризованное 3,2%',i:'🥛',size:8000,v:85,gost:'ГОСТ 31450-2013',trts:'ТР ТС 033/2013',
+   inds:[{n:'Массовая доля жира',m:'ГОСТ 5867',u:'%',norm:'3,2±0,1',rev:null,dev:.15},
+         {n:'Кислотность',m:'ГОСТ 3624',u:'°Т',norm:'16–21',rev:null,dev:1.2},
+         {n:'Плотность',m:'ГОСТ 3625',u:'кг/м³',norm:'≥1027',rev:true,dev:2},
+         {n:'КМАФАнМ',m:'ГОСТ 10444.15',u:'КОЕ/г',norm:'≤1×10⁵',rev:false,dev:.3}]},
+  {n:'Сыр «Российский» 50%',i:'🧀',size:800,v:850,gost:'ГОСТ 32260-2013',trts:'ТР ТС 033/2013',
+   inds:[{n:'Жир в сух. в-ве',m:'ГОСТ 5867',u:'%',norm:'50±1,6',rev:null,dev:.5},
+         {n:'Влажность',m:'ГОСТ 3626',u:'%',norm:'≤40',rev:false,dev:1.5},
+         {n:'Соль',m:'ГОСТ 3627',u:'%',norm:'1,5–2,5',rev:null,dev:.15},
+         {n:'КМАФАнМ',m:'ГОСТ 10444.15',u:'КОЕ/г',norm:'≤1×10⁵',rev:false,dev:.3}]},
+  {n:'Яблоки свежие I сорт',i:'🍎',size:10000,v:130,gost:'ГОСТ 34314-2017',trts:'ТР ТС 021/2011',
+   inds:[{n:'Размер плода',m:'ГОСТ 34314',u:'мм',norm:'≥60',rev:true,dev:3},
+         {n:'Сахара',m:'ГОСТ 28561',u:'%',norm:'≥10',rev:true,dev:.8},
+         {n:'Кислотность',m:'ГОСТ 25555.0',u:'%',norm:'0,3–1,0',rev:null,dev:.08},
+         {n:'Нитраты',m:'ГОСТ 29270',u:'мг/кг',norm:'≤60',rev:false,dev:8}]},
+  {n:'Мёд цветочный',i:'🍯',size:500,v:700,gost:'ГОСТ 31766-2012',trts:'ТР ТС 021/2011',
+   inds:[{n:'Вода',m:'ГОСТ 31774',u:'%',norm:'≤20',rev:false,dev:1.2},
+         {n:'Сахароза',m:'ГОСТ 32168',u:'%',norm:'≤6',rev:false,dev:.5},
+         {n:'Диастазное число',m:'ГОСТ 32168',u:'ед. Готе',norm:'≥8',rev:true,dev:1.5},
+         {n:'Оксиметилфурфурол',m:'ГОСТ 31774',u:'мг/кг',norm:'≤25',rev:false,dev:4}]},
+  {n:'Колбаса «Докторская»',i:'🥓',size:1200,v:550,gost:'ГОСТ 33673-2015',trts:'ТР ТС 034/2013',
+   inds:[{n:'Белок',m:'ГОСТ 25011',u:'%',norm:'≥12',rev:true,dev:.7},
+         {n:'Жир',m:'ГОСТ 23042',u:'%',norm:'≤22',rev:false,dev:1.2},
+         {n:'Соль',m:'ГОСТ 9957',u:'%',norm:'1,8–2,4',rev:null,dev:.15},
+         {n:'Нитрит натрия',m:'ГОСТ 29299',u:'мг/кг',norm:'≤50',rev:false,dev:5},
+         {n:'КМАФАнМ',m:'ГОСТ 10444.15',u:'КОЕ/г',norm:'≤1×10³',rev:false,dev:.3}]},
+  {n:'Рыба копчёная (скумбрия)',i:'🐟',size:900,v:750,gost:'ГОСТ 7447-2015',trts:'ТР ТС 040/2016',
+   inds:[{n:'Жир',m:'ГОСТ 1368',u:'%',norm:'≥12',rev:true,dev:1.2},
+         {n:'Соль',m:'ГОСТ 27207',u:'%',norm:'2,5–4,0',rev:null,dev:.3},
+         {n:'Влажность',m:'ГОСТ 7636',u:'%',norm:'≤68',rev:false,dev:1.5},
+         {n:'Гистамин',m:'ГОСТ 31746',u:'мг/кг',norm:'≤100',rev:false,dev:15}]},
+  {n:'Творог 9%',i:'🥣',size:1500,v:380,gost:'ГОСТ 31453-2013',trts:'ТР ТС 033/2013',
+   inds:[{n:'Жир',m:'ГОСТ 5867',u:'%',norm:'9±0,6',rev:null,dev:.3},
+         {n:'Белок',m:'ГОСТ 23327',u:'%',norm:'≥16',rev:true,dev:.6},
+         {n:'Кислотность',m:'ГОСТ 3624',u:'°Т',norm:'≤200',rev:false,dev:8},
+         {n:'КМАФАнМ',m:'ГОСТ 10444.15',u:'КОЕ/г',norm:'≤1×10⁵',rev:false,dev:.3}]},
+  {n:'Шоколад горький 70%',i:'🍫',size:600,v:1500,gost:'ГОСТ 31721-2012',trts:'ТР ТС 021/2011',
+   inds:[{n:'Какао-продукты',m:'ГОСТ 31721',u:'%',norm:'≥70',rev:true,dev:1.5},
+         {n:'Влажность',m:'ГОСТ 5900',u:'%',norm:'≤1,2',rev:false,dev:.1},
+         {n:'Сахароза',m:'ГОСТ 5903',u:'%',norm:'≤30',rev:false,dev:1.2},
+         {n:'КМАФАнМ',m:'ГОСТ 10444.15',u:'КОЕ/г',norm:'≤1×10⁴',rev:false,dev:.3}]},
+  {n:'Масло сливочное 82,5%',i:'🧈',size:600,v:1200,gost:'ГОСТ 32261-2013',trts:'ТР ТС 033/2013',
+   inds:[{n:'Жир',m:'ГОСТ 5867',u:'%',norm:'82,5±0,5',rev:null,dev:.3},
+         {n:'Влажность',m:'ГОСТ 3626',u:'%',norm:'≤16',rev:false,dev:.4},
+         {n:'Кислотность плазмы',m:'ГОСТ 3624',u:'°Т',norm:'≤22',rev:false,dev:1.5}]},
+  {n:'Мясо птицы (тушка)',i:'🍗',size:1500,v:280,gost:'ГОСТ 31962-2013',trts:'ТР ТС 034/2013',
+   inds:[{n:'Белок',m:'ГОСТ 25011',u:'%',norm:'≥18',rev:true,dev:.7},
+         {n:'Жир',m:'ГОСТ 23042',u:'%',norm:'≤15',rev:false,dev:1.2},
+         {n:'Свинец (Pb)',m:'ГОСТ 26932',u:'мг/кг',norm:'≤0,5',rev:false,dev:.05},
+         {n:'КМАФАнМ',m:'ГОСТ 10444.15',u:'КОЕ/г',norm:'≤1×10⁵',rev:false,dev:.3}]}
 ];
 
-let state={currentLevel:0,currentTask:0,coins:0,xp:0,totalCorrect:0,totalTasks:0,answers:[],soundOn:true};
-let actx=null;
-function initAudio(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}}
+const CONTRACT_POOL=[
+  {buyer:'Школьная столовая №14',i:'🏫',amt:30,mul:1.4,ddl:3},
+  {buyer:'Сеть «Магнит»',i:'🏪',amt:60,mul:1.2,ddl:4},
+  {buyer:'Ресторан «БиоКухня»',i:'🍽️',amt:20,mul:1.8,ddl:3},
+  {buyer:'Детский сад «Ромашка»',i:'🧸',amt:25,mul:1.5,ddl:3},
+  {buyer:'Комбинат школьного питания',i:'🏭',amt:80,mul:1.3,ddl:5},
+  {buyer:'Больница №7',i:'🏥',amt:40,mul:1.4,ddl:4},
+  {buyer:'Гостиница «Плаза»',i:'🏨',amt:35,mul:1.7,ddl:4},
+  {buyer:'Госзаказ Минобороны',i:'🎖️',amt:120,mul:1.5,ddl:7},
+  {buyer:'Университет ДОННУЭТ',i:'🎓',amt:45,mul:1.55,ddl:4}
+];
+
+const EVENTS=[
+  {t:'🌧️ Засуха: биомасса −8 т',f:s=>{s.biomass=Math.max(0,s.biomass-8)},cls:'warn'},
+  {t:'📈 Спрос на белок: цена еды +700 ₽',f:s=>{s.foodPrice=Math.min(8000,s.foodPrice+700)},cls:'good'},
+  {t:'🦠 Вспышка бактерий: −6 т биомассы',f:s=>{s.biomass=Math.max(0,s.biomass-6)},cls:'bad'},
+  {t:'🏆 Грант РНФ: +250 000 ₽',f:s=>{s.money+=250000},cls:'good'},
+  {t:'🌍 Экологический штраф: −150 000 ₽, −4 эко',f:s=>{s.money-=150000;s.eco=Math.max(0,s.eco-4)},cls:'bad'},
+  {t:'🔬 Научный прорыв: +5 эко',f:s=>{s.eco=Math.min(100,s.eco+5)},cls:'good'},
+  {t:'🚚 Топливо подорожало: −80 000 ₽',f:s=>{s.money-=80000},cls:'warn'},
+  {t:'🥗 Программа «Здоровое питание»: +180 000 ₽',f:s=>{s.money+=180000},cls:'good'},
+  {t:'⚡ Отключение энергии: −12⚡',f:s=>{s.energy=Math.max(0,s.energy-12)},cls:'bad'},
+  {t:'♻️ Субсидия за переработку: +160 000 ₽',f:s=>{s.money+=160000},cls:'good'},
+  {t:'🎓 Практика студентов ДОННУЭТ: +120 000 ₽',f:s=>{s.money+=120000},cls:'good'},
+  {t:'📋 Проверка Роспотребнадзора: −90 000 ₽',f:s=>{s.money-=90000},cls:'warn'},
+  {t:'🎁 Спонсор кафедры: +200 000 ₽',f:s=>{s.money+=200000},cls:'epic'},
+  {t:'💎 VIP-заказчик: +300 000 ₽',f:s=>{s.money+=300000},cls:'epic'}
+];
+
+const LESSONS=[
+  {q:'Что такое клейковина пшеницы?',
+   o:['Комплекс белков, дающий эластичное тесто','Крахмальная фракция','Минеральная примесь','Пигмент зерна'],
+   c:0,e:'Клейковина — глиадин + глютенин. Норма ≥23% для хлебопекарной пшеницы (ГОСТ 27839).'},
+  {q:'Единица измерения кислотности молока?',
+   o:['%','°Т (Тернера)','моль/л','pH'],
+   c:1,e:'Кислотность молока — в градусах Тернера (°Т). Норма 16–21 °Т (ГОСТ 3624).'},
+  {q:'Минимум какао-продуктов в горьком шоколаде?',
+   o:['≥35%','≥55%','≥70%','≥90%'],
+   c:1,e:'По ГОСТ 31721-2012 горький шоколад — не менее 55% какао-продуктов.'},
+  {q:'Что такое КМАФАнМ?',
+   o:['Кислотно-молочный анализ','Количество мезофильных аэробных и факультативно-анаэробных микроорганизмов','Комплексный метод физико-химических исследований','Коэффициент массовой активности'],
+   c:1,e:'КМАФАнМ — общая микробная обсеменённость (КОЕ/г). Ключевой показатель безопасности (ГОСТ 10444.15).'},
+  {q:'Что регулирует ТР ТС 021/2011?',
+   o:['Маркировку','Безопасность пищевой продукции','Молоко','Перевозку грузов'],
+   c:1,e:'ТР ТС 021/2011 — рамочный регламент о безопасности. На нём основаны все остальные ТР ТС.'},
+  {q:'Норма нитратов в картофеле?',
+   o:['≤250 мг/кг','≤500 мг/кг','≤1000 мг/кг','Не нормируется'],
+   c:0,e:'Для картофеля — ≤250 мг/кг. Нитраты превращаются в нитриты и нитрозамины (ГОСТ 29270).'},
+  {q:'Метод Гербера — для чего?',
+   o:['Определения белка','Определения жира','Определения влаги','Определения золы'],
+   c:1,e:'Метод Гербера (ГОСТ 5867) — определение массовой доли жира в молочных продуктах.'},
+  {q:'Сколько принципов в HACCP?',
+   o:['3','5','7','12'],
+   c:2,e:'7 принципов: анализ опасностей, ККТ, пределы, мониторинг, коррекция, верификация, документация.'},
+  {q:'Что такое число падения?',
+   o:['Потери зерна','Активность амилолитических ферментов','Плотность зерна','Скорость падения колоса'],
+   c:1,e:'ЧП — активность амилаз. Рожь ≥140 с, пшеница ≥200 с. Низкое ЧП = клейкий мякиш.'},
+  {q:'Норма влажности чёрного чая?',
+   o:['≤3%','≤7%','≤15%','≤20%'],
+   c:1,e:'По ГОСТ 32573-2013 влажность чёрного чая не более 7%. Больше — плесень.'}
+];
+
+const ACHS=[
+  {id:'first_build',i:'🏗️',t:'Первый модуль',ck:s=>Object.values(s.buildings).reduce((a,b)=>a+b,0)>2},
+  {id:'first_sow',i:'🌱',t:'Первый посев',ck:s=>s.totalSown>=1},
+  {id:'first_harvest',i:'🌾',t:'Первый урожай',ck:s=>s.totalHarvest>=1},
+  {id:'eco70',i:'🌿',t:'Эко ≥70',ck:s=>s.eco>=70},
+  {id:'eco90',i:'💚',t:'Эко ≥90',ck:s=>s.eco>=90},
+  {id:'money2m',i:'💰',t:'2 млн ₽',ck:s=>s.money>=2000000},
+  {id:'money5m',i:'💎',t:'5 млн ₽',ck:s=>s.money>=5000000},
+  {id:'clean',i:'✨',t:'Без отходов',ck:s=>s.turn>8&&s.waste<5},
+  {id:'tycoon',i:'🏆',t:'Все модули',ck:s=>Object.values(s.buildings).every(v=>v>=1)},
+  {id:'lab1',i:'🔬',t:'1-й опыт',ck:s=>s.experimentsDone>=1},
+  {id:'lab5',i:'⚗️',t:'5 опытов',ck:s=>s.experimentsDone>=5},
+  {id:'expert',i:'📋',t:'1-я экспертиза',ck:s=>s.batchesDone>=1},
+  {id:'perfect',i:'⭐',t:'Премиум-партия',ck:s=>s.perfectBatches>=1},
+  {id:'contract3',i:'💼',t:'3 контракта',ck:s=>s.contractsDone>=3},
+  {id:'contract8',i:'🎯',t:'8 контрактов',ck:s=>s.contractsDone>=8},
+  {id:'academy3',i:'🎓',t:'3 урока',ck:s=>s.lessonsDone>=3},
+  {id:'academy7',i:'📚',t:'7 уроков',ck:s=>s.lessonsDone>=7},
+  {id:'allcrops',i:'🌾',t:'Все 6 культур',ck:s=>Object.keys(s.cropsGrown||{}).length>=6}
+];
+
+/* ==================== СОСТОЯНИЕ ==================== */
+let state, soundOn=true, currentTab='farm';
+const $=id=>document.getElementById(id);
+const fN=v=>Math.round(v).toLocaleString('ru-RU')+' ₽';
+const fSp=v=>Math.round(v).toLocaleString('ru-RU');
+const r1=v=>Math.round(v*10)/10;
+const r2=v=>Math.round(v*100)/100;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+function resetState(){
+  state={
+    turn:1, maxTurns:30,
+    money:500000, biomass:15, food:0, energy:20, waste:0, eco:50,
+    delivered:0, foodPrice:4500, log:[],
+    batch:null, contracts:[],
+    examsDone:0, perfectBatches:0, rejectedBatches:0, batchesDone:0,
+    contractsDone:0, contractsFailed:0,
+    experimentsDone:0, lessonsDone:0,
+    totalSown:0, totalHarvest:0, cropsGrown:{},
+    lessonIdx:0, lessonAnswered:[],
+    fields:[
+      {crop:null,weeks:0,ready:false},
+      {crop:null,weeks:0,ready:false},
+      {crop:null,weeks:0,ready:false},
+      {crop:null,weeks:0,ready:false}
+    ],
+    lab:{sample:null,methods:{organo:false,fizhim:false,micro:false},result:null},
+    spcData:[],
+    defects:{},
+    achievements:new Set(),
+    buildings:{farm:1,greenhouse:0,biogas:0,processing:1,bioplast:0,solar:0,
+      lab:0,logistics:0,expert_lab:0,cert_center:0,qc_dept:0,tasting:0}
+  };
+}
+
+/* ==================== АУДИО ==================== */
+let actx;
+function initA(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}}
 function sfx(type){
-  if(!state.soundOn||!actx)return;
+  if(!soundOn||!actx)return;
   try{
     const t=actx.currentTime;
-    if(type==='correct'){[523,659,784].forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.08,t+i*.08);g.gain.exponentialRampToValueAtTime(.001,t+i*.08+.25);o.start(t+i*.08);o.stop(t+i*.08+.27)})}
-    else if(type==='wrong'){const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type='sawtooth';o.frequency.setValueAtTime(200,t);o.frequency.exponentialRampToValueAtTime(100,t+.25);g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+.28);o.start(t);o.stop(t+.3)}
-    else if(type==='click'){const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type='sine';o.frequency.setValueAtTime(500,t);o.frequency.exponentialRampToValueAtTime(700,t+.05);g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.001,t+.07);o.start(t);o.stop(t+.09)}
-    else if(type==='level'){[523,659,784,1046,1318].forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.09,t+i*.1);g.gain.exponentialRampToValueAtTime(.001,t+i*.1+.35);o.start(t+i*.1);o.stop(t+i*.1+.37)})}
+    const beep=(f1,f2,dur,w,vol)=>{const o=actx.createOscillator(),g=actx.createGain();
+      o.connect(g);g.connect(actx.destination);o.type=w||'sine';
+      o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+      g.gain.setValueAtTime(vol||.07,t);g.gain.exponentialRampToValueAtTime(.001,t+dur+.02);
+      o.start(t);o.stop(t+dur+.03)};
+    if(type==='click')beep(600,900,.05);
+    else if(type==='build')beep(300,700,.12,'triangle',.1);
+    else if(type==='coin'){[880,1320].forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.05,t+i*.06);g.gain.exponentialRampToValueAtTime(.001,t+i*.06+.14);o.start(t+i*.06);o.stop(t+i*.06+.16)})}
+    else if(type==='error')beep(180,90,.2,'sawtooth',.09);
+    else if(type==='turn')beep(400,800,.15);
+    else if(type==='exam')beep(500,900,.2,'square',.05);
+    else if(type==='levelup'){[523,659,784,1046].forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.07,t+i*.09);g.gain.exponentialRampToValueAtTime(.001,t+i*.09+.3);o.start(t+i*.09);o.stop(t+i*.09+.32)})}
+    else if(type==='harvest')beep(400,1000,.25,'triangle',.09);
   }catch(e){}
 }
-function vibrate(ms){if(navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}}
-function toast(text,cls=''){const el=document.createElement('div');el.className='toast '+cls;el.textContent=text;document.getElementById('toasts').appendChild(el);setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),320)},2400)}
-function floatNum(el,txt,cls='plus'){if(!el)return;const r=el.getBoundingClientRect();const d=document.createElement('div');d.className='flt '+cls;d.textContent=txt;d.style.left=(r.left+r.width/2)+'px';d.style.top=(r.top+r.height/2)+'px';document.getElementById('fx').appendChild(d);setTimeout(()=>d.remove(),1250)}
-function confetti(){const colors=['#4ade80','#22d3ee','#a3e635','#fbbf24','#f87171','#fde047','#c084fc'];for(let i=0;i<70;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=colors[i%colors.length];c.style.animationDuration=(2+Math.random()*2)+'s';c.style.animationDelay=(Math.random()*.6)+'s';c.style.transform='rotate('+Math.random()*360+'deg)';document.body.appendChild(c);setTimeout(()=>c.remove(),5000)}}
-function shakeScreen(){const app=document.getElementById('appRoot');app.classList.remove('shake');void app.offsetWidth;app.classList.add('shake');setTimeout(()=>app.classList.remove('shake'),500)}
+function vib(ms){if(navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}}
 
-(function(){const c=document.getElementById('bg');const ctx=c.getContext('2d');let W,H,parts=[];function resize(){W=c.width=innerWidth;H=c.height=innerHeight}resize();addEventListener('resize',resize);for(let i=0;i<45;i++){parts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:1+Math.random()*2,o:.15+Math.random()*.35,c:Math.random()<.5?'74,222,128':'34,211,238'})}(function loop(){ctx.clearRect(0,0,W,H);for(const p of parts){p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);g.addColorStop(0,'rgba('+p.c+','+p.o+')');g.addColorStop(1,'rgba('+p.c+',0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r*6,0,6.28);ctx.fill()}requestAnimationFrame(loop)})()})();
+/* ==================== ЭФФЕКТЫ ==================== */
+function toast(txt,cls=''){
+  const el=document.createElement('div');el.className='toast '+cls;el.textContent=txt;
+  $('toasts').appendChild(el);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),300)},2400);
+}
+function floatNum(el,txt,cls='plus'){
+  if(!el)return;
+  const r=el.getBoundingClientRect();const d=document.createElement('div');
+  d.className='flt '+cls;d.textContent=txt;
+  d.style.left=(r.left+r.width/2)+'px';d.style.top=(r.top+r.height/2)+'px';
+  $('fx').appendChild(d);setTimeout(()=>d.remove(),1250);
+}
+function confetti(){
+  const colors=['#4ade80','#22d3ee','#a3e635','#fbbf24','#f87171','#fde047','#c084fc'];
+  for(let i=0;i<70;i++){const c=document.createElement('div');c.className='conf';
+    c.style.left=Math.random()*100+'vw';c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(2+Math.random()*2)+'s';c.style.animationDelay=(Math.random()*.5)+'s';
+    document.body.appendChild(c);setTimeout(()=>c.remove(),4500)}
+}
+function shakeS(){const a=$('appRoot');a.classList.remove('shake');void a.offsetWidth;
+  a.classList.add('shake');setTimeout(()=>a.classList.remove('shake'),500)}
 
-const $=id=>document.getElementById(id);
-const TOTAL_TASKS=LEVELS.reduce((s,l)=>s+l.tasks.length,0);
-function updateHeader(){$('chipLevel').textContent='Ур. '+(state.currentLevel+1);$('chipCoins').textContent='💰 '+state.coins;$('chipXp').textContent='✦ '+state.xp}
-function updateProgress(){const pct=(state.totalTasks/TOTAL_TASKS)*100;$('progressFill').style.width=pct+'%';$('progressNum').textContent=state.totalTasks+' / '+TOTAL_TASKS}
-function renderTask(){
-  const level=LEVELS[state.currentLevel],task=level.tasks[state.currentTask];
-  $('levelBadge').textContent=level.title;$('bossMessage').textContent=level.boss;
-  $('taskTitle').textContent=task.title;$('taskDesc').innerHTML=task.desc;
-  const opts=$('options');opts.innerHTML='';
-  task.options.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='option';btn.innerHTML=`<span class="key">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;btn.addEventListener('click',()=>answer(i,btn));opts.appendChild(btn)});
-  $('feedback').style.display='none';$('feedback').className='feedback';$('nextBtn').classList.remove('show');
+/* ==================== ФОН ==================== */
+(function(){
+  const c=$('bg'),ctx=c.getContext('2d');let W,H,parts=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
+  resize();addEventListener('resize',resize);
+  for(let i=0;i<50;i++)parts.push({x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:1+Math.random()*2,
+    o:.15+Math.random()*.35,c:Math.random()<.5?'74,222,128':'34,211,238'});
+  (function loop(){ctx.clearRect(0,0,W,H);
+    for(const p of parts){p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+      g.addColorStop(0,'rgba('+p.c+','+p.o+')');g.addColorStop(1,'rgba('+p.c+',0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r*6,0,6.28);ctx.fill()}
+    requestAnimationFrame(loop)})();
+})();
+
+/* ==================== ЛОГ ==================== */
+function addLog(text,cls=''){
+  state.log.unshift({text,cls});
+  if(state.log.length>60)state.log.pop();
+  $('log').innerHTML=state.log.map(l=>`<div class="le ${l.cls}">${l.text}</div>`).join('');
 }
-function answer(idx,btn){
-  const level=LEVELS[state.currentLevel],task=level.tasks[state.currentTask];
-  const isCorrect=idx===task.correct;
-  document.querySelectorAll('.option').forEach((o,i)=>{o.disabled=true;if(i===task.correct)o.classList.add('correct')});
-  if(!isCorrect)btn.classList.add('wrong');
-  let xpGain=0,coinGain=0;
-  if(isCorrect){xpGain=20+state.currentLevel*8;coinGain=50+state.currentLevel*20;state.xp+=xpGain;state.coins+=coinGain;state.totalCorrect++;sfx('correct');vibrate(30);floatNum(btn,'+'+coinGain+' 💰','gold')}
-  else{sfx('wrong');vibrate([50,40,50]);shakeScreen()}
-  state.totalTasks++;state.answers.push({level:state.currentLevel,task:state.currentTask,correct:isCorrect});
-  const fb=$('feedback');fb.style.display='block';fb.className='feedback '+(isCorrect?'correct':'wrong');
-  fb.innerHTML=`<div class="fb-title">${isCorrect?'✅ Верно! +'+xpGain+' XP · +'+coinGain+' 💰':'❌ Неверно. Правильный: '+String.fromCharCode(65+task.correct)}</div><div class="fb-text">${task.explanation}</div>`;
-  $('nextBtn').classList.add('show');$('nextBtn').textContent=isLastTaskOfLevel()?'🏁 Завершить уровень':'Продолжить ▶';
-  updateHeader();updateProgress();
+
+/* ==================== РЕНДЕР РЕСУРСОВ ==================== */
+const RES_META=[
+  {k:'money',i:'💰',l:'Касса',money:true},
+  {k:'biomass',i:'🌾',l:'Биомасса, т'},
+  {k:'food',i:'🍞',l:'Еда, т'},
+  {k:'energy',i:'⚡',l:'Энергия'},
+  {k:'waste',i:'♻️',l:'Отходы, т'},
+  {k:'delivered',i:'📦',l:'Продано, т'}
+];
+let prevRes={};
+
+function renderRes(){
+  const bar=$('resBar');
+  if(!bar.dataset.init){
+    bar.innerHTML=RES_META.map(r=>
+      `<div class="res" id="res-${r.k}"><span class="ico">${r.i}</span>
+       <div class="val">0</div><div class="lbl">${r.l}</div></div>`).join('');
+    bar.dataset.init='1';
+  }
+  RES_META.forEach(r=>{
+    const v=state[r.k],el=$('res-'+r.k);
+    const valEl=el.querySelector('.val');
+    const old=prevRes[r.k];
+    valEl.textContent=r.money?fN(v):fSp(v);
+    if(old!==undefined&&Math.round(old)!==Math.round(v)){
+      el.classList.remove('up','down');void el.offsetWidth;
+      el.classList.add(v>old?'up':'down');
+    }
+    el.classList.toggle('warn-pulse',r.k==='energy'&&state.energy<5&&state.turn>1);
+    prevRes[r.k]=v;
+  });
+  const eco=Math.round(state.eco);
+  $('ecoFill').style.width=eco+'%';
+  $('ecoNum').textContent=eco;
+  $('turnChip').textContent=state.turn+'/'+state.maxTurns;
 }
-function isLastTaskOfLevel(){return state.currentTask>=LEVELS[state.currentLevel].tasks.length-1}
-function nextTask(){sfx('click');if(isLastTaskOfLevel())showLevelComplete();else{state.currentTask++;renderTask()}}
-function showLevelComplete(){
-  const level=LEVELS[state.currentLevel];
-  const levelAnswers=state.answers.filter(a=>a.level===state.currentLevel);
-  const correct=levelAnswers.filter(a=>a.correct).length,total=level.tasks.length;
-  $('levelTitle').textContent='✅ Уровень '+(state.currentLevel+1)+' пройден!';
-  $('levelSubtitle').textContent=level.title;
-  $('levelScores').innerHTML=`<div class="score-row ${correct===total?'win':''}"><span class="sk">Правильных ответов</span><span class="sv">${correct} / ${total}</span></div><div class="score-row"><span class="sk">Монеты</span><span class="sv">💰 ${state.coins}</span></div><div class="score-row"><span class="sk">Опыт</span><span class="sv">✦ ${state.xp}</span></div>`;
-  $('levelNextBtn').textContent=state.currentLevel>=LEVELS.length-1?'🏁 Итоги стажировки':'▶ Следующий уровень';
-  sfx('level');confetti();document.getElementById('levelScreen').classList.remove('hide');
+
+/* ==================== ФЕРМА ==================== */
+function renderFarm(){
+  const g=$('fieldsGrid');
+  g.innerHTML=state.fields.map((f,i)=>{
+    const num='Поле '+(i+1);
+    if(!f.crop){
+      return `<div class="field">
+        <div class="fnum">${num}</div>
+        <div style="font-size:1.3rem;text-align:center;opacity:.4">🟫</div>
+        <div class="fname" style="color:var(--dim)">Не засеяно</div>
+        <select class="fselect" data-field="${i}">
+          <option value="">— культура —</option>
+          ${Object.entries(CROPS).map(([k,c])=>`<option value="${k}">${c.i} ${c.n} · ${fN(c.cost)}</option>`).join('')}
+        </select>
+        <button class="cbtn" data-sow="${i}">Посеять</button>
+      </div>`;
+    }
+    const c=CROPS[f.crop];
+    if(f.ready){
+      return `<div class="field ready">
+        <div class="fnum">${num}</div>
+        <div class="fcrop">${c.i}</div>
+        <div class="fname">${c.n}</div>
+        <div class="fprog" style="color:var(--gold)">✓ Готово</div>
+        <button class="cbtn orange" data-harvest="${i}">🌾 Убрать</button>
+      </div>`;
+    }
+    const prog=(f.weeks/c.weeks)*100;
+    return `<div class="field sown">
+      <div class="fnum">${num}</div>
+      <div class="fcrop">${c.i}</div>
+      <div class="fname">${c.n}</div>
+      <div class="fprog">${f.weeks}/${c.weeks} нед.</div>
+      <div class="fbar"><div class="fbar-fill" style="width:${prog}%"></div></div>
+      <div style="font-size:.46rem;color:var(--dim);text-align:center;font-family:var(--mono)">${c.gost}</div>
+    </div>`;
+  }).join('');
+
+  g.querySelectorAll('[data-sow]').forEach(b=>b.addEventListener('click',()=>{
+    const i=+b.dataset.sow;
+    const sel=g.querySelector(`select[data-field="${i}"]`);
+    if(!sel.value){sfx('error');toast('Выбери культуру','warn');return}
+    sowField(i,sel.value);
+  }));
+  g.querySelectorAll('[data-harvest]').forEach(b=>b.addEventListener('click',()=>harvestField(+b.dataset.harvest)));
 }
-function levelNext(){
-  document.getElementById('levelScreen').classList.add('hide');sfx('click');
-  if(state.currentLevel>=LEVELS.length-1)showFinal();
-  else{state.currentLevel++;state.currentTask=0;updateHeader();renderTask()}
+
+function sowField(i,key){
+  const c=CROPS[key];
+  if(state.money<c.cost){sfx('error');toast('Мало средств','warn');return}
+  state.money-=c.cost;
+  state.fields[i]={crop:key,weeks:0,ready:false};
+  state.totalSown++;
+  sfx('build');vib(20);
+  addLog(`🌱 Поле ${i+1}: ${c.n} · ${c.gost}`,'good');
+  floatNum($('res-money'),'−'+fN(c.cost),'gold');
+  renderAll();
 }
-function showFinal(){
-  const total=state.totalTasks,correct=state.totalCorrect,pct=total?Math.round((correct/total)*100):0;
+
+function harvestField(i){
+  const f=state.fields[i];if(!f||!f.ready||!f.crop)return;
+  const c=CROPS[f.crop];
+  const season=Math.floor((state.turn-1)/7)%4;
+  const seasonMult=[1,1.3,1.4,.6][season];
+  const labBonus=1+0.05*state.buildings.lab;
+  const total=c.yield*seasonMult*labBonus;
+  const biomassGain=Math.round(total*0.7);
+  const moneyGain=Math.round(total*4500);
+  state.biomass+=biomassGain;state.money+=moneyGain;
+  state.eco=clamp(state.eco+1,0,100);
+  state.totalHarvest++;
+  state.cropsGrown[f.crop]=true;
+  sfx('harvest');vib(25);
+  addLog(`🌾 ${c.n}: +${fSp(biomassGain)} т биомассы, +${fN(moneyGain)}`,'good');
+  floatNum($('res-money'),'+'+fN(moneyGain),'plus');
+  toast('🌾 Урожай: '+c.n);
+  state.fields[i]={crop:null,weeks:0,ready:false};
+  checkAch();renderAll();
+}
+
+/* ==================== МОДУЛИ ==================== */
+function costOf(k,lvl){return Math.round(BUILDINGS[k].cost*Math.pow(1.55,lvl)/1000)*1000}
+
+function effText(k,lvl){
+  const d=BUILDINGS[k],parts=[],out=d.out||{};
+  const nm={biomass:'🌾',food:'🍞',waste:'♻️',eco:'🌍'};
+  for(const x in out){
+    const v=r1(out[x]*lvl);
+    if(v===0)continue;
+    if(x==='money')parts.push('+'+fN(out[x]*lvl));
+    else parts.push((v>0?'+':'')+v+' '+nm[x]);
+  }
+  if(d.e)parts.push('−'+(d.e*lvl)+'⚡');
+  if(d.eg)parts.push('+'+(d.eg*lvl)+'⚡');
+  return parts.join(' · ')||'пассивный';
+}
+
+function renderBuildings(){
+  const g=$('bgrid');
+  g.innerHTML=Object.keys(BUILDINGS).map(k=>{
+    const d=BUILDINGS[k],lvl=state.buildings[k];
+    const cost=costOf(k,lvl),can=state.money>=cost;
+    return `<div class="card ${lvl>0?'built':''}">
+      <div class="chead"><span class="ci">${d.i}</span>
+        <span class="cn">${d.n}</span><span class="lvl">ур.${lvl}</span></div>
+      <div class="cdesc">${d.d}</div>
+      <div class="ceff">${effText(k,Math.max(lvl,1))} /ур.</div>
+      <button class="cbtn ${lvl>0?'built':''}" data-buy="${k}" ${can?'':'disabled'}>
+        ${lvl>0?'Улучшить':'Построить'} · ${fN(cost)}
+      </button>
+    </div>`;
+  }).join('');
+  g.querySelectorAll('[data-buy]').forEach(b=>b.addEventListener('click',()=>buy(b.dataset.buy,b)));
+}
+
+function buy(k,btn){
+  const lvl=state.buildings[k],cost=costOf(k,lvl);
+  if(state.money<cost){sfx('error');vib(30);toast('Мало средств','warn');return}
+  state.money-=cost;state.buildings[k]++;
+  sfx('build');vib(25);
+  floatNum(btn,'−'+fN(cost),'gold');
+  addLog(`🏗️ «${BUILDINGS[k].n}» (ур.${state.buildings[k]})`,'good');
+  checkAch();renderAll();
+}
+
+/* ==================== ЛАБОРАТОРИЯ ==================== */
+function renderLab(){
+  const c=$('labContent');
+  if(!state.lab.sample){
+    c.innerHTML=`
+      <p style="font-size:.7rem;color:#c4e6d6;margin-bottom:8px;line-height:1.55">
+        Выбери образец для исследования. Каждый опыт даёт <b>XP</b>, знания и небольшие бонусы.
+      </p>
+      <div class="lab-mini">
+        <h3 style="font-size:.62rem;color:var(--gold);margin-bottom:6px;text-transform:uppercase">Доступные образцы</h3>
+        <div class="grid" id="labSamples">
+          ${BATCH_POOL.slice(0,6).map((b,i)=>`
+            <button class="cbtn ${state.money>=15000?'':'disabled'}" data-lab-pick="${i}" ${state.money>=15000?'':'disabled'} style="padding:10px">
+              ${b.i} ${b.n}<br><span style="font-size:.5rem;opacity:.7">15 000 ₽</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>`;
+    c.querySelectorAll('[data-lab-pick]').forEach(b=>b.addEventListener('click',()=>{
+      const idx=+b.dataset.labPick;
+      if(state.money<15000){sfx('error');toast('Мало средств','warn');return}
+      state.money-=15000;
+      const sample=BATCH_POOL[idx];
+      const q=40+Math.floor(Math.random()*56);
+      state.lab.sample={...sample,quality:q};
+      state.lab.methods={organo:false,fizhim:false,micro:false};
+      state.lab.result=null;
+      sfx('exam');addLog(`🔬 Взят образец: ${sample.n}, Q≈${q}`,'info');
+      renderAll();
+    }));
+    return;
+  }
+  const b=state.lab.sample;
+  const doneCount=Object.values(state.lab.methods).filter(Boolean).length;
+  c.innerHTML=`
+    <div class="batch-card">
+      <div class="bhead">
+        <span class="bicon">${b.i}</span>
+        <div style="flex:1">
+          <div class="btitle">${b.n}</div>
+          <div class="bsub">${b.gost} · ${b.trts}</div>
+          <div class="bdocs">Методов проведено: ${doneCount}/3</div>
+        </div>
+      </div>
+      <div class="bdesc">Выбери методы испытаний. Каждый метод раскрывает часть показателей.</div>
+      <div class="method-grid">
+        <button class="method-btn ${state.lab.methods.organo?'done':''}" data-method="organo" ${state.lab.methods.organo?'disabled':''}>
+          <span class="method-emoji">👁️</span>Органолептика
+        </button>
+        <button class="method-btn ${state.lab.methods.fizhim?'done':''}" data-method="fizhim" ${state.lab.methods.fizhim?'disabled':''}>
+          <span class="method-emoji">🧪</span>Физико-химия
+        </button>
+        <button class="method-btn ${state.lab.methods.micro?'done':''}" data-method="micro" ${state.lab.methods.micro?'disabled':''}>
+          <span class="method-emoji">🧬</span>Микробиология
+        </button>
+        <button class="method-btn" data-lab-reset style="border-color:var(--red);color:var(--red)">
+          <span class="method-emoji">🔄</span>Сменить образец
+        </button>
+      </div>
+      ${state.lab.result?`<div style="margin-top:10px">
+        <div style="font-size:.6rem;color:var(--acc2);text-transform:uppercase;letter-spacing:.5px;font-weight:800;margin-bottom:5px">📋 Итоговый вердикт</div>
+        <div class="protocol">
+          <div style="font-size:.62rem;margin-bottom:5px;color:var(--gold);font-weight:800">
+            Q = ${state.lab.result.q}/100
+          </div>
+          <div style="color:${state.lab.result.q>=70?'var(--acc)':state.lab.result.q>=40?'var(--gold)':'var(--red)'};font-weight:800;font-size:.68rem">
+            ${state.lab.result.q>=90?'✅ Премиум-качество':state.lab.result.q>=70?'✅ Соответствует':state.lab.result.q>=40?'⚠️ Условно годен':'❌ Не соответствует'}
+          </div>
+        </div>
+      </div>`:''}
+    </div>
+  `;
+  c.querySelectorAll('[data-method]').forEach(btn=>btn.addEventListener('click',()=>{
+    const m=btn.dataset.method;
+    if(state.lab.methods[m])return;
+    state.lab.methods[m]=true;
+    state.experimentsDone++;
+    sfx('exam');vib(20);
+    const exp={organo:'👁️ Органолептика: внешний вид, вкус, запах, консистенция',
+      fizhim:'🧪 Физико-химия: титрование, рефрактометрия, фотоколориметрия',
+      micro:'🧬 Микробиология: КМАФАнМ, БГКП, патогены, токсичные элементы'}[m];
+    addLog(`🔬 ${exp}`,'info');
+    // проверить завершение
+    if(Object.values(state.lab.methods).every(Boolean)&&!state.lab.result){
+      state.lab.result={q:state.lab.sample.quality};
+      const xp=Math.round(40+state.lab.sample.quality/2);
+      state.money+=20000;
+      state.eco=clamp(state.eco+1,0,100);
+      addLog(`✅ Испытания завершены. Q=${state.lab.sample.quality}/100, +20 000 ₽, +XP`,'good');
+      toast('✅ Опыт завершён! +20 000 ₽','epic');
+      floatNum($('res-money'),'+20 000 ₽','plus');
+      sfx('coin');
+    }
+    checkAch();renderAll();
+  }));
+  c.querySelectorAll('[data-lab-reset]').forEach(btn=>btn.addEventListener('click',()=>{
+    state.lab.sample=null;state.lab.result=null;
+    state.lab.methods={organo:false,fizhim:false,micro:false};
+    renderAll();
+  }));
+}
+
+/* ==================== ПАРТИИ ==================== */
+function spawnBatch(){
+  const t=BATCH_POOL[Math.floor(Math.random()*BATCH_POOL.length)];
+  const q=20+Math.floor(Math.random()*76);
+  const autoReveal=state.buildings.qc_dept>0;
+  state.batch={...t,quality:q,revealed:autoReveal};
+  addLog(`📦 Прибыла партия: ${t.n} · ${t.gost}`,'info');
+  toast('📦 Партия на экспертизу!');
+  sfx('coin');
+}
+
+function renderBatch(){
+  const c=$('batchContent');
+  if(!state.batch){
+    c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--dim);font-size:.72rem;line-height:1.6">
+      Партии приходят каждые 3 недели.<br>
+      <span style="font-size:.6rem">Следующая на ${state.turn<2?2:Math.ceil((state.turn-2)/3)*3+2}-й неделе</span>
+    </div>`;
+    return;
+  }
+  const b=state.batch;
+  const cost=state.buildings.expert_lab?15000:40000;
+
+  if(!b.revealed){
+    c.innerHTML=`
+      <div class="batch-card">
+        <div class="bhead">
+          <span class="bicon">${b.i}</span>
+          <div style="flex:1">
+            <div class="btitle">${b.n}</div>
+            <div class="bsub">${fSp(b.size)} ед. · ${fN(b.size*b.v)}</div>
+            <div class="bdocs">📜 ${b.gost} · ${b.trts}</div>
+          </div>
+        </div>
+        <div class="bdesc">
+          Требуется решение по партии. Принять вслепую — риск. Провести экспертизу — увидишь протокол.
+        </div>
+        <div class="bactions">
+          <button class="bbtn green" data-batch="accept">✅ Принять вслепую</button>
+          <button class="bbtn cyan" data-batch="exam">⚗️ Экспертиза · ${fN(cost)}</button>
+          <button class="bbtn red" data-batch="reject">❌ Отклонить</button>
+        </div>
+      </div>`;
+  } else {
+    // Показать протокол
+    const q=b.quality;
+    const indicators=b.inds.map(ind=>{
+      const dev=q/100-.5;
+      const noise=(Math.random()-.5)*ind.dev*.5;
+      const offset=dev*ind.dev*1.5;
+      let measured;
+      const normNum=parseFloat(ind.norm.replace(/[^\d.,-]/g,'').replace(',','.'));
+      if(isNaN(normNum))measured='—';
+      else{measured=normNum*(1+dev*.5)+offset+noise;measured=Math.max(.01,measured);
+        const dec=(ind.norm.split(/[.,]/)[1]||'').length;
+        measured=parseFloat(measured.toFixed(Math.min(dec,2)))}
+      let ok=true;
+      if(ind.rev===true)ok=measured>=normNum;
+      else if(ind.rev===false)ok=measured<=normNum;
+      else if(ind.rev===null){const m=ind.norm.match(/([\d,\.]+)[–\-]([\d,\.]+)/);
+        if(m){const lo=parseFloat(m[1].replace(',','.')),hi=parseFloat(m[2].replace(',','.'));ok=measured>=lo&&measured<=hi}}
+      return {...ind,measured,ok};
+    });
+    const verdict=q>=90?'отлично':q>=70?'соответствует':q>=40?'условно годна':'НЕ СООТВЕТСТВУЕТ';
+    c.innerHTML=`
+      <div class="batch-card">
+        <div class="bhead">
+          <span class="bicon">${b.i}</span>
+          <div style="flex:1">
+            <div class="btitle">${b.n}</div>
+            <div class="bsub">${fSp(b.size)} ед. · Q=${q}/100</div>
+          </div>
+        </div>
+        <div class="protocol">
+          <div style="font-size:.62rem;font-weight:800;color:${q>=70?'var(--acc)':q>=40?'var(--gold)':'var(--red)'};margin-bottom:6px">
+            ${q>=70?'✅':q>=40?'⚠️':'❌'} ${verdict}
+          </div>
+          ${indicators.map(ind=>`
+            <div class="prow">
+              <div><div class="pname">${ind.n}</div><div class="pmethod">${ind.m}</div></div>
+              <div class="pval ${ind.ok?'ok':'bad'}">${ind.measured==='—'?'н/о':ind.measured+' '+ind.u}</div>
+              <div class="pnorm">${ind.norm}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="bactions">
+          <button class="bbtn green" data-batch="accept_final">✅ Принять</button>
+          <button class="bbtn red" data-batch="reject_final">❌ Отклонить</button>
+        </div>
+      </div>`;
+  }
+  c.querySelectorAll('[data-batch]').forEach(btn=>btn.addEventListener('click',()=>handleBatch(btn.dataset.batch)));
+}
+
+function handleBatch(action){
+  const b=state.batch;if(!b)return;
+  if(action==='exam'){
+    const cost=state.buildings.expert_lab?15000:40000;
+    if(state.money<cost){sfx('error');toast('Мало средств','warn');return}
+    state.money-=cost;state.examsDone++;
+    b.revealed=true;
+    sfx('exam');
+    addLog(`⚗️ Экспертиза: ${b.n} (−${fN(cost)}), Q=${b.quality}`,'info');
+    renderAll();return;
+  }
+  if(action==='reject'||action==='reject_final'){
+    state.rejectedBatches++;state.batchesDone++;
+    state.eco=clamp(state.eco+1,0,100);
+    addLog(`🛡️ Партия «${b.n}» отклонена. Эко +1`,'info');
+    toast('🛡️ Отклонено','warn');
+    state.batch=null;checkAch();renderAll();return;
+  }
+  if(action==='accept'||action==='accept_final'){
+    const totalVal=b.size*b.v;
+    const qMult=.5+b.quality/100;
+    const certBonus=1+.1*state.buildings.cert_center;
+    if(b.quality>=70){
+      const rev=Math.round(totalVal*qMult*certBonus/1000)*1000;
+      state.money+=rev;state.eco=clamp(state.eco+2,0,100);
+      if(b.quality>=90)state.perfectBatches++;
+      addLog(`✅ Принято: +${fN(rev)}`,'good');
+      floatNum($('res-money'),'+'+fN(rev),'plus');
+      sfx('coin');
+    } else if(b.quality>=40){
+      const rev=Math.round(totalVal*qMult*certBonus*.7/1000)*1000;
+      state.money+=rev;
+      const dt=b.inds[0].n;
+      state.defects[dt]=(state.defects[dt]||0)+1;
+      addLog(`⚠️ Условно годна: +${fN(rev)}`,'warn');
+      floatNum($('res-money'),'+'+fN(rev),'gold');
+    } else {
+      const fine=Math.round(totalVal*.4/1000)*1000;
+      state.money-=fine;state.eco=clamp(state.eco-8,0,100);
+      const dt=b.inds[0].n;
+      state.defects[dt]=(state.defects[dt]||0)+1;
+      addLog(`❌ НЕ СООТВЕТСТВУЕТ! Штраф ${fN(fine)}`,'bad');
+      floatNum($('res-money'),'−'+fN(fine),'minus');
+      sfx('error');vib([60,40,60]);shakeS();
+    }
+    state.batchesDone++;
+    state.spcData.push({turn:state.turn,value:b.quality,indicator:'Q-индекс',unit:'/100',norm:70});
+    state.batch=null;checkAch();renderAll();
+  }
+}
+
+/* ==================== КОНТРАКТЫ ==================== */
+function renderContracts(){
+  const c=$('contractsContent');
+  if(!state.contracts.length){
+    c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--dim);font-size:.72rem">
+      Договоры появятся в течение недель (автоматически).<br>
+      Пока производите еду — она продаётся сама.
+    </div>`;
+    return;
+  }
+  c.innerHTML=state.contracts.map(ct=>{
+    const left=ct.deadline-state.turn;
+    const can=state.food>=ct.amt;
+    return `<div class="card" style="margin-bottom:6px">
+      <div class="chead">
+        <span class="ci">${ct.i}</span>
+        <span class="cn">${ct.buyer}</span>
+        <span class="lvl">${left} нед.</span>
+      </div>
+      <div class="cdesc">${ct.amt} т еды · награда ${fN(ct.reward)}</div>
+      <button class="cbtn purple" data-contract="${ct.id}" ${can?'':'disabled'}>
+        ${can?'✓ Сдать':'Нужно '+ct.amt+' т (есть '+fSp(state.food)+')'}
+      </button>
+    </div>`;
+  }).join('');
+  c.querySelectorAll('[data-contract]').forEach(b=>b.addEventListener('click',()=>completeContract(b.dataset.contract)));
+}
+
+function spawnContract(){
+  if(state.contracts.length>=3)return;
+  const t=CONTRACT_POOL[Math.floor(Math.random()*CONTRACT_POOL.length)];
+  const reward=Math.round(t.amt*state.foodPrice*t.mul/1000)*1000;
+  state.contracts.push({...t,id:'c'+Date.now()+Math.random(),reward,deadline:state.turn+t.ddl});
+  addLog(`📝 Договор: ${t.buyer} — ${t.amt} т, ${t.reward?fN(t.reward):fN(reward)}`,'info');
+  toast('📝 Новый договор: '+t.buyer);sfx('coin');
+}
+
+function completeContract(id){
+  const c=state.contracts.find(x=>x.id===id);if(!c)return;
+  if(state.food<c.amt){sfx('error');toast('Мало еды','warn');return}
+  state.food-=c.amt;
+  const bonus=Math.round(c.reward*(1+.1*state.buildings.cert_center));
+  state.money+=bonus;state.contractsDone++;
+  addLog(`✅ Договор ${c.buyer}: +${fN(bonus)}`,'good');
+  toast(`✅ +${fN(bonus)}`,'epic');
+  floatNum($('res-money'),'+'+fN(bonus),'plus');
+  sfx('coin');vib(35);
+  state.contracts=state.contracts.filter(x=>x.id!==id);
+  checkAch();renderAll();
+}
+
+/* ==================== АНАЛИЗ ==================== */
+function renderStats(){
+  const c=$('statsContent');
+  if(state.spcData.length<2){
+    c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--dim);font-size:.72rem">
+      Недостаточно данных для анализа.<br>Проводи испытания партий и опытов, чтобы построить графики.
+    </div>`;
+    return;
+  }
+  const vals=state.spcData.map(d=>d.value);
+  const mean=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const sd=Math.sqrt(vals.reduce((a,b)=>a+Math.pow(b-mean,2),0)/(vals.length-1||1));
+  const ucl=mean+3*sd,lcl=mean-3*sd;
+
+  // SPC Chart
+  const W=600,H=170,pad=28;
+  const minV=Math.min(lcl,...vals)-2,maxV=Math.max(ucl,...vals)+2;
+  const range=maxV-minV||1;
+  const stepX=(W-2*pad)/(vals.length-1||1);
+  const pts=vals.map((v,i)=>({x:pad+i*stepX,y:H-pad-((v-minV)/range)*(H-2*pad),v}));
+  const linePoints=pts.map(p=>p.x+','+p.y).join(' ');
+  const yFor=v=>H-pad-((v-minV)/range)*(H-2*pad);
+
+  let spcSvg=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <line x1="${pad}" y1="${yFor(ucl)}" x2="${W-pad}" y2="${yFor(ucl)}" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="${pad}" y1="${yFor(lcl)}" x2="${W-pad}" y2="${yFor(lcl)}" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="${pad}" y1="${yFor(mean)}" x2="${W-pad}" y2="${yFor(mean)}" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="${W-pad-2}" y="${yFor(ucl)-3}" fill="#f87171" font-size="9" text-anchor="end" font-family="monospace">UCL ${r1(ucl)}</text>
+    <text x="${W-pad-2}" y="${yFor(mean)+11}" fill="#22d3ee" font-size="9" text-anchor="end" font-family="monospace">x̄ ${r1(mean)}</text>
+    <text x="${W-pad-2}" y="${yFor(lcl)+10}" fill="#f87171" font-size="9" text-anchor="end" font-family="monospace">LCL ${r1(lcl)}</text>
+    <polyline points="${linePoints}" fill="none" stroke="#4ade80" stroke-width="1.8"/>
+    ${pts.map(p=>{const ooc=p.v>ucl||p.v<lcl;return `<circle cx="${p.x}" cy="${p.y}" r="${ooc?4:3}" fill="${ooc?'#f87171':'#4ade80'}" stroke="#04210f" stroke-width="1"/>`}).join('')}
+  </svg>`;
+
+  // Pareto
+  const entries=Object.entries(state.defects).sort((a,b)=>b[1]-a[1]);
+  const total=entries.reduce((a,b)=>a+b[1],0)||1;
+  let cum=0;
+  const paretoHtml=entries.length?entries.map(([n,cnt])=>{
+    const pct=(cnt/total)*100;cum+=pct;
+    return `<div>
+      <div class="par-row"><span class="par-name">${n}</span>
+        <span class="par-val">${cnt} (${r1(pct)}%)</span></div>
+      <div class="par-bar"><div class="par-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join(''):'<div style="color:var(--dim);font-size:.62rem;text-align:center">Дефектов не зафиксировано</div>';
+
+  c.innerHTML=`
+    <div class="chart-box">
+      <div class="chart-title"><span>📈 Карта Шухарта — Q-индекс партий</span><span>n=${vals.length}</span></div>
+      ${spcSvg}
+      <div class="chart-legend">
+        <span><i style="background:#4ade80"></i>x̄ ${r1(mean)}</span>
+        <span><i style="background:#22d3ee"></i>CL</span>
+        <span><i style="background:#f87171"></i>±3σ (UCL/LCL)</span>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="sv">${r1(mean)}</div><div class="sl">x̄</div></div>
+      <div class="stat-item"><div class="sv">${r1(sd)}</div><div class="sl">σ</div></div>
+      <div class="stat-item ${vals.filter(v=>v>ucl||v<lcl).length?'bad':''}"><div class="sv">${vals.filter(v=>v>ucl||v<lcl).length}</div><div class="sl">выходов за 3σ</div></div>
+      <div class="stat-item"><div class="sv">${state.examsDone}</div><div class="sl">испытаний</div></div>
+    </div>
+    <div style="background:rgba(5,22,17,.9);border-radius:9px;padding:8px;
+      font-family:var(--mono);font-size:.56rem;color:#a7e8c8;line-height:1.6;margin-top:8px">
+      <b style="color:var(--acc2)">Формулы:</b><br>
+      x̄ = Σxᵢ/n = ${r1(mean)}<br>
+      σ = √(Σ(xᵢ−x̄)²/(n−1)) = ${r1(sd)}<br>
+      UCL = x̄ + 3σ = ${r1(ucl)} · LCL = x̄ − 3σ = ${r1(lcl)}
+    </div>
+    <h3 style="font-size:.62rem;color:var(--gold);margin:10px 0 5px;text-transform:uppercase;letter-spacing:.5px">📉 Диаграмма Парето — дефекты</h3>
+    ${paretoHtml}
+  `;
+}
+
+/* ==================== АКАДЕМИЯ ==================== */
+function renderAcademy(){
+  const c=$('academyContent');
+  const lesson=LESSONS[state.lessonIdx%LESSONS.length];
+  const answered=state.lessonAnswered[state.lessonIdx];
+  c.innerHTML=`
+    <div class="lesson">
+      <div style="font-size:.6rem;color:var(--acc2);text-transform:uppercase;letter-spacing:.5px;font-weight:800;margin-bottom:5px">
+        Урок ${state.lessonIdx+1} / ${LESSONS.length} · Пройдено: ${state.lessonsDone}
+      </div>
+      <div class="lesson-q">${lesson.q}</div>
+      <div class="lesson-options">
+        ${lesson.o.map((o,i)=>{
+          let cls='';
+          if(answered){
+            if(i===lesson.c)cls='correct';
+            else if(answered.picked===i)cls='wrong';
+          }
+          return `<button class="lesson-opt ${cls}" data-lesson="${i}" ${answered?'disabled':''}>${String.fromCharCode(65+i)}. ${o}</button>`;
+        }).join('')}
+      </div>
+      ${answered?`<div class="lesson-exp">
+        ${answered.correct?'✅ Верно! +XP':'❌ Правильный: '+String.fromCharCode(65+lesson.c)}<br>
+        ${lesson.e}
+      </div>
+      <button class="startbtn" data-lesson-next>Следующий урок ▶</button>`:''}
+    </div>
+  `;
+  c.querySelectorAll('[data-lesson]').forEach(btn=>btn.addEventListener('click',()=>{
+    const i=+btn.dataset.lesson;
+    if(state.lessonAnswered[state.lessonIdx])return;
+    const correct=i===lesson.c;
+    if(correct){state.lessonsDone++;state.money+=30000;state.eco=clamp(state.eco+1,0,100);
+      sfx('coin');vib(25);addLog(`🎓 Урок ${state.lessonIdx+1}: верно! +30 000 ₽, +1 эко`,'good')}
+    else{sfx('error');vib([40,30,40])}
+    state.lessonAnswered[state.lessonIdx]={picked:i,correct};
+    checkAch();renderAll();
+  }));
+  c.querySelectorAll('[data-lesson-next]').forEach(b=>b.addEventListener('click',()=>{
+    state.lessonIdx=(state.lessonIdx+1)%LESSONS.length;
+    renderAcademy();
+  }));
+}
+
+/* ==================== ДОСТИЖЕНИЯ ==================== */
+function checkAch(){
+  ACHS.forEach(a=>{
+    if(!state.achievements.has(a.id)&&a.ck(state)){
+      state.achievements.add(a.id);
+      state.money+=50000;
+      setTimeout(()=>{toast(a.i+' '+a.t+'! +50 000 ₽','epic');sfx('levelup');vib([20,40,20])},250);
+    }
+  });
+}
+
+function renderAch(){
+  $('achList').innerHTML=ACHS.map(a=>{
+    const got=state.achievements.has(a.id);
+    return `<div class="ach ${got?'':'locked'}">${got?a.i:'🔒'} ${a.t}</div>`;
+  }).join('');
+}
+
+/* ==================== ХОД ==================== */
+function nextTurn(){
+  const btn=$('nextBtn');
+  btn.disabled=true;
+  sfx('turn');vib(12);
+
+  // Поля
+  state.fields.forEach(f=>{
+    if(f.crop&&!f.ready){
+      f.weeks++;
+      if(f.weeks>=CROPS[f.crop].weeks)f.ready=true;
+    }
+  });
+
+  // Модули
+  const B=state.buildings;
+  const labBonus=1+0.05*B.lab;
+  const season=Math.floor((state.turn-1)/7)%4;
+  const seasonMult=[1,1.3,1.4,.6][season];
+
+  let gain=0,demand=0;
+  for(const k in B){const lvl=B[k];if(!lvl)continue;
+    const d=BUILDINGS[k];
+    if(d.eg)gain+=d.eg*lvl;
+    if(d.e)demand+=d.e*lvl;}
+  let ratio=1;
+  if(demand>0&&state.energy+gain<demand){
+    ratio=Math.max(0,(state.energy+gain)/demand);
+    if(ratio<.999){toast('⚡ Нехватка энергии','warn');sfx('error');vib(50);shakeS()}
+  }
+
+  const delta={money:0,biomass:0,food:0,energy:0,waste:0,eco:0};
+  for(const k in B){
+    const lvl=B[k];if(!lvl)continue;
+    const def=BUILDINGS[k];
+    const r=def.e?ratio:1;
+    if(def.eg)delta.energy+=def.eg*lvl;
+    if(def.e)delta.energy-=def.e*lvl*r;
+    if(def.out)for(const res in def.out){
+      let v=def.out[res]*lvl*r;
+      if(v>0&&(res==='biomass'||res==='food')){
+        v*=labBonus*seasonMult;
+      }
+      delta[res]+=v;
+    }
+  }
+
+  state.money+=delta.money;
+  state.biomass=Math.max(0,state.biomass+delta.biomass);
+  state.energy=Math.max(0,state.energy+delta.energy);
+  state.waste=Math.max(0,state.waste+delta.waste);
+  state.eco=clamp(state.eco+delta.eco,0,100);
+  state.food=Math.max(0,state.food+delta.food);
+
+  // Продажа еды
+  const logBonus=1+.15*B.logistics;
+  const ecoBonus=1+(state.eco-50)/200;
+  const price=Math.max(1500,Math.round(state.foodPrice*logBonus*ecoBonus));
+  const sold=Math.floor(state.food*.6);
+  state.food-=sold;
+  const rev=sold*price;
+  state.money+=rev;
+  state.delivered+=sold;
+  if(sold>0){
+    addLog(`🍞 Реализация: ${fSp(sold)} т × ${fN(price)}/т = +${fN(rev)}`,'good');
+    sfx('coin');floatNum($('res-money'),'+'+fN(rev),'plus');
+  }
+
+  // Отходы
+  if(state.waste>30){
+    const pen=Math.ceil((state.waste-30)/10);
+    state.eco=clamp(state.eco-pen,0,100);
+    addLog(`♻️ Отходы ${fSp(state.waste)} т. Эко −${pen}`,'bad');
+  } else if(state.waste<5&&state.turn>3){
+    state.eco=clamp(state.eco+1,0,100);
+    addLog('🌿 Замкнутый цикл. Эко +1','good');
+  }
+
+  // Событие
+  if(Math.random()<0.4){
+    const e=EVENTS[Math.floor(Math.random()*EVENTS.length)];
+    e.f(state);
+    state.money=Math.max(-500000,state.money);
+    state.eco=clamp(state.eco,0,100);
+    addLog(e.t,e.cls);
+    if(e.cls==='bad'){vib([50,30,50]);sfx('error');shakeS()}
+    else if(e.cls==='good'){sfx('coin')}
+    else if(e.cls==='epic'){sfx('levelup');confetti()}
+  }
+
+  // Просроченные контракты
+  const failed=state.contracts.filter(c=>state.turn>=c.deadline&&state.food<c.amt);
+  failed.forEach(c=>{
+    state.contractsFailed++;
+    state.eco=clamp(state.eco-3,0,100);
+    addLog(`❌ Просрочен договор: ${c.buyer}. Эко −3`,'bad');
+    shakeS();
+  });
+  state.contracts=state.contracts.filter(c=>!failed.includes(c));
+
+  // Новый контракт
+  if(state.contracts.length<3&&Math.random()<0.5)spawnContract();
+
+  // Цена
+  state.foodPrice=Math.round((3800+Math.random()*1800)/100)*100;
+
+  state.turn++;
+
+  // Партия каждые 3 недели
+  if(!state.batch&&state.turn>1&&(state.turn-2)%3===0)spawnBatch();
+
+  checkAch();renderAll();
+
+  if(state.eco<=0){addLog('💀 Эко-коллапс','bad');setTimeout(()=>endGame(true),400);return}
+  if(state.money<-500000){addLog('💸 Банкротство','bad');setTimeout(()=>endGame(true),400);return}
+  if(state.turn>state.maxTurns){setTimeout(()=>endGame(false),400);return}
+
+  addLog(`— Неделя ${state.turn} · ${['🌸','☀️','🍂','❄️'][season]} · ${fN(state.foodPrice)}/т —`,'info');
+  btn.disabled=false;
+}
+
+/* ==================== ФИНАЛ ==================== */
+function endGame(failed){
+  $('nextBtn').disabled=true;
+  const moneyScore=Math.round(Math.max(0,state.money)/400);
+  const foodScore=Math.round(state.delivered*5);
+  const ecoScore=Math.round(state.eco*15);
+  const wasteBonus=state.waste<20?200:0;
+  const expertBonus=Math.round(state.examsDone*80+state.perfectBatches*150);
+  const contractBonus=Math.round(state.contractsDone*200);
+  const lessonBonus=Math.round(state.lessonsDone*100);
+  const achBonus=state.achievements.size*80;
+  const total=moneyScore+foodScore+ecoScore+wasteBonus+expertBonus+contractBonus+lessonBonus+achBonus;
+
+  $('finalScore').textContent=fSp(total);
   let rank,comment;
-  if(pct>=90){rank='🏆 ЭКСПЕРТ ДОННУЭТ';comment='Блестящий результат! Ты готов работать в реальной лаборатории.'}
-  else if(pct>=80){rank='🥇 Старший эксперт';comment='Отличный результат! Уверенно разбираешься в экспертизе.'}
-  else if(pct>=65){rank='🥈 Товаровед-эксперт';comment='Хороший результат. Повтори сложные темы.'}
-  else if(pct>=50){rank='🥉 Лаборант-исследователь';comment='Неплохо! Просмотри объяснения.'}
-  else{rank='🌱 Стажёр';comment='Первый опыт! Изучи материалы и возвращайся.'}
-  $('finalRank').textContent=rank;$('finalTitle').textContent='🏁 Стажировка завершена!';$('finalComment').textContent=comment;
-  $('finalScores').innerHTML=`<div class="score-row ${pct>=65?'win':'lose'}"><span class="sk">Правильных ответов</span><span class="sv">${correct} / ${total} (${pct}%)</span></div><div class="score-row"><span class="sk">Монеты</span><span class="sv">💰 ${state.coins}</span></div><div class="score-row"><span class="sk">Опыт</span><span class="sv">✦ ${state.xp}</span></div><div class="score-row"><span class="sk">Уровней</span><span class="sv">${LEVELS.length} / ${LEVELS.length}</span></div>`;
-  sfx('level');confetti();setTimeout(confetti,400);
-  document.getElementById('finalScreen').classList.remove('hide');
-}
-function showReview(){
-  const list=$('reviewList');
-  list.innerHTML=LEVELS.map(level=>`<h3 style="color:var(--acc2);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;margin:13px 0 7px;font-weight:800">${level.title}</h3>${level.tasks.map((task,ti)=>`<div style="background:rgba(5,22,17,.85);border:1px solid var(--line);border-radius:10px;padding:9px;margin-bottom:7px"><div style="font-size:.72rem;font-weight:800;margin-bottom:5px;color:var(--txt)">${ti+1}. ${task.title}</div><div style="font-size:.66rem;color:var(--acc);margin-bottom:5px">✅ ${task.options[task.correct]}</div><div style="font-size:.64rem;color:#c4e6d6;line-height:1.5">${task.explanation}</div></div>`).join('')}`).join('');
-  document.getElementById('reviewScreen').classList.remove('hide');
-}
-function startGame(){
-  initAudio();if(actx&&actx.state==='suspended')actx.resume();
-  state={currentLevel:0,currentTask:0,coins:0,xp:0,totalCorrect:0,totalTasks:0,answers:[],soundOn:state.soundOn};
-  $('startScreen').classList.add('hide');$('finalScreen').classList.add('hide');
-  $('levelScreen').classList.add('hide');$('reviewScreen').classList.add('hide');
-  updateHeader();updateProgress();renderTask();sfx('click');
+  if(failed){rank='⚠️ Комбинат не выжил';comment='Повтори опыт с учётом ошибок.'}
+  else if(total>=9000){rank='👑 Легенда ДОННУЭТ';comment='Образцовая работа!'}
+  else if(total>=6500){rank='🏆 Эксперт ДОННУЭТ';comment='Блестящий результат!'}
+  else if(total>=4500){rank='🥇 Старший эксперт';comment='Отличная работа!'}
+  else if(total>=2500){rank='🥈 Товаровед-эксперт';comment='Хороший результат.'}
+  else if(total>=1200){rank='🥉 Лаборант-исследователь';comment='Неплохо для старта.'}
+  else {rank='🌱 Стажёр';comment='Первый опыт. Изучи справочник.'}
+
+  $('endTitle').textContent=failed?'💀 Игра окончена':'🏁 Итоги 30 недель';
+  $('rankText').textContent=rank;
+  $('endComment').textContent=comment;
+  $('scoreGrid').innerHTML=`
+    <div class="score-item"><div class="sv">${fSp(moneyScore)}</div><div class="sl">💰 Касса</div></div>
+    <div class="score-item"><div class="sv">${fSp(foodScore)}</div><div class="sl">📦 Еда (${fSp(state.delivered)} т)</div></div>
+    <div class="score-item"><div class="sv">${fSp(ecoScore)}</div><div class="sl">🌍 Эко (${Math.round(state.eco)})</div></div>
+    <div class="score-item"><div class="sv">${fSp(expertBonus)}</div><div class="sl">⚗️ Экспертизы (${state.examsDone})</div></div>
+    <div class="score-item"><div class="sv">${fSp(contractBonus)}</div><div class="sl">💼 Контракты (${state.contractsDone})</div></div>
+    <div class="score-item"><div class="sv">${fSp(lessonBonus)}</div><div class="sl">🎓 Уроки (${state.lessonsDone})</div></div>
+    <div class="score-item"><div class="sv">${fSp(achBonus)}</div><div class="sl">🏆 Достижения (${state.achievements.size})</div></div>
+    <div class="score-item"><div class="sv">${fSp(wasteBonus)}</div><div class="sl">♻️ Чистота</div></div>
+  `;
+  $('endScreen').classList.remove('hide');
+  if(!failed){confetti();sfx('win');vib([80,40,80,40,150])}
 }
 
+/* ==================== TABS ==================== */
+function switchTab(name){
+  currentTab=name;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
+  const el=$('tab-'+name);if(el)el.style.display='block';
+  if(name==='lab')renderLab();
+  if(name==='batch')renderBatch();
+  if(name==='contracts')renderContracts();
+  if(name==='stats')renderStats();
+  if(name==='academy')renderAcademy();
+}
+
+/* ==================== RENDER ALL ==================== */
+function renderAll(){
+  renderRes();
+  renderFarm();
+  renderBuildings();
+  if(currentTab==='lab')renderLab();
+  if(currentTab==='batch')renderBatch();
+  if(currentTab==='contracts')renderContracts();
+  if(currentTab==='stats')renderStats();
+  if(currentTab==='academy')renderAcademy();
+}
+
+/* ==================== СТАРТ ==================== */
+function startGame(){
+  initA();
+  if(actx&&actx.state==='suspended')actx.resume();
+  resetState();
+  prevRes={};
+  $('log').innerHTML='';
+  document.querySelectorAll('.overlay').forEach(o=>o.classList.add('hide'));
+  $('nextBtn').disabled=false;
+  addLog('🌱 Комбинат запущен! Капитал: 500 000 ₽','good');
+  addLog('💡 Совет: построй солнечную станцию — энергии не хватает.','info');
+  addLog('📦 Первая партия на экспертизу придёт на 2-й неделе.','info');
+  renderAll();
+  sfx('coin');
+}
+
+/* ==================== BIND ==================== */
 $('startBtn').addEventListener('click',startGame);
 $('restartBtn').addEventListener('click',startGame);
-$('nextBtn').addEventListener('click',nextTask);
-$('levelNextBtn').addEventListener('click',levelNext);
-$('reviewBtn').addEventListener('click',showReview);
-$('reviewClose').addEventListener('click',()=>$('reviewScreen').classList.add('hide'));
-$('soundBtn').addEventListener('click',e=>{state.soundOn=!state.soundOn;e.target.textContent=state.soundOn?'🔊':'🔇';if(state.soundOn){initAudio();sfx('click')}});
+$('nextBtn').addEventListener('click',nextTurn);
+$('soundBtn').addEventListener('click',e=>{
+  soundOn=!soundOn;e.target.textContent=soundOn?'🔊':'🔇';
+  if(soundOn){initA();sfx('click')}
+});
+$('helpBtn').addEventListener('click',()=>$('helpScreen').classList.remove('hide'));
+$('helpClose').addEventListener('click',()=>$('helpScreen').classList.add('hide'));
+$('achBtn').addEventListener('click',()=>{renderAch();$('achScreen').classList.remove('hide')});
+$('achClose').addEventListener('click',()=>$('achScreen').classList.add('hide'));
+
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+
+/* старт */
+resetState();
+renderRes();
 </script>
 </body>
 </html>
