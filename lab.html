@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#06120f">
+<title>🔬 Реальная лаборатория — ДОННУЭТ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --card:rgba(18,53,43,.8);--card2:rgba(13,37,29,.92);
+  --line:rgba(74,222,128,.25);--acc:#4ade80;--acc2:#22d3ee;
+  --gold:#fbbf24;--red:#f87171;--purple:#c084fc;
+  --txt:#e7f6ee;--dim:#8fbfae;
+  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,'Roboto',sans-serif;
+  background:radial-gradient(circle at 20% -10%,#14493a 0%,#06120f 55%,#020806 100%);
+  color:var(--txt);min-height:100vh;overflow-x:hidden;line-height:1.45;padding:8px;
+}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.6}
+.app{position:relative;z-index:1;max-width:900px;margin:0 auto}
+
+.header{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:8px 10px;margin-bottom:8px;
+  background:linear-gradient(90deg,rgba(15,58,45,.92),rgba(18,63,82,.92));
+  border:1px solid var(--line);border-radius:14px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(74,222,128,.15);
+}
+.brand{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.brand-img{flex-shrink:0;width:44px;height:44px;object-fit:contain;
+  filter:drop-shadow(0 0 8px rgba(74,222,128,.35))}
+.brand h1{font-size:.85rem;font-weight:900;letter-spacing:.3px;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1.1}
+.brand h1 span{-webkit-text-fill-color:initial}
+.brand .sub{font-size:.44rem;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.2px;margin-top:1px;font-weight:600;line-height:1.2}
+.nav-btns{display:flex;gap:4px}
+.icon-btn{background:rgba(8,37,29,.9);border:1px solid var(--line);
+  border-radius:8px;color:var(--txt);padding:6px 9px;font-size:.72rem;
+  cursor:pointer;font-family:inherit;text-decoration:none;line-height:1;
+  transition:.15s;display:inline-flex;align-items:center;gap:4px}
+.icon-btn:active{transform:scale(.9)}
+.icon-btn.home{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;
+  font-weight:800}
+
+.panel{
+  background:linear-gradient(170deg,rgba(16,48,39,.85),rgba(12,35,29,.92));
+  border:1px solid var(--line);border-radius:14px;padding:12px;
+  margin-bottom:10px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(74,222,128,.08);
+}
+.panel h2{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--acc2);margin-bottom:9px;font-weight:800;
+  display:flex;justify-content:space-between;align-items:center;gap:6px}
+
+/* Sample grid */
+.samples-grid{display:grid;grid-template-columns:1fr;gap:6px}
+@media(min-width:520px){.samples-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:800px){.samples-grid{grid-template-columns:repeat(3,1fr)}}
+.sample-btn{
+  background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.9));
+  border:1.5px solid rgba(33,88,69,.9);border-radius:12px;
+  padding:10px;color:var(--txt);font-family:inherit;cursor:pointer;
+  text-align:left;transition:.18s;display:flex;gap:9px;align-items:flex-start;
+}
+.sample-btn:hover:not(:disabled){border-color:var(--acc);transform:translateY(-2px)}
+.sample-btn:active:not(:disabled){transform:scale(.98)}
+.sample-btn.disabled{opacity:.4;cursor:not-allowed}
+.sample-icon{font-size:1.7rem;line-height:1}
+.sample-info{flex:1;min-width:0}
+.sample-name{font-size:.72rem;font-weight:800;line-height:1.15}
+.sample-meta{font-size:.55rem;color:var(--dim);margin-top:3px;font-family:var(--mono)}
+
+/* Experiment view */
+.exp-header{
+  background:linear-gradient(160deg,rgba(251,191,36,.12),rgba(13,37,29,.94));
+  border:1px solid rgba(251,191,36,.5);border-radius:14px;
+  padding:12px;margin-bottom:10px;
+}
+.exp-title{font-size:.92rem;font-weight:900;line-height:1.15}
+.exp-sub{font-size:.6rem;color:var(--dim);margin-top:3px;font-family:var(--mono)}
+.exp-desc{font-size:.7rem;color:#c4e6d6;line-height:1.55;margin-top:8px;
+  padding:8px 10px;background:rgba(5,22,17,.7);border-radius:8px;
+  border-left:3px solid var(--acc2)}
+.exp-desc b{color:var(--acc2)}
+.exp-desc .mono{font-family:var(--mono);color:var(--gold)}
+
+/* Method selection */
+.method-list{display:flex;flex-direction:column;gap:6px}
+.method-item{
+  background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.9));
+  border:1.5px solid rgba(33,88,69,.9);border-radius:12px;
+  padding:11px;color:var(--txt);font-family:inherit;cursor:pointer;
+  text-align:left;transition:.18s;display:flex;gap:10px;align-items:center;
+}
+.method-item:hover:not(:disabled){border-color:var(--acc)}
+.method-item:active:not(:disabled){transform:scale(.98)}
+.method-item:disabled{opacity:.5;cursor:not-allowed}
+.method-item.done{border-color:var(--acc2);background:rgba(34,211,238,.1)}
+.method-icon{font-size:1.6rem;flex-shrink:0}
+.method-body{flex:1}
+.method-name{font-size:.75rem;font-weight:800;line-height:1.15}
+.method-desc{font-size:.58rem;color:var(--dim);margin-top:2px;font-family:var(--mono)}
+.method-status{font-size:.55rem;font-weight:800;padding:3px 8px;border-radius:6px;
+  background:rgba(8,37,29,.9);color:var(--dim);font-family:var(--mono);
+  border:1px solid var(--line)}
+.method-item.done .method-status{color:var(--acc);border-color:var(--acc)}
+
+/* Interactive stage */
+.stage{
+  background:linear-gradient(170deg,rgba(5,22,17,.95),rgba(3,15,12,.98));
+  border:1px solid var(--line);border-radius:14px;padding:14px;
+  margin-bottom:10px;position:relative;overflow:hidden;
+  min-height:280px;
+}
+.stage-title{font-size:.62rem;text-transform:uppercase;letter-spacing:.8px;
+  color:var(--acc2);font-weight:800;margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center}
+.stage-title .step-info{color:var(--gold);font-family:var(--mono)}
+
+.stage-visual{
+  background:radial-gradient(circle at 50% 60%,rgba(34,211,238,.08),transparent 70%);
+  border-radius:12px;padding:16px;margin-bottom:12px;
+  min-height:150px;display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+
+/* Промывка бюретки */
+.burette{
+  width:22px;height:180px;background:linear-gradient(90deg,#e5e7eb 0%,#f3f4f6 50%,#d1d5db 100%);
+  border-radius:11px;position:relative;border:1px solid #6b7280;
+  box-shadow:inset 0 0 8px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.5);
+  margin:0 20px;
+}
+.burette::before{content:'';position:absolute;left:0;right:0;top:8%;
+  height:1px;background:rgba(0,0,0,.2)}
+.burette::after{content:'';position:absolute;left:0;right:0;top:16%;
+  height:1px;background:rgba(0,0,0,.2)}
+.burette-liquid{
+  position:absolute;left:2px;right:2px;top:2px;bottom:auto;
+  height:60%;background:linear-gradient(180deg,#fbcfe8,#ec4899);
+  border-radius:9px 9px 4px 4px;transition:height .8s cubic-bezier(.3,1.3,.5,1);
+  box-shadow:inset -3px 0 6px rgba(0,0,0,.2);
+}
+.burette-scale{position:absolute;left:26px;top:0;bottom:0;display:flex;
+  flex-direction:column;justify-content:space-between;
+  font-family:var(--mono);font-size:8px;color:#9ca3af}
+.flask{
+  width:70px;height:70px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.4),rgba(220,220,240,.15) 60%,rgba(180,180,200,.1));
+  border:2px solid rgba(200,200,220,.5);position:relative;margin:0 20px;
+  box-shadow:0 6px 20px rgba(0,0,0,.5),inset 0 -8px 16px rgba(180,180,220,.15);
+}
+.flask-liquid{
+  position:absolute;left:6%;right:6%;bottom:6%;height:60%;
+  border-radius:50%;background:radial-gradient(circle at 40% 30%,#fef3c7,#fbbf24);
+  transition:background 1s;opacity:.9;
+}
+.flask-liquid.pink{background:radial-gradient(circle at 40% 30%,#fce7f3,#ec4899)}
+.flask-liquid.color-change{animation:colorCh 1.5s forwards}
+@keyframes colorCh{from{background:radial-gradient(circle at 40% 30%,#fef3c7,#fbbf24)}
+  to{background:radial-gradient(circle at 40% 30%,#fce7f3,#ec4899)}}
+
+/* Brix tube */
+.refract-tube{
+  width:60px;height:200px;background:linear-gradient(90deg,rgba(200,220,240,.4),rgba(255,255,255,.3),rgba(180,200,220,.4));
+  border-radius:8px;position:relative;border:2px solid rgba(150,180,200,.6);
+  box-shadow:inset 0 0 12px rgba(255,255,255,.3),0 4px 16px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+.refract-liquid{
+  position:absolute;left:2px;right:2px;bottom:2px;height:55%;
+  background:linear-gradient(180deg,#fef9c3,#fde047);
+  border-radius:4px;transition:height .8s,background .8s;
+}
+.refract-shadow{
+  position:absolute;left:50%;top:55%;transform:translateX(-50%);
+  width:2px;height:80px;background:rgba(0,0,0,.5);
+  box-shadow:0 0 6px rgba(0,0,0,.3);
+}
+
+/* Petri dish */
+.petri{
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#fef3c7,#fde047 60%,#eab308);
+  border:6px solid rgba(255,255,255,.6);
+  box-shadow:0 0 30px rgba(234,179,8,.4),inset 0 0 40px rgba(180,120,0,.4);
+  position:relative;
+}
+.colony{
+  position:absolute;width:8px;height:8px;border-radius:50%;
+  background:radial-gradient(circle,#fff,#fef3c7);
+  box-shadow:0 0 6px rgba(255,255,255,.8),inset 0 -1px 2px rgba(0,0,0,.3);
+  animation:grow .5s;
+}
+@keyframes grow{from{transform:scale(0)}to{transform:scale(1)}}
+
+/* Balance */
+.balance{
+  width:160px;height:80px;position:relative;
+}
+.balance-pan{
+  width:70px;height:10px;background:linear-gradient(180deg,#d1d5db,#9ca3af);
+  border-radius:4px;position:absolute;bottom:20px;
+  box-shadow:0 4px 8px rgba(0,0,0,.4);
+}
+.balance-display{
+  background:#04210f;border:2px solid #1a5a3e;border-radius:8px;
+  padding:8px 14px;font-family:var(--mono);font-size:1.4rem;font-weight:900;
+  color:#4ade80;letter-spacing:1px;
+  box-shadow:0 0 20px rgba(74,222,128,.3),inset 0 0 10px rgba(74,222,128,.15);
+  text-shadow:0 0 8px rgba(74,222,128,.7);
+}
+.balance-unit{font-size:.6rem;color:var(--dim);text-align:center;
+  margin-top:4px;font-family:var(--mono);letter-spacing:1px}
+
+/* Action buttons */
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.action-btn{
+  flex:1 1 auto;min-width:110px;padding:11px 10px;border-radius:10px;
+  border:none;font-family:inherit;font-weight:900;font-size:.7rem;
+  cursor:pointer;transition:.15s;letter-spacing:.3px;
+}
+.action-btn:not(:disabled):active{transform:scale(.96)}
+.action-btn:disabled{opacity:.4;cursor:not-allowed}
+.action-btn.primary{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;
+  box-shadow:0 4px 14px rgba(74,222,128,.3)}
+.action-btn.secondary{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a}
+.action-btn.danger{background:rgba(46,20,20,.9);color:#f87171;border:1px solid rgba(248,113,113,.6)}
+
+/* Result */
+.result-box{
+  background:linear-gradient(160deg,rgba(34,211,238,.08),rgba(13,37,29,.94));
+  border:1px solid rgba(34,211,238,.4);border-radius:12px;
+  padding:12px;margin-top:10px;animation:fbIn .4s;
+}
+@keyframes fbIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.result-header{font-size:.62rem;color:var(--acc2);text-transform:uppercase;
+  letter-spacing:.6px;font-weight:800;margin-bottom:8px}
+.result-value{
+  background:#04210f;border:2px solid #1a5a3e;border-radius:10px;
+  padding:14px;text-align:center;margin-bottom:8px;
+  box-shadow:inset 0 0 12px rgba(74,222,128,.15);
+}
+.result-num{font-family:var(--mono);font-size:1.8rem;font-weight:900;
+  color:#4ade80;letter-spacing:1px;text-shadow:0 0 10px rgba(74,222,128,.6)}
+.result-num.bad{color:#f87171;text-shadow:0 0 10px rgba(248,113,113,.6)}
+.result-num.warn{color:#fbbf24;text-shadow:0 0 10px rgba(251,191,36,.6)}
+.result-unit{font-size:.68rem;color:var(--dim);font-family:var(--mono);margin-top:2px}
+.result-norm{font-size:.6rem;color:var(--dim);margin-top:6px;font-family:var(--mono)}
+.result-verdict{font-size:.72rem;font-weight:800;margin-top:8px;padding:8px;
+  border-radius:8px;text-align:center}
+.result-verdict.ok{background:rgba(74,222,128,.15);color:var(--acc);
+  border:1px solid var(--acc)}
+.result-verdict.warn{background:rgba(251,191,36,.15);color:var(--gold);
+  border:1px solid var(--gold)}
+.result-verdict.bad{background:rgba(248,113,113,.15);color:var(--red);
+  border:1px solid var(--red)}
+.result-formula{
+  font-family:var(--mono);font-size:.58rem;color:#a7e8c8;line-height:1.6;
+  padding:8px;background:rgba(5,22,17,.7);border-radius:6px;margin-top:8px;
+}
+.result-formula b{color:var(--acc2)}
+
+/* Log */
+.log{
+  background:rgba(5,22,17,.9);border:1px solid var(--line);border-radius:10px;
+  padding:8px;max-height:160px;overflow-y:auto;font-size:.58rem;
+  display:flex;flex-direction:column;gap:3px;font-family:var(--mono);
+}
+.log::-webkit-scrollbar{width:4px}
+.log::-webkit-scrollbar-thumb{background:#1f5a47;border-radius:3px}
+.le{padding:4px 7px;border-radius:6px;background:rgba(14,43,35,.9);
+  border-left:2px solid #2b6b56;line-height:1.4}
+.le.good{border-color:var(--acc)}
+.le.bad{border-color:var(--red)}
+.le.info{border-color:var(--acc2)}
+.le.warn{border-color:var(--gold)}
+
+/* Toasts */
+#toasts{position:fixed;top:8px;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;flex-direction:column;gap:4px;
+  pointer-events:none;width:calc(100% - 16px);max-width:360px}
+.toast{
+  background:linear-gradient(135deg,rgba(20,60,48,.97),rgba(13,42,34,.97));
+  border:1px solid var(--acc);border-radius:10px;padding:8px 12px;
+  font-size:.68rem;font-weight:700;text-align:center;color:var(--txt);
+  box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(74,222,128,.2);
+  animation:tin .3s}
+.toast.bad{border-color:var(--red)}
+.toast.warn{border-color:var(--gold)}
+.toast.epic{border-color:var(--purple)}
+.toast.out{animation:tout .3s forwards}
+@keyframes tin{from{opacity:0;transform:translateY(-14px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes tout{to{opacity:0;transform:translateY(-14px) scale(.94)}}
+
+footer{margin-top:12px;padding:10px;text-align:center;
+  border-top:1px solid rgba(74,222,128,.15)}
+footer .uni{font-size:.6rem;font-weight:900;color:var(--acc);
+  letter-spacing:.4px;text-transform:uppercase}
+footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="toasts"></div>
+
+<div class="app">
+  <header class="header">
+    <div class="brand">
+      <img src="logo-lab.png" class="brand-img" alt="Лаборатория"
+           onerror="this.style.display='none'">
+      <div>
+        <h1>🔬 Реальная лаборатория</h1>
+        <div class="sub">ДОННУЭТ · кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <a class="icon-btn home" href="index.html">🏠 Игра</a>
+    </div>
+  </header>
+
+  <div id="mainContent"></div>
+
+  <footer>
+    <div class="uni">ФГБОУ ВО «ДОННУЭТ»</div>
+    <div class="kaf">Кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
+  </footer>
+</div>
+
+<script>
+/* ==================== ДАННЫЕ ОБРАЗЦОВ ==================== */
+const SAMPLES = [
+  {id:'milk', icon:'🥛', name:'Молоко пастеризованное 3,2%',
+   gost:'ГОСТ 31450-2013', trts:'ТР ТС 033/2013',
+   methods:['organo','titration','fat'],
+   description:'Жидкий молочный продукт. Определяем кислотность (титрование), жир (метод Гербера) и органолептику.'},
+  {id:'bread', icon:'🍞', name:'Хлеб пшеничный из муки в/с',
+   gost:'ГОСТ 26987-86', trts:'ТР ТС 021/2011',
+   methods:['organo','moisture','porosity'],
+   description:'Хлебобулочное изделие. Определяем влажность мякиша, пористость и органолептику.'},
+  {id:'juice', icon:'🧃', name:'Сок яблочный прямого отжима',
+   gost:'ГОСТ 32100-2013', trts:'ТР ТС 023/2011',
+   methods:['organo','brix','acidity'],
+   description:'Сок без добавления сахара. Определяем сухие вещества (рефрактометрия) и кислотность.'},
+  {id:'honey', icon:'🍯', name:'Мёд цветочный натуральный',
+   gost:'ГОСТ 31766-2012', trts:'ТР ТС 021/2011',
+   methods:['organo','brix','water'],
+   description:'Натуральный цветочный мёд. Определяем массовую долю воды и диастазное число.'},
+  {id:'meat', icon:'🍗', name:'Мясо птицы (тушка)',
+   gost:'ГОСТ 31962-2013', trts:'ТР ТС 034/2013',
+   methods:['organo','micro','protein'],
+   description:'Тушка курицы. Определяем КМАФАнМ, белок (Кьельдаль) и свежесть.'},
+  {id:'sausage', icon:'🥓', name:'Колбаса варёная «Докторская»',
+   gost:'ГОСТ 33673-2015', trts:'ТР ТС 034/2013',
+   methods:['organo','micro','protein'],
+   description:'Варёная колбаса. Определяем микробиологию, белок и органолептику.'}
+];
+
+/* ==================== МЕТОДЫ ==================== */
+const METHODS = {
+  organo:{
+    icon:'👁️', name:'Органолептическая оценка',
+    desc:'ГОСТ 31449 — внешний вид, цвет, запах, вкус, консистенция',
+    render:renderOrgano, steps:['Внешний вид','Запах','Вкус']
+  },
+  titration:{
+    icon:'🧪', name:'Титрование (кислотность)',
+    desc:'ГОСТ 3624 — титрование 0,1 н NaOH, единицы °Т',
+    render:renderTitration
+  },
+  fat:{
+    icon:'⚖️', name:'Жир по Герберу',
+    desc:'ГОСТ 5867 — центрифугирование в жиромере, %',
+    render:renderFat
+  },
+  moisture:{
+    icon:'💧', name:'Влажность (высушивание)',
+    desc:'ГОСТ 21094 — высушивание до постоянной массы, %',
+    render:renderMoisture
+  },
+  porosity:{
+    icon:'🕳️', name:'Пористость мякиша',
+    desc:'ГОСТ 5669 — отношение объёма пор к объёму мякиша, %',
+    render:renderPorosity
+  },
+  brix:{
+    icon:'🔆', name:'Рефрактометрия (сухие вещества)',
+    desc:'ГОСТ 28562 — показатель преломления, °Brix',
+    render:renderBrix
+  },
+  acidity:{
+    icon:'🍋', name:'Титруемая кислотность',
+    desc:'ГОСТ 25555.0 — титрование, %',
+    render:renderJuiceAcidity
+  },
+  water:{
+    icon:'💧', name:'Массовая доля воды в мёде',
+    desc:'ГОСТ 31774 — рефрактометрия, %',
+    render:renderHoneyWater
+  },
+  micro:{
+    icon:'🧬', name:'Микробиология (КМАФАнМ)',
+    desc:'ГОСТ 10444.15 — подсчёт колоний, КОЕ/г',
+    render:renderMicro
+  },
+  protein:{
+    icon:'🧪', name:'Белок по Кьельдалю',
+    desc:'ГОСТ 23327 — минерализация + отгонка, %',
+    render:renderProtein
+  }
+};
+
+/* ==================== СОСТОЯНИЕ ==================== */
+let currentSample = null;
+let methodResults = {};
+let log = [];
+
+/* ==================== ФОН ==================== */
+(function(){
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let W,H,parts=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
+  resize();addEventListener('resize',resize);
+  for(let i=0;i<40;i++)parts.push({x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:1+Math.random()*2,
+    o:.15+Math.random()*.35,c:Math.random()<.5?'74,222,128':'34,211,238'});
+  (function loop(){ctx.clearRect(0,0,W,H);
+    for(const p of parts){p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+      g.addColorStop(0,'rgba('+p.c+','+p.o+')');g.addColorStop(1,'rgba('+p.c+',0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r*6,0,6.28);ctx.fill()}
+    requestAnimationFrame(loop)})();
+})();
+
+/* ==================== AUDIO ==================== */
+let actx;
+function initA(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}}
+function sfx(t){
+  if(!actx)return;
+  try{
+    const now=actx.currentTime;
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.connect(g);g.connect(actx.destination);
+    if(t==='drop'){o.type='sine';o.frequency.setValueAtTime(1200,now);
+      o.frequency.exponentialRampToValueAtTime(400,now+.3);
+      g.gain.setValueAtTime(.08,now);g.gain.exponentialRampToValueAtTime(.001,now+.35);
+      o.start(now);o.stop(now+.37)}
+    else if(t==='coin'){[880,1320].forEach((f,i)=>{const o2=actx.createOscillator(),g2=actx.createGain();
+      o2.connect(g2);g2.connect(actx.destination);o2.type='square';o2.frequency.value=f;
+      g2.gain.setValueAtTime(.05,now+i*.06);g2.gain.exponentialRampToValueAtTime(.001,now+i*.06+.14);
+      o2.start(now+i*.06);o2.stop(now+i*.06+.16)})}
+    else if(t==='click'){o.type='sine';o.frequency.setValueAtTime(600,now);
+      o.frequency.exponentialRampToValueAtTime(900,now+.06);
+      g.gain.setValueAtTime(.07,now);g.gain.exponentialRampToValueAtTime(.001,now+.08);
+      o.start(now);o.stop(now+.09)}
+  }catch(e){}
+}
+function vib(ms){if(navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}}
+
+/* ==================== TOASTS ==================== */
+function toast(txt,cls=''){
+  const el=document.createElement('div');el.className='toast '+cls;el.textContent=txt;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),300)},2400);
+}
+
+/* ==================== LOG ==================== */
+function addLog(txt,cls=''){
+  log.unshift({txt,cls});
+  if(log.length>20)log.pop();
+  const logEl=document.getElementById('log');
+  if(logEl)logEl.innerHTML=log.map(l=>`<div class="le ${l.cls}">${l.txt}</div>`).join('');
+}
+
+/* ==================== РЕНДЕР: выбор образца ==================== */
+function renderSampleSelect(){
+  const c=document.getElementById('mainContent');
+  c.innerHTML=`
+    <div class="panel">
+      <h2>🧪 Выберите образец для исследования</h2>
+      <div class="samples-grid">
+        ${SAMPLES.map(s=>`
+          <button class="sample-btn" data-sample="${s.id}">
+            <span class="sample-icon">${s.icon}</span>
+            <div class="sample-info">
+              <div class="sample-name">${s.name}</div>
+              <div class="sample-meta">${s.gost}</div>
+            </div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+    <div class="panel">
+      <h2>📓 Журнал лаборатории</h2>
+      <div class="log" id="log">${log.map(l=>`<div class="le ${l.cls}">${l.txt}</div>`).join('')}</div>
+    </div>
+  `;
+  c.querySelectorAll('[data-sample]').forEach(b=>b.addEventListener('click',()=>{
+    sfx('click');vib(15);
+    openSample(b.dataset.sample);
+  }));
+}
+
+/* ==================== РЕНДЕР: образец открыт ==================== */
+function openSample(id){
+  currentSample=SAMPLES.find(s=>s.id===id);
+  methodResults={};
+  addLog(`📂 Открыт образец: ${currentSample.name}`,'info');
+  renderSampleView();
+}
+
+function renderSampleView(){
+  const c=document.getElementById('mainContent');
+  const s=currentSample;
+  const doneCount=Object.keys(methodResults).length;
+  c.innerHTML=`
+    <div class="panel" style="padding:10px 12px">
+      <button class="icon-btn" id="backBtn">← Назад к образцам</button>
+    </div>
+
+    <div class="exp-header">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="font-size:2rem">${s.icon}</div>
+        <div style="flex:1">
+          <div class="exp-title">${s.name}</div>
+          <div class="exp-sub">📜 ${s.gost} · ${s.trts}</div>
+        </div>
+      </div>
+      <div class="exp-desc">${s.description}</div>
+    </div>
+
+    <div class="panel">
+      <h2>🔬 Методы испытаний <span style="color:var(--gold);font-size:.6rem;font-family:var(--mono)">${doneCount}/${s.methods.length}</span></h2>
+      <div class="method-list">
+        ${s.methods.map(m=>{
+          const info=METHODS[m];
+          const done=methodResults[m];
+          return `<button class="method-item ${done?'done':''}" data-method="${m}">
+            <span class="method-icon">${info.icon}</span>
+            <div class="method-body">
+              <div class="method-name">${info.name}</div>
+              <div class="method-desc">${info.desc}</div>
+            </div>
+            <span class="method-status">${done?'✓ выполнено':'начать'}</span>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    ${doneCount===s.methods.length?`
+      <div class="panel">
+        <h2>📋 Сводный протокол испытаний</h2>
+        <div class="result-box">
+          <div class="result-header">Протокол № LAB-${Date.now().toString().slice(-6)}</div>
+          ${Object.entries(methodResults).map(([m,r])=>`
+            <div style="display:flex;justify-content:space-between;padding:6px 0;
+              border-bottom:1px dotted rgba(74,222,128,.15);font-size:.65rem">
+              <span>${METHODS[m].icon} ${METHODS[m].name}</span>
+              <span style="font-family:var(--mono);font-weight:900;
+                color:${r.ok?'var(--acc)':r.warn?'var(--gold)':'var(--red)'}">
+                ${r.value} ${r.unit} ${r.ok?'✓':r.warn?'⚠':'✗'}
+              </span>
+            </div>
+          `).join('')}
+          <div style="margin-top:10px;text-align:center;font-size:.7rem;font-weight:800;
+            color:var(--gold)">
+            Итог: ${Object.values(methodResults).every(r=>r.ok)?'✅ СООТВЕТСТВУЕТ':'⚠️ ЕСТЬ ОТКЛОНЕНИЯ'}
+          </div>
+        </div>
+      </div>
+    `:''}
+
+    <div class="panel">
+      <h2>📓 Журнал</h2>
+      <div class="log" id="log">${log.map(l=>`<div class="le ${l.cls}">${l.txt}</div>`).join('')}</div>
+    </div>
+  `;
+  c.querySelector('#backBtn').addEventListener('click',()=>{
+    sfx('click');currentSample=null;renderSampleSelect();
+  });
+  c.querySelectorAll('[data-method]').forEach(b=>b.addEventListener('click',()=>{
+    if(methodResults[b.dataset.method])return;
+    sfx('click');vib(15);
+    runMethod(b.dataset.method);
+  }));
+}
+
+/* ==================== ЗАПУСК МЕТОДА ==================== */
+function runMethod(m){
+  const fn=METHODS[m].render;
+  fn();
+}
+
+/* ==================== 1. ОРГАНОЛЕПТИКА ==================== */
+function renderOrgano(){
+  const c=document.getElementById('mainContent');
+  let step=0;
+  const questions=[
+    {q:'Внешний вид и цвет', opts:['Свойственный, без дефектов','Незначительные отклонения','Явные дефекты, посторонние включения']},
+    {q:'Запах', opts:['Чистый, свойственный продукту','Слабый, недостаточно выражен','Посторонний, гнилостный']},
+    {q:'Вкус (дегустация)', opts:['Чистый, без посторонних привкусов','Слегка выражен','Горький, кислый, посторонний']}
+  ];
+  const scores=[40,28,14];
+  let total=0;
+
+  function render(){
+    c.innerHTML=`
+      <div class="panel">
+        <button class="icon-btn" id="backBtn">← Назад</button>
+      </div>
+      <div class="exp-header">
+        <div class="exp-title">👁️ Органолептическая оценка</div>
+        <div class="exp-sub">ГОСТ 31449 / ГОСТ 9959 · Шаг ${step+1}/3</div>
+        <div class="exp-desc">
+          <b>Органолептика</b> — оценка по 5 показателям: <b>внешний вид, цвет, запах, вкус, консистенция</b>. 
+          Проводится в дегустационной лаборатории с изолированными кабинами.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">
+          <span>Образец</span>
+          <span class="step-info">${step+1} / 3</span>
+        </div>
+        <div class="stage-visual">
+          <div style="text-align:center">
+            <div style="font-size:4rem">${currentSample.icon}</div>
+            <div style="font-size:.7rem;margin-top:8px;color:var(--dim)">${currentSample.name}</div>
+          </div>
+        </div>
+        <div style="font-size:.72rem;font-weight:800;margin-bottom:10px">
+          ${questions[step].q}
+        </div>
+        <div class="method-list">
+          ${questions[step].opts.map((o,i)=>`
+            <button class="method-item" data-ans="${i}">
+              <span class="method-icon">${['✅','⚠️','❌'][i]}</span>
+              <div class="method-body">
+                <div class="method-name">${o}</div>
+                <div class="method-desc">оценка ${scores[i]}/40 баллов</div>
+              </div>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    c.querySelectorAll('[data-ans]').forEach(b=>b.addEventListener('click',()=>{
+      const i=+b.dataset.ans;
+      total+=scores[i];
+      sfx(i===0?'coin':'click');vib(15);
+      step++;
+      if(step<3)render();
+      else finish();
+    }));
+  }
+
+  function finish(){
+    const avg=Math.round(total/3);
+    const ok=avg>=28, warn=avg>=16&&!ok;
+    methodResults.organo={value:avg,unit:'/40 баллов',ok,warn};
+    addLog(`👁️ Органолептика: ${avg}/40 — ${ok?'соответствует':warn?'допустимо':'дефект'}`,ok?'good':warn?'warn':'bad');
+    renderResult();
+  }
+
+  function renderResult(){
+    const r=methodResults.organo;
+    c.innerHTML=`
+      <div class="panel">
+        <button class="icon-btn" id="backBtn">← К образцу</button>
+      </div>
+      <div class="exp-header">
+        <div class="exp-title">👁️ Органолептическая оценка завершена</div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">Результат</div>
+        <div class="stage-visual">
+          <div style="text-align:center">
+            <div class="result-num ${r.ok?'':r.warn?'warn':'bad'}" style="font-size:2.4rem">
+              ${r.value}<span style="font-size:1rem">/40</span>
+            </div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="result-header">📋 Заключение</div>
+          <div class="result-verdict ${r.ok?'ok':r.warn?'warn':'bad'}">
+            ${r.ok?'✅ Соответствует ГОСТ (≥28 баллов)':r.warn?'⚠️ Допустимо (16–27 баллов)':'❌ Не соответствует (<16 баллов)'}
+          </div>
+          <div class="result-formula">
+            <b>Формула:</b> O = (внеш. вид + запах + вкус) / 3 = ${r.value} баллов из 40<br>
+            <b>Порог:</b> ≥28 — соответствует, 16–27 — допустимо, &lt;16 — дефект
+          </div>
+        </div>
+        <div class="actions">
+          <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+  }
+
+  render();
+}
+
+/* ==================== 2. ТИТРОВАНИЕ (молоко, кислотность) ==================== */
+function renderTitration(){
+  const c=document.getElementById('mainContent');
+  let steps=0;
+  let volume=0;
+  const trueAcidity = 16 + Math.random()*6; // 16-22 °Т
+
+  function render(){
+    c.innerHTML=`
+      <div class="panel">
+        <button class="icon-btn" id="backBtn">← Назад</button>
+      </div>
+      <div class="exp-header">
+        <div class="exp-title">🧪 Титрование кислотности молока</div>
+        <div class="exp-sub">ГОСТ 3624 · Метод титрования 0,1 н NaOH</div>
+        <div class="exp-desc">
+          В колбу отмеряют <b>10 мл молока</b>, добавляют <b>20 мл дистиллированной воды</b> и 
+          <b>3 капли фенолфталеина</b>. Титруют 0,1 н раствором NaOH до появления <b>розовой окраски</b>, 
+          устойчивой 1 минуту. Кислотность = объём NaOH × 10 = <b>°Т</b>.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">
+          <span>Титрование</span>
+          <span class="step-info">NaOH: ${volume.toFixed(1)} мл</span>
+        </div>
+        <div class="stage-visual">
+          <div class="burette">
+            <div class="burette-liquid" style="height:${60-volume*2}%"></div>
+            <div class="burette-scale">
+              <span>0</span><span>5</span><span>10</span><span>15</span>
+            </div>
+          </div>
+          <div class="flask">
+            <div class="flask-liquid ${volume>trueAcidity-1?'pink':''}"></div>
+          </div>
+        </div>
+        <div style="font-size:.7rem;color:var(--dim);text-align:center;line-height:1.5">
+          Нажимай <b>«Каплю»</b> чтобы добавить NaOH.<br>
+          Остановись, когда раствор порозовеет.
+        </div>
+        <div class="actions">
+          <button class="action-btn secondary" id="dropBtn">💧 Добавить 0,5 мл NaOH</button>
+          <button class="action-btn primary" id="stopBtn">✓ Стоп — готово</button>
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    c.querySelector('#dropBtn').addEventListener('click',()=>{
+      volume+=0.5;
+      sfx('drop');vib(10);
+      if(volume>25)volume=25;
+      render();
+    });
+    c.querySelector('#stopBtn').addEventListener('click',()=>{
+      if(volume<5){sfx('click');toast('Слишком мало титранта','warn');return}
+      finish();
+    });
+  }
+
+  function finish(){
+    // кислотность = объём × 10
+    const acidity=Math.round(volume*10*10)/10;
+    const ok=acidity>=16&&acidity<=21;
+    const warn=acidity>=14&&acidity<16||acidity>21&&acidity<=24;
+    methodResults.titration={value:acidity,unit:'°Т',ok,warn};
+    addLog(`🧪 Титрование: ${acidity} °Т — ${ok?'норма (16–21)':warn?'на границе':'не соответствует'}`,ok?'good':warn?'warn':'bad');
+    
+    c.innerHTML=`
+      <div class="panel">
+        <button class="icon-btn" id="backBtn">← К образцу</button>
+      </div>
+      <div class="exp-header">
+        <div class="exp-title">🧪 Титрование завершено</div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">Результат</div>
+        <div class="stage-visual">
+          <div style="text-align:center">
+            <div class="result-num ${ok?'':warn?'warn':'bad'}" style="font-size:2.4rem">
+              ${acidity}<span style="font-size:1rem"> °Т</span>
+            </div>
+            <div class="result-unit">титруемая кислотность</div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="result-header">📋 Заключение</div>
+          <div class="result-verdict ${ok?'ok':warn?'warn':'bad'}">
+            ${ok?'✅ Соответствует ГОСТ (16–21 °Т)':warn?'⚠️ На границе нормы':'❌ Не соответствует (скисшее / разбавленное)'}
+          </div>
+          <div class="result-formula">
+            <b>Формула:</b> K = V(NaOH) × 10 = ${volume.toFixed(1)} × 10 = <b>${acidity} °Т</b><br>
+            <b>Норма:</b> 16–21 °Т для пастеризованного молока<br>
+            <b>Метод:</b> ГОСТ 3624-92, титрование 0,1 н NaOH с фенолфталеином
+          </div>
+        </div>
+        <div class="actions">
+          <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+  }
+
+  render();
+}
+
+/* ==================== 3. ЖИР ПО ГЕРБЕРУ ==================== */
+function renderFat(){
+  const c=document.getElementById('mainContent');
+  const trueFat = 3.1 + Math.random()*0.3;
+  const measured = Math.round(trueFat*10)/10;
+  let spun=false;
+
+  function render(){
+    c.innerHTML=`
+      <div class="panel">
+        <button class="icon-btn" id="backBtn">← Назад</button>
+      </div>
+      <div class="exp-header">
+        <div class="exp-title">⚖️ Определение жира методом Гербера</div>
+        <div class="exp-sub">ГОСТ 5867 · Метод Гербера</div>
+        <div class="exp-desc">
+          В молочный жиромер отмеряют <b>10 мл молока</b>, добавляют <b>10 мл серной кислоты</b> 
+          (плотность 1,81–1,82) и <b>1 мл изоамилового спирта</b>. Центрифугируют 5 минут, 
+          затем замеряют столбик жира.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">
+          <span>Жиромер</span>
+          <span class="step-info">${spun?'измерено':'нужно центрифугировать'}</span>
+        </div>
+        <div class="stage-visual">
+          <div style="position:relative;width:40px;height:200px;
+            background:linear-gradient(90deg,rgba(200,220,240,.4),rgba(255,255,255,.3),rgba(180,200,220,.4));
+            border:2px solid rgba(150,180,200,.6);border-radius:20px;
+            box-shadow:inset 0 0 12px rgba(255,255,255,.3),0 4px 16px rgba(0,0,0,.5);overflow:hidden">
+            <div style="position:absolute;left:2px;right:2px;bottom:2px;
+              height:60%;background:linear-gradient(180deg,#fef9c3,#fde047);border-radius:16px"></div>
+            ${spun?`<div style="position:absolute;left:2px;right:2px;bottom:70%;height:8%;
+              background:linear-gradient(180deg,#fce7f3,#ec4899);border-radius:4px;
+              box-shadow:0 0 8px rgba(236,72,153,.8)"></div>`:''}
+            <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);
+              font-family:var(--mono);font-size:8px;color:#6b7280;text-align:center">
+              ${spun?'3,2':'?'}
+            </div>
+          </div>
+        </div>
+        <div style="font-size:.7rem;color:var(--dim);text-align:center;line-height:1.5;margin-bottom:10px">
+          ${spun?'Жир всплыл в капилляре. Измеряем столбик.':'Нажми «Центрифугировать» → 5 минут.'}
+        </div>
+        <div class="actions">
+          ${!spun?`<button class="action-btn primary" id="spinBtn">⚙️ Центрифугировать 5 мин</button>`:`
+            <button class="action-btn primary" id="measureBtn">📏 Измерить результат</button>`}
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    if(!spun) c.querySelector('#spinBtn').addEventListener('click',()=>{spun=true;sfx('drop');vib(20);render()});
+    else c.querySelector('#measureBtn').addEventListener('click',finish);
+  }
+
+  function finish(){
+    const ok=Math.abs(measured-3.2)<=0.1;
+    const warn=Math.abs(measured-3.2)<=0.3;
+    methodResults.fat={value:measured,unit:'%',ok,warn};
+    addLog(`⚖️ Жир по Герберу: ${measured}% — ${ok?'норма':warn?'в пределах отклонения':'не соответствует'}`,ok?'good':warn?'warn':'bad');
+    c.innerHTML=`
+      <div class="panel">
+        <button class="icon-btn" id="backBtn">← К образцу</button>
+      </div>
+      <div class="exp-header">
+        <div class="exp-title">⚖️ Жир определён</div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">Результат</div>
+        <div class="stage-visual">
+          <div style="text-align:center">
+            <div class="result-num ${ok?'':warn?'warn':'bad'}" style="font-size:2.4rem">
+              ${measured}<span style="font-size:1rem"> %</span>
+            </div>
+            <div class="result-unit">массовая доля жира</div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="result-header">📋 Заключение</div>
+          <div class="result-verdict ${ok?'ok':warn?'warn':'bad'}">
+            ${ok?'✅ Соответствует (3,2 ± 0,1%)':warn?'⚠️ В пределах производственного допуска':'❌ Не соответствует заявленному'}
+          </div>
+          <div class="result-formula">
+            <b>Метод:</b> ГОСТ 5867-90, метод Гербера<br>
+            <b>Реактивы:</b> H₂SO₄ (пл. 1,81–1,82), изоамиловый спирт<br>
+            <b>Условия:</b> центрифуга 1000 об/мин, 5 мин, T = 65 °C<br>
+            <b>Норма:</b> 3,2 ± 0,1%
+          </div>
+        </div>
+        <div class="actions">
+          <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+  }
+
+  render();
+}
+
+/* ==================== 4. ВЛАЖНОСТЬ (хлеб) ==================== */
+function renderMoisture(){
+  const c=document.getElementById('mainContent');
+  const trueM=41+Math.random()*2;
+  const measured=Math.round(trueM*10)/10;
+  let dried=false;
+
+  function render(){
+    c.innerHTML=`
+      <div class="panel"><button class="icon-btn" id="backBtn">← Назад</button></div>
+      <div class="exp-header">
+        <div class="exp-title">💧 Влажность мякиша хлеба</div>
+        <div class="exp-sub">ГОСТ 21094 · Высушивание до постоянной массы</div>
+        <div class="exp-desc">
+          Из мякиша берут навеску <b>5 г</b>, высушивают в сушильном шкафу при <b>130 °C</b> в течение 40 минут, 
+          охлаждают и взвешивают. Влажность = потеря массы × 100% / масса навески.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">
+          <span>Сушильный шкаф</span>
+          <span class="step-info">T = 130 °C</span>
+        </div>
+        <div class="stage-visual">
+          <div style="text-align:center">
+            <div class="balance-display">${dried?measured+'%':'....'}</div>
+            <div class="balance-unit">${dried?'измеренная влажность':'нажми «Высушить»'}</div>
+          </div>
+        </div>
+        <div class="actions">
+          ${!dried?`<button class="action-btn primary" id="dryBtn">🔥 Высушить 40 мин</button>`:`
+            <button class="action-btn primary" id="doneBtn">✓ Готово</button>`}
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    if(!dried) c.querySelector('#dryBtn').addEventListener('click',()=>{dried=true;sfx('drop');vib(20);render()});
+    else{
+      const ok=measured<=42;
+      methodResults.moisture={value:measured,unit:'%',ok,warn:!ok};
+      addLog(`💧 Влажность хлеба: ${measured}% — ${ok?'норма (≤42%)':'превышение'}`,ok?'good':'warn');
+      c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+    }
+  }
+  render();
+}
+
+/* ==================== 5. ПОРИСТОСТЬ ==================== */
+function renderPorosity(){
+  const c=document.getElementById('mainContent');
+  const trueP=70+Math.random()*8;
+  const measured=Math.round(trueP);
+  const ok=measured>=72;
+  methodResults.porosity={value:measured,unit:'%',ok,warn:!ok};
+  addLog(`🕳️ Пористость: ${measured}% — ${ok?'соответствует':'ниже нормы'}`,ok?'good':'warn');
+
+  c.innerHTML=`
+    <div class="panel"><button class="icon-btn" id="backBtn">← К образцу</button></div>
+    <div class="exp-header">
+      <div class="exp-title">🕳️ Пористость мякиша хлеба</div>
+      <div class="exp-sub">ГОСТ 5669 · Метод Журавлёва</div>
+      <div class="exp-desc">
+        Из мякиша вырезают цилиндр <b>объёмом 27 см³</b>, взвешивают, 
+        определяют плотность и по формуле считают пористость.
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-title">Результат</div>
+      <div class="stage-visual">
+        <div style="text-align:center">
+          <div class="result-num ${ok?'':'warn'}" style="font-size:2.4rem">
+            ${measured}<span style="font-size:1rem"> %</span>
+          </div>
+          <div class="result-unit">пористость</div>
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="result-header">📋 Заключение</div>
+        <div class="result-verdict ${ok?'ok':'warn'}">
+          ${ok?'✅ Соответствует ГОСТ (≥72%)':'⚠️ Ниже нормы — хлеб плотный'}
+        </div>
+        <div class="result-formula">
+          <b>Формула:</b> П = (V<sub>мякиша</sub> − V<sub>плотной части</sub>) / V<sub>мякиша</sub> × 100%<br>
+          <b>Норма:</b> ≥72% для пшеничного хлеба из муки в/с (ГОСТ 26987)
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+      </div>
+    </div>
+  `;
+  c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+  c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+}
+
+/* ==================== 6. РЕФРАКТОМЕТРИЯ (Brix, сок) ==================== */
+function renderBrix(){
+  const c=document.getElementById('mainContent');
+  const trueB=10+Math.random()*3;
+  const measured=Math.round(trueB*10)/10;
+  const ok=measured>=10.5;
+  methodResults.brix={value:measured,unit:'°Brix',ok,warn:!ok};
+  addLog(`🔆 Рефрактометрия: ${measured} °Brix — ${ok?'соответствует':'ниже нормы'}`,ok?'good':'warn');
+
+  c.innerHTML=`
+    <div class="panel"><button class="icon-btn" id="backBtn">← К образцу</button></div>
+    <div class="exp-header">
+      <div class="exp-title">🔆 Рефрактометрия сока</div>
+      <div class="exp-sub">ГОСТ 28562 · Показатель преломления</div>
+      <div class="exp-desc">
+        На призму рефрактометра наносят <b>1–2 капли сока</b>. Смотрят границу света и тени, 
+        по шкале определяют <b>°Brix</b> (массовая доля растворимых сухих веществ).
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-title">Измерение</div>
+      <div class="stage-visual" style="flex-direction:column">
+        <div class="refract-tube" style="height:150px">
+          <div class="refract-liquid" style="height:${40+measured*3}%"></div>
+          <div class="refract-shadow"></div>
+        </div>
+        <div style="margin-top:10px;font-family:var(--mono);font-size:.85rem;
+          font-weight:900;color:var(--acc2)">
+          ${measured} °Brix
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="result-header">📋 Заключение</div>
+        <div class="result-verdict ${ok?'ok':'warn'}">
+          ${ok?'✅ Соответствует ГОСТ 32100-2013 (≥10,5 °Brix)':'⚠️ Ниже нормы — возможна фальсификация водой'}
+        </div>
+        <div class="result-formula">
+          <b>Метод:</b> рефрактометрия при 20 °C<br>
+          <b>Норма:</b> ≥10,5 °Brix для яблочного сока прямого отжима<br>
+          <b>Что даёт:</b> показатель содержания сахаров и растворимых веществ
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+      </div>
+    </div>
+  `;
+  c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+  c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+}
+
+/* ==================== 7. КИСЛОТНОСТЬ СОКА ==================== */
+function renderJuiceAcidity(){
+  const c=document.getElementById('mainContent');
+  const trueA=0.4+Math.random()*0.6;
+  const measured=Math.round(trueA*100)/100;
+  const ok=measured>=0.3&&measured<=1.2;
+  methodResults.acidity={value:measured,unit:'%',ok,warn:!ok};
+  addLog(`🍋 Кислотность сока: ${measured}% — ${ok?'соответствует':'не соответствует'}`,ok?'good':'warn');
+
+  c.innerHTML=`
+    <div class="panel"><button class="icon-btn" id="backBtn">← К образцу</button></div>
+    <div class="exp-header">
+      <div class="exp-title">🍋 Титруемая кислотность сока</div>
+      <div class="exp-sub">ГОСТ 25555.0 · Титрование 0,1 н NaOH</div>
+      <div class="exp-desc">
+        К <b>10 мл сока</b> добавляют воду и титруют 0,1 н NaOH до pH 8,1 
+        (по фенолфталеину). Выражают в % яблочной кислоты.
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-title">Результат</div>
+      <div class="stage-visual">
+        <div style="text-align:center">
+          <div class="result-num ${ok?'':'warn'}" style="font-size:2.4rem">
+            ${measured}<span style="font-size:1rem"> %</span>
+          </div>
+          <div class="result-unit">титруемая кислотность</div>
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="result-header">📋 Заключение</div>
+        <div class="result-verdict ${ok?'ok':'warn'}">
+          ${ok?'✅ В пределах нормы (0,3–1,2%)':'⚠️ Отклонение от нормы'}
+        </div>
+        <div class="result-formula">
+          <b>Формула:</b> К = V(NaOH) × K × 100 / V(сока)<br>
+          <b>Норма:</b> 0,3–1,2% для яблочного сока (ГОСТ 32100)<br>
+          <b>Индикатор:</b> фенолфталеин, pH 8,1
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+      </div>
+    </div>
+  `;
+  c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+  c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+}
+
+/* ==================== 8. ВОДА В МЁДЕ ==================== */
+function renderHoneyWater(){
+  const c=document.getElementById('mainContent');
+  const trueW=17+Math.random()*4;
+  const measured=Math.round(trueW*10)/10;
+  const ok=measured<=20;
+  methodResults.water={value:measured,unit:'%',ok,warn:!ok};
+  addLog(`💧 Вода в мёде: ${measured}% — ${ok?'норма (≤20%)':'превышение'}`,ok?'good':'warn');
+
+  c.innerHTML=`
+    <div class="panel"><button class="icon-btn" id="backBtn">← К образцу</button></div>
+    <div class="exp-header">
+      <div class="exp-title">💧 Массовая доля воды в мёде</div>
+      <div class="exp-sub">ГОСТ 31774 · Рефрактометрия</div>
+      <div class="exp-desc">
+        Мёд наносят на призму рефрактометра. По показателю преломления определяют 
+        <b>массовую долю воды</b>. Норма — <b>≤20%</b> (при большей влажности мёд бродит).
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-title">Измерение</div>
+      <div class="stage-visual">
+        <div style="text-align:center">
+          <div class="result-num ${ok?'':'warn'}" style="font-size:2.4rem">
+            ${measured}<span style="font-size:1rem"> %</span>
+          </div>
+          <div class="result-unit">массовая доля воды</div>
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="result-header">📋 Заключение</div>
+        <div class="result-verdict ${ok?'ok':'warn'}">
+          ${ok?'✅ Соответствует ГОСТ (≤20%)':'⚠️ Превышение — риск брожения'}
+        </div>
+        <div class="result-formula">
+          <b>Метод:</b> ГОСТ 31774, рефрактометрический<br>
+          <b>Норма:</b> ≤20% массовой доли воды<br>
+          <b>Показатель преломления:</b> ${(1.49+trueW*0.001).toFixed(4)}
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+      </div>
+    </div>
+  `;
+  c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+  c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+}
+
+/* ==================== 9. МИКРОБИОЛОГИЯ ==================== */
+function renderMicro(){
+  const c=document.getElementById('mainContent');
+  const sampleKey=currentSample.id;
+  // генерируем количество колоний
+  const baseCount = sampleKey==='meat'? 50+Math.floor(Math.random()*150) :
+                    sampleKey==='sausage'? 30+Math.floor(Math.random()*100) :
+                    20+Math.floor(Math.random()*80);
+  const isSafe = baseCount<100;
+
+  // Генерируем позиции колоний
+  const colonies=[];
+  for(let i=0;i<Math.min(baseCount,60);i++){
+    const angle=Math.random()*6.28;
+    const r=Math.random()*70;
+    colonies.push({x:90+Math.cos(angle)*r-4,y:90+Math.sin(angle)*r-4});
+  }
+
+  c.innerHTML=`
+    <div class="panel"><button class="icon-btn" id="backBtn">← Назад</button></div>
+    <div class="exp-header">
+      <div class="exp-title">🧬 Микробиологический анализ</div>
+      <div class="exp-sub">ГОСТ 10444.15 · КМАФАнМ (КОЕ/г)</div>
+      <div class="exp-desc">
+        Из разведения образца делают <b>посев на чашку Петри</b> с питательной средой. 
+        Инкубируют 48 ч при 30 °C. Считают выросшие колонии, 
+        пересчитывают на 1 г продукта.
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-title">
+        <span>Чашка Петри (после инкубации)</span>
+        <span class="step-info">посев 1:1000</span>
+      </div>
+      <div class="stage-visual">
+        <div class="petri">
+          ${colonies.map(cl=>`<div class="colony" style="left:${cl.x}px;top:${cl.y}px"></div>`).join('')}
+        </div>
+      </div>
+      <div style="font-size:.72rem;text-align:center;color:var(--dim);line-height:1.5;margin-bottom:10px">
+        Подсчитай колонии. Всего видно ≈ <b>${colonies.length}</b>.<br>
+        Итоговое значение КМАФАнМ — с учётом разведения.
+      </div>
+      <div class="actions">
+        <button class="action-btn primary" id="countBtn">🔢 Посчитать</button>
+        <button class="action-btn secondary" id="revealBtn">📊 Показать результат</button>
+      </div>
+    </div>
+  `;
+  c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+
+  function finish(){
+    const cfus = colonies.length*1000; // с учётом разведения
+    const value = cfus.toLocaleString('ru-RU');
+    // Норма зависит от продукта
+    const norms = {milk:100000, meat:100000, sausage:1000};
+    const norm = norms[sampleKey]||100000;
+    const ok = cfus<=norm;
+    methodResults.micro={value:value,unit:'КОЕ/г',ok,warn:!ok};
+    addLog(`🧬 КМАФАнМ: ${value} КОЕ/г — ${ok?'в норме':'превышение'}`,ok?'good':'bad');
+
+    c.innerHTML=`
+      <div class="panel"><button class="icon-btn" id="backBtn">← К образцу</button></div>
+      <div class="exp-header">
+        <div class="exp-title">🧬 Микробиология завершена</div>
+      </div>
+      <div class="stage">
+        <div class="stage-title">Результат</div>
+        <div class="stage-visual">
+          <div style="text-align:center">
+            <div class="result-num ${ok?'':'bad'}" style="font-size:1.6rem">
+              ${value}
+            </div>
+            <div class="result-unit">КОЕ/г · КМАФАнМ</div>
+          </div>
+        </div>
+        <div class="result-box">
+          <div class="result-header">📋 Заключение</div>
+          <div class="result-verdict ${ok?'ok':'bad'}">
+            ${ok?'✅ В пределах нормы — безопасно':'❌ Превышение КМАФАнМ — опасно для потребителя'}
+          </div>
+          <div class="result-formula">
+            <b>Подсчёт:</b> N = a × 10ⁿ = ${colonies.length} × 1000 = ${value} КОЕ/г<br>
+            <b>Норма ТР ТС 021/2011:</b> ≤${norm.toLocaleString('ru-RU')} КОЕ/г<br>
+            <b>Метод:</b> ГОСТ 10444.15, глубинное или поверхностное культивирование
+          </div>
+        </div>
+        <div class="actions">
+          <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+        </div>
+      </div>
+    `;
+    c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+    c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+  }
+
+  c.querySelector('#countBtn').addEventListener('click',()=>{
+    sfx('click');vib(15);
+    toast('Подсчитано: '+colonies.length+' колоний');
+    finish();
+  });
+  c.querySelector('#revealBtn').addEventListener('click',()=>{
+    sfx('coin');vib(25);finish();
+  });
+}
+
+/* ==================== 10. БЕЛОК ПО КЬЕЛЬДАЛЮ ==================== */
+function renderProtein(){
+  const c=document.getElementById('mainContent');
+  const sampleKey=currentSample.id;
+  const trueP = sampleKey==='meat'? 17+Math.random()*2 :
+                sampleKey==='sausage'? 12+Math.random()*2 :
+                13+Math.random()*2;
+  const measured=Math.round(trueP*10)/10;
+  const norms={meat:18, sausage:12};
+  const norm=norms[sampleKey]||15;
+  const ok=measured>=norm;
+  methodResults.protein={value:measured,unit:'%',ok,warn:!ok};
+  addLog(`🧪 Белок: ${measured}% — ${ok?'соответствует':'ниже нормы'}`,ok?'good':'warn');
+
+  c.innerHTML=`
+    <div class="panel"><button class="icon-btn" id="backBtn">← К образцу</button></div>
+    <div class="exp-header">
+      <div class="exp-title">🧪 Белок по Кьельдалю</div>
+      <div class="exp-sub">ГОСТ 23327 · Метод Кьельдаля</div>
+      <div class="exp-desc">
+        Навеску образца <b>минерализуют</b> концентрированной H₂SO₄ с катализатором. 
+        Аммиак отгоняют в титрованную кислоту, избыток оттитровывают. 
+        Расчёт по азоту × 6,25.
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-title">Результат</div>
+      <div class="stage-visual">
+        <div style="text-align:center">
+          <div class="result-num ${ok?'':'warn'}" style="font-size:2.4rem">
+            ${measured}<span style="font-size:1rem"> %</span>
+          </div>
+          <div class="result-unit">массовая доля белка</div>
+        </div>
+      </div>
+      <div class="result-box">
+        <div class="result-header">📋 Заключение</div>
+        <div class="result-verdict ${ok?'ok':'warn'}">
+          ${ok?`✅ Соответствует ГОСТ (≥${norm}%)`:`⚠️ Ниже нормы (норма ≥${norm}%)`}
+        </div>
+        <div class="result-formula">
+          <b>Формула:</b> Белок = N × 6,25 = ${(measured/6.25).toFixed(2)} × 6,25 = ${measured}%<br>
+          <b>Норма:</b> ≥${norm}% массовой доли белка<br>
+          <b>Метод:</b> ГОСТ 23327-98, минерализация по Кьельдалю
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn primary" id="doneBtn">✓ Продолжить</button>
+      </div>
+    </div>
+  `;
+  c.querySelector('#backBtn').addEventListener('click',()=>{sfx('click');renderSampleView()});
+  c.querySelector('#doneBtn').addEventListener('click',()=>{sfx('coin');vib(25);renderSampleView()});
+}
+
+/* ==================== СТАРТ ==================== */
+initA();
+renderSampleSelect();
+addLog('🔬 Лаборатория запущена. Выбери образец.','info');
+</script>
+</body>
+</html>
