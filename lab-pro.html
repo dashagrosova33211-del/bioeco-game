@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#06120f">
+<title>🔬 ЛАБ-PRO — ДОННУЭТ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --card:rgba(18,53,43,.8);--card2:rgba(13,37,29,.92);
+  --line:rgba(74,222,128,.25);--acc:#4ade80;--acc2:#22d3ee;
+  --gold:#fbbf24;--red:#f87171;--purple:#c084fc;--pink:#ec4899;
+  --txt:#e7f6ee;--dim:#8fbfae;
+  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,'Roboto',sans-serif;
+  background:radial-gradient(circle at 20% -10%,#14493a 0%,#06120f 55%,#020806 100%);
+  color:var(--txt);min-height:100vh;overflow-x:hidden;line-height:1.45;padding:8px;
+}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.6}
+.app{position:relative;z-index:1;max-width:900px;margin:0 auto}
+
+.header{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:8px 10px;margin-bottom:8px;
+  background:linear-gradient(90deg,rgba(15,58,45,.92),rgba(18,63,82,.92));
+  border:1px solid var(--line);border-radius:14px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(74,222,128,.15);
+}
+.brand{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.brand-img{flex-shrink:0;width:44px;height:44px;object-fit:contain;
+  filter:drop-shadow(0 0 8px rgba(74,222,128,.35))}
+.brand h1{font-size:.85rem;font-weight:900;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1.1}
+.brand h1 span{-webkit-text-fill-color:initial}
+.brand .sub{font-size:.44rem;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.2px;margin-top:1px;font-weight:600;line-height:1.2}
+.icon-btn{background:rgba(8,37,29,.9);border:1px solid var(--line);
+  border-radius:8px;color:var(--txt);padding:6px 9px;font-size:.72rem;
+  cursor:pointer;font-family:inherit;text-decoration:none;line-height:1;
+  transition:.15s;display:inline-flex;align-items:center;gap:4px}
+.icon-btn:active{transform:scale(.9)}
+.icon-btn.home{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;font-weight:800}
+
+.tabs{display:flex;gap:3px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:7px 11px;border-radius:9px;background:rgba(8,37,29,.9);
+  border:1px solid var(--line);color:var(--dim);font-size:.62rem;font-weight:800;
+  cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
+.tab.active{background:linear-gradient(90deg,rgba(34,211,238,.25),rgba(74,222,128,.2));
+  color:var(--acc);border-color:var(--acc)}
+.tab:active{transform:scale(.95)}
+
+.panel{
+  background:linear-gradient(170deg,rgba(16,48,39,.85),rgba(12,35,29,.92));
+  border:1px solid var(--line);border-radius:14px;padding:12px;
+  margin-bottom:8px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(74,222,128,.08);
+}
+.panel h2{font-size:.66rem;text-transform:uppercase;letter-spacing:1px;
+  color:var(--acc2);margin-bottom:8px;font-weight:800;
+  display:flex;justify-content:space-between;align-items:center;gap:6px}
+.panel h3{font-size:.6rem;color:var(--gold);margin:8px 0 4px;
+  text-transform:uppercase;letter-spacing:.5px;font-weight:800}
+
+/* MICROSCOPE */
+.micro-stage{
+  background:radial-gradient(circle at 50% 45%,#1a1a1a 0%,#000 80%);
+  border:8px solid #1f2937;border-radius:50%;width:min(92vw,420px);
+  aspect-ratio:1;margin:0 auto 10px;
+  box-shadow:0 0 40px rgba(0,0,0,.9),inset 0 0 30px #000;
+  position:relative;overflow:hidden;
+  cursor:grab;
+}
+.micro-stage:active{cursor:grabbing}
+.micro-canvas{
+  position:absolute;inset:0;width:100%;height:100%;
+  transition:transform .3s cubic-bezier(.3,1.2,.5,1);
+}
+.micro-crosshair{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:60px;height:60px;pointer-events:none;opacity:.5;
+  background:
+    linear-gradient(0deg,transparent 49%,#4ade80 49%,#4ade80 51%,transparent 51%),
+    linear-gradient(90deg,transparent 49%,#4ade80 49%,#4ade80 51%,transparent 51%);
+  border-radius:50%;
+  border:1px solid rgba(74,222,128,.4);
+}
+.micro-scale{
+  position:absolute;bottom:8px;left:12px;
+  font-family:var(--mono);font-size:.55rem;color:#4ade80;
+  background:rgba(0,0,0,.7);padding:3px 8px;border-radius:5px;
+  border:1px solid rgba(74,222,128,.3);
+}
+.micro-zoom{
+  display:flex;gap:5px;justify-content:center;margin-bottom:10px;flex-wrap:wrap;
+}
+.zoom-btn{
+  padding:8px 12px;border-radius:8px;background:rgba(8,37,29,.9);
+  border:1.5px solid var(--line);color:var(--txt);font-family:inherit;
+  font-weight:800;font-size:.65rem;cursor:pointer;transition:.15s;
+}
+.zoom-btn.active{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;
+  border-color:var(--acc)}
+.zoom-btn:active{transform:scale(.95)}
+
+.sample-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.sample-tab{
+  padding:6px 10px;border-radius:8px;background:rgba(8,37,29,.9);
+  border:1px solid var(--line);color:var(--txt);font-family:inherit;
+  font-weight:700;font-size:.6rem;cursor:pointer;transition:.15s;
+}
+.sample-tab.active{border-color:var(--acc);color:var(--acc)}
+.sample-tab:active{transform:scale(.95)}
+
+/* SPECTROPHOTOMETER */
+.spec-device{
+  background:linear-gradient(180deg,#1f2937,#111827);
+  border-radius:14px;padding:14px;margin-bottom:10px;
+  border:1px solid #374151;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 24px rgba(0,0,0,.5);
+}
+.spec-screen{
+  background:#04210f;border-radius:10px;padding:10px;
+  border:2px solid #1a5a3e;
+  box-shadow:inset 0 0 20px rgba(74,222,128,.15);
+  font-family:var(--mono);text-align:center;margin-bottom:10px;
+}
+.spec-lambda{font-size:.6rem;color:var(--dim);letter-spacing:.5px}
+.spec-value{font-size:2rem;font-weight:900;color:#4ade80;letter-spacing:2px;
+  text-shadow:0 0 12px rgba(74,222,128,.6);margin:4px 0}
+.spec-unit{font-size:.55rem;color:#8fbfae;letter-spacing:1px}
+.spec-slot{
+  background:#000;height:6px;border-radius:3px;margin:10px 0;position:relative;
+  overflow:hidden;
+}
+.spec-beam{
+  position:absolute;left:0;top:0;bottom:0;width:60%;
+  background:linear-gradient(90deg,rgba(74,222,128,.7),rgba(34,211,238,.9));
+  box-shadow:0 0 12px rgba(34,211,238,.6);
+  transition:width .5s;
+}
+.wl-slider{
+  width:100%;-webkit-appearance:none;height:8px;border-radius:4px;margin:10px 0;
+  background:linear-gradient(90deg,#8b00ff,#0000ff,#00ff00,#ffff00,#ff7f00,#ff0000);
+  outline:none;
+}
+.wl-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+  background:#fff;border:3px solid #22d3ee;cursor:pointer;
+  box-shadow:0 0 12px rgba(34,211,238,.8);
+}
+.wl-slider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;background:#fff;
+  border:3px solid #22d3ee;cursor:pointer;
+}
+
+/* calibration chart */
+.chart-box{
+  background:#04210f;border:1px solid #1a5a3e;border-radius:10px;
+  padding:8px;margin:10px 0;
+}
+.chart-box svg{width:100%;height:160px;display:block}
+
+/* PCR */
+.pcr-stage{
+  background:linear-gradient(180deg,#0a0a0a,#1a1a2e);
+  border-radius:14px;padding:14px;
+  border:1px solid #374151;margin-bottom:10px;
+  box-shadow:inset 0 0 40px rgba(0,0,0,.8);
+}
+.pcr-thermocycler{
+  background:linear-gradient(180deg,#2a2a3a,#1a1a2a);
+  border-radius:10px;padding:10px;margin-bottom:10px;
+  border:1px solid #4a4a6a;
+}
+.pcr-temp-display{
+  display:flex;justify-content:space-between;gap:8px;margin-bottom:10px;
+}
+.pcr-temp{
+  flex:1;background:#000;border-radius:8px;padding:8px;
+  border:2px solid #4a4a6a;text-align:center;
+}
+.pcr-temp.active{border-color:#4ade80;box-shadow:0 0 16px rgba(74,222,128,.5)}
+.pcr-temp-label{font-size:.5rem;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.5px;font-family:var(--mono)}
+.pcr-temp-value{font-family:var(--mono);font-size:1rem;font-weight:900;
+  color:#4ade80;margin-top:3px}
+.pcr-temp.active .pcr-temp-value{color:#fff;text-shadow:0 0 8px #4ade80}
+
+.pcr-tubes{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.pcr-tube{
+  width:34px;height:80px;border-radius:4px 4px 17px 17px;
+  background:linear-gradient(180deg,rgba(200,220,240,.5),rgba(150,180,220,.7));
+  border:2px solid rgba(150,180,200,.6);position:relative;
+  box-shadow:inset 0 0 12px rgba(255,255,255,.3),0 4px 12px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+.pcr-tube-liquid{
+  position:absolute;left:2px;right:2px;bottom:2px;height:50%;
+  background:linear-gradient(180deg,rgba(252,231,243,.8),rgba(236,72,153,.6));
+  border-radius:2px 2px 15px 15px;
+  transition:.5s;
+}
+.pcr-tube-label{
+  position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:.5rem;color:var(--dim);white-space:nowrap;
+}
+
+.pcr-progress{
+  height:10px;background:#0a0a0a;border-radius:5px;overflow:hidden;
+  border:1px solid #374151;margin:10px 0;
+}
+.pcr-progress-fill{
+  height:100%;background:linear-gradient(90deg,#22d3ee,#4ade80,#fbbf24);
+  background-size:200% 100%;animation:flow 3s linear infinite;
+  transition:width .3s;
+}
+@keyframes flow{0%{background-position:0 0}100%{background-position:200% 0}}
+
+/* Gel electrophoresis */
+.gel-stage{
+  background:linear-gradient(180deg,#1e3a8a,#0a1a3a);
+  border-radius:10px;padding:14px;
+  border:2px solid #3b82f6;
+  box-shadow:inset 0 0 30px rgba(59,130,246,.3);
+  margin-top:10px;
+}
+.gel-lanes{display:flex;justify-content:space-around;gap:6px;
+  min-height:180px;align-items:flex-start;padding-top:6px}
+.gel-lane{
+  width:38px;height:170px;position:relative;
+  background:rgba(0,0,0,.3);border-radius:4px;
+}
+.gel-band{
+  position:absolute;left:4px;right:4px;height:6px;border-radius:3px;
+  background:linear-gradient(90deg,#ec4899,#f472b6);
+  box-shadow:0 0 12px rgba(236,72,153,.9);
+  animation:bandIn .6s cubic-bezier(.3,1.5,.5,1);
+}
+@keyframes bandIn{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
+.gel-band.ladder{background:linear-gradient(90deg,#22d3ee,#4ade80);
+  box-shadow:0 0 10px rgba(34,211,238,.7)}
+.gel-label{
+  font-size:.5rem;text-align:center;color:var(--dim);
+  font-family:var(--mono);margin-top:6px;
+}
+
+/* Buttons */
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.action-btn{
+  flex:1 1 auto;min-width:100px;padding:11px 10px;border-radius:10px;
+  border:none;font-family:inherit;font-weight:900;font-size:.7rem;
+  cursor:pointer;transition:.15s;letter-spacing:.3px;
+}
+.action-btn:not(:disabled):active{transform:scale(.96)}
+.action-btn:disabled{opacity:.4;cursor:not-allowed}
+.action-btn.primary{background:linear-gradient(90deg,#16a34a,#4ade80);color:#04210f;
+  box-shadow:0 4px 14px rgba(74,222,128,.3)}
+.action-btn.secondary{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a}
+.action-btn.gold{background:linear-gradient(90deg,#d97706,#fbbf24);color:#2b1600}
+.action-btn.danger{background:rgba(46,20,20,.9);color:#f87171;border:1px solid rgba(248,113,113,.6)}
+
+/* Result */
+.result-box{
+  background:linear-gradient(160deg,rgba(34,211,238,.08),rgba(13,37,29,.94));
+  border:1px solid rgba(34,211,238,.4);border-radius:12px;
+  padding:12px;margin-top:10px;animation:fbIn .4s;
+}
+@keyframes fbIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.result-header{font-size:.6rem;color:var(--acc2);text-transform:uppercase;
+  letter-spacing:.6px;font-weight:800;margin-bottom:8px}
+.result-value{
+  background:#04210f;border:2px solid #1a5a3e;border-radius:10px;
+  padding:14px;text-align:center;margin-bottom:8px;
+}
+.result-num{font-family:var(--mono);font-size:1.8rem;font-weight:900;
+  color:#4ade80;text-shadow:0 0 10px rgba(74,222,128,.6)}
+.result-num.bad{color:#f87171;text-shadow:0 0 10px rgba(248,113,113,.6)}
+.result-num.warn{color:#fbbf24;text-shadow:0 0 10px rgba(251,191,36,.6)}
+.result-unit{font-size:.6rem;color:var(--dim);font-family:var(--mono);margin-top:2px}
+.result-verdict{font-size:.7rem;font-weight:800;margin-top:8px;padding:8px;
+  border-radius:8px;text-align:center}
+.result-verdict.ok{background:rgba(74,222,128,.15);color:var(--acc);border:1px solid var(--acc)}
+.result-verdict.warn{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid var(--gold)}
+.result-verdict.bad{background:rgba(248,113,113,.15);color:var(--red);border:1px solid var(--red)}
+.result-formula{
+  font-family:var(--mono);font-size:.56rem;color:#a7e8c8;line-height:1.6;
+  padding:8px;background:rgba(5,22,17,.7);border-radius:6px;margin-top:8px;
+}
+.result-formula b{color:var(--acc2)}
+
+/* Toast */
+#toasts{position:fixed;top:8px;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;flex-direction:column;gap:4px;
+  pointer-events:none;width:calc(100% - 16px);max-width:360px}
+.toast{
+  background:linear-gradient(135deg,rgba(20,60,48,.97),rgba(13,42,34,.97));
+  border:1px solid var(--acc);border-radius:10px;padding:8px 12px;
+  font-size:.68rem;font-weight:700;text-align:center;color:var(--txt);
+  box-shadow:0 8px 28px rgba(0,0,0,.5),0 0 20px rgba(74,222,128,.2);
+  animation:tin .3s}
+.toast.bad{border-color:var(--red)}
+.toast.warn{border-color:var(--gold)}
+.toast.epic{border-color:var(--purple)}
+.toast.out{animation:tout .3s forwards}
+@keyframes tin{from{opacity:0;transform:translateY(-14px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes tout{to{opacity:0;transform:translateY(-14px) scale(.94)}}
+
+/* CERTIFICATE modal */
+.cert-modal{
+  position:fixed;inset:0;background:rgba(3,12,9,.96);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:10px;
+  z-index:300;overflow-y:auto;
+}
+.cert-modal.hide{display:none}
+.cert-inner{
+  background:linear-gradient(165deg,rgba(20,58,46,.98),rgba(11,39,33,.99));
+  border:1px solid var(--line);border-radius:18px;padding:18px;
+  max-width:640px;width:100%;max-height:94vh;overflow-y:auto;
+  box-shadow:0 24px 70px rgba(0,0,0,.85);
+}
+.cert-inner h2{font-size:1.05rem;margin-bottom:9px;font-weight:900;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cert-inner input{
+  width:100%;padding:11px;border-radius:10px;
+  background:rgba(5,22,17,.9);border:1px solid var(--line);
+  color:var(--txt);font-family:inherit;font-size:.85rem;margin:8px 0;
+}
+.cert-inner input:focus{outline:none;border-color:var(--acc)}
+.cert-preview{
+  border-radius:12px;margin:10px 0;background:#fff;
+  max-width:100%;height:auto;box-shadow:0 8px 24px rgba(0,0,0,.5);
+}
+
+footer{margin-top:12px;padding:10px;text-align:center;
+  border-top:1px solid rgba(74,222,128,.15)}
+footer .uni{font-size:.6rem;font-weight:900;color:var(--acc);
+  letter-spacing:.4px;text-transform:uppercase}
+footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="toasts"></div>
+
+<div class="app">
+  <header class="header">
+    <div class="brand">
+      <img src="logo-lab.png" class="brand-img" alt=""
+           onerror="this.style.display='none'">
+      <div>
+        <h1>🔬 ЛАБ-PRO</h1>
+        <div class="sub">ДОННУЭТ · кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px">
+      <button class="icon-btn" id="voiceBtn" title="Голос">🔊</button>
+      <button class="icon-btn" id="certBtn" title="Сертификат">🏅</button>
+      <a class="icon-btn home" href="index.html">🏠 Игра</a>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="micro">🔬 Микроскоп</button>
+    <button class="tab" data-tab="spec">📊 Спектрофотометр</button>
+    <button class="tab" data-tab="pcr">🧬 ПЦР на ГМО</button>
+  </div>
+
+  <div id="tab-micro" class="tab-content">
+    <div class="panel">
+      <h2>🔬 Микроскоп <span style="color:var(--gold);font-size:.55rem;font-family:var(--mono)" id="microInfo">40×</span></h2>
+
+      <div class="sample-tabs" id="sampleTabs"></div>
+
+      <div class="micro-stage" id="microStage">
+        <canvas class="micro-canvas" id="microCanvas" width="420" height="420"></canvas>
+        <div class="micro-crosshair"></div>
+        <div class="micro-scale" id="microScale">--- мкм</div>
+      </div>
+
+      <div class="micro-zoom" id="zoomBtns">
+        <button class="zoom-btn active" data-zoom="40">40×</button>
+        <button class="zoom-btn" data-zoom="100">100×</button>
+        <button class="zoom-btn" data-zoom="400">400×</button>
+        <button class="zoom-btn" data-zoom="1000">1000×</button>
+      </div>
+
+      <div style="font-size:.66rem;color:var(--dim);text-align:center;line-height:1.5">
+        👆 Двигай стекло пальцем · 🔍 Меняй увеличение
+      </div>
+
+      <div class="result-box" id="microResult" style="display:none"></div>
+    </div>
+  </div>
+
+  <div id="tab-spec" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>📊 Спектрофотометр <span style="color:var(--gold);font-size:.55rem;font-family:var(--mono)">UV-Vis</span></h2>
+
+      <div style="font-size:.68rem;color:#c4e6d6;line-height:1.55;margin-bottom:10px;
+        padding:8px 10px;background:rgba(5,22,17,.7);border-radius:8px;
+        border-left:3px solid var(--acc2)">
+        <b>Закон Бугера-Ламберта-Бера:</b> A = ε · c · l.
+        Измеряем оптическую плотность A при длине волны λ. По калибровочной кривой находим концентрацию c.
+      </div>
+
+      <div class="spec-device">
+        <div class="spec-screen">
+          <div class="spec-lambda" id="specLambda">λ = 540 нм</div>
+          <div class="spec-value" id="specValue">0.000</div>
+          <div class="spec-unit">оптическая плотность (A)</div>
+        </div>
+        <div class="spec-slot"><div class="spec-beam" id="specBeam"></div></div>
+
+        <label style="font-size:.6rem;color:var(--dim);font-family:var(--mono)">
+          Длина волны: <span id="wlLabel" style="color:var(--acc2)">540 нм</span>
+        </label>
+        <input type="range" min="400" max="700" value="540" class="wl-slider" id="wlSlider">
+
+        <div style="font-size:.6rem;color:var(--dim);text-align:center;font-family:var(--mono)">
+          🎯 Выбери λ в максимуме поглощения аналита
+        </div>
+      </div>
+
+      <h3>Образец для анализа</h3>
+      <div class="actions" id="specSamples">
+        <button class="action-btn secondary" data-analyte="protein">🥩 Белок (биурет)</button>
+        <button class="action-btn secondary" data-analyte="vitc">🍋 Витамин C</button>
+        <button class="action-btn secondary" data-analyte="nitrite">🥓 Нитриты</button>
+        <button class="action-btn secondary" data-analyte="sugar">🍯 Сахара</button>
+      </div>
+
+      <div id="specContent"></div>
+    </div>
+  </div>
+
+  <div id="tab-pcr" class="tab-content" style="display:none">
+    <div class="panel">
+      <h2>🧬 ПЦР-анализ на ГМО <span style="color:var(--gold);font-size:.55rem;font-family:var(--mono)">ПЦР + гель-электрофорез</span></h2>
+
+      <div style="font-size:.68rem;color:#c4e6d6;line-height:1.55;margin-bottom:10px;
+        padding:8px 10px;background:rgba(5,22,17,.7);border-radius:8px;
+        border-left:3px solid var(--acc2)">
+        <b>ПЦР</b> (полимеразная цепная реакция) — амплификация ДНК. 30 циклов = миллион копий.
+        Проверяем 3 образца сои на наличие <b>промотора 35S CaMV</b> (маркер ГМО).
+      </div>
+
+      <div class="pcr-thermocycler">
+        <div class="pcr-temp-display">
+          <div class="pcr-temp" id="temp1">
+            <div class="pcr-temp-label">Денатурация</div>
+            <div class="pcr-temp-value">95°C</div>
+          </div>
+          <div class="pcr-temp" id="temp2">
+            <div class="pcr-temp-label">Отжиг</div>
+            <div class="pcr-temp-value">55°C</div>
+          </div>
+          <div class="pcr-temp" id="temp3">
+            <div class="pcr-temp-label">Элонгация</div>
+            <div class="pcr-temp-value">72°C</div>
+          </div>
+        </div>
+
+        <div class="pcr-tubes">
+          <div class="pcr-tube"><div class="pcr-tube-liquid"></div>
+            <div class="pcr-tube-label">К+<br>контр.</div></div>
+          <div class="pcr-tube"><div class="pcr-tube-liquid"></div>
+            <div class="pcr-tube-label">Образец 1<br>соя</div></div>
+          <div class="pcr-tube"><div class="pcr-tube-liquid"></div>
+            <div class="pcr-tube-label">Образец 2<br>соя</div></div>
+        </div>
+
+        <div class="pcr-progress">
+          <div class="pcr-progress-fill" id="pcrProgress" style="width:0%"></div>
+        </div>
+        <div style="text-align:center;font-family:var(--mono);font-size:.62rem;color:var(--acc2)"
+             id="pcrStatus">Готов к запуску</div>
+      </div>
+
+      <div class="actions">
+        <button class="action-btn primary" id="pcrStart">🧬 Запустить ПЦР (30 циклов)</button>
+      </div>
+
+      <div id="gelContainer"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="uni">ФГБОУ ВО «ДОННУЭТ»</div>
+    <div class="kaf">Кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
+  </footer>
+</div>
+
+<!-- CERTIFICATE MODAL -->
+<div class="cert-modal hide" id="certModal">
+  <div class="cert-inner">
+    <h2>🏅 Сертификат участника</h2>
+    <p style="font-size:.75rem;color:#c4e6d6;margin-bottom:9px">
+      Введи своё имя — сгенерируем сертификат с логотипами ДОННУЭТ и статистикой.
+    </p>
+    <input type="text" id="certName" placeholder="Фамилия Имя" maxlength="40">
+    <canvas id="certCanvas" width="900" height="640"
+      style="width:100%;height:auto;border-radius:12px;background:#fff;
+      box-shadow:0 8px 24px rgba(0,0,0,.5)"></canvas>
+    <div class="actions">
+      <button class="action-btn primary" id="certDownload">📥 Скачать PNG</button>
+      <button class="action-btn secondary" id="certClose">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const toast=(t,c='')=>{const el=document.createElement('div');
+  el.className='toast '+c;el.textContent=t;$('toasts').appendChild(el);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),300)},2200)};
+
+/* AUDIO */
+let actx;
+function initA(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}}
+function sfx(t){
+  if(!actx)return;
+  try{const now=actx.currentTime;
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.connect(g);g.connect(actx.destination);
+    if(t==='click'){o.type='sine';o.frequency.setValueAtTime(600,now);
+      o.frequency.exponentialRampToValueAtTime(900,now+.06);
+      g.gain.setValueAtTime(.06,now);g.gain.exponentialRampToValueAtTime(.001,now+.08);
+      o.start(now);o.stop(now+.09)}
+    else if(t==='coin'){[880,1320].forEach((f,i)=>{const o2=actx.createOscillator(),g2=actx.createGain();
+      o2.connect(g2);g2.connect(actx.destination);o2.type='square';o2.frequency.value=f;
+      g2.gain.setValueAtTime(.05,now+i*.06);g2.gain.exponentialRampToValueAtTime(.001,now+i*.06+.14);
+      o2.start(now+i*.06);o2.stop(now+i*.06+.16)})}
+    else if(t==='beep'){o.type='sine';o.frequency.value=880;
+      g.gain.setValueAtTime(.04,now);g.gain.exponentialRampToValueAtTime(.001,now+.08);
+      o.start(now);o.stop(now+.1)}
+  }catch(e){}
+}
+function vib(ms){if(navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}}
+
+/* VOICE */
+let voiceOn=false;
+function speak(text){
+  if(!voiceOn||!('speechSynthesis' in window))return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ru-RU';u.rate=1.05;u.pitch=1.1;u.volume=.9;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+$('voiceBtn').addEventListener('click',e=>{
+  voiceOn=!voiceOn;
+  e.target.textContent=voiceOn?'🔊':'🔇';
+  if(voiceOn){initA();speak('Голосовой эксперт включён');sfx('click')}
+  else{try{speechSynthesis.cancel()}catch(e){}}
+});
+
+/* TABS */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
+  $('tab-'+t.dataset.tab).style.display='block';
+  sfx('click');
+  if(t.dataset.tab==='micro')speak('Микроскоп. Двигай стекло и меняй увеличение');
+  if(t.dataset.tab==='spec')speak('Спектрофотометр. Выбери длину волны и образец');
+  if(t.dataset.tab==='pcr')speak('Полимеразная цепная реакция. Определяем ГМО в сое');
+}));
+
+/* ============================================================
+   МИКРОСКОП
+   ============================================================ */
+const SAMPLES={
+  yeast:{
+    icon:'🍺', name:'Дрожжи (Saccharomyces cerevisiae)',
+    size:5, sizeLabel:'5 мкм',
+    color:'#fde047', desc:'Одноклеточные грибы. Используются в хлебопечении и пивоварении.'
+  },
+  bacteria:{
+    icon:'🥛', name:'Молочнокислые бактерии',
+    size:1, sizeLabel:'1 мкм',
+    color:'#4ade80', desc:'Lactobacillus. Сквашивают молоко в йогурт и простоквашу.'
+  },
+  sugar:{
+    icon:'🍬', name:'Кристаллы сахарозы',
+    size:20, sizeLabel:'20 мкм',
+    color:'#22d3ee', desc:'Сахароза — дисахарид глюкозы и фруктозы. Формирует кристаллы.'
+  },
+  apple:{
+    icon:'🍎', name:'Клетки мякоти яблока',
+    size:80, sizeLabel:'80 мкм',
+    color:'#f87171', desc:'Растительные клетки с вакуолями и хлоропластами.'
+  },
+  starch:{
+    icon:'🌾', name:'Зёрна крахмала картофеля',
+    size:30, sizeLabel:'30 мкм',
+    color:'#c084fc', desc:'Крахмальные зёрна с характерной слоистостью.'
+  }
+};
+let currentSample='yeast';
+let currentZoom=40;
+let panX=0,panY=0;
+
+function renderSampleTabs(){
+  $('sampleTabs').innerHTML=Object.entries(SAMPLES).map(([k,s])=>
+    `<button class="sample-tab ${k===currentSample?'active':''}" data-sample="${k}">
+      ${s.icon} ${s.name.split(' ')[0]}
+    </button>`).join('');
+  $('sampleTabs').querySelectorAll('[data-sample]').forEach(b=>b.addEventListener('click',()=>{
+    currentSample=b.dataset.sample;panX=0;panY=0;
+    renderSampleTabs();drawMicro();
+    sfx('click');vib(15);
+    speak(SAMPLES[currentSample].name);
+  }));
+}
+
+function drawMicro(){
+  const c=$('microCanvas'),ctx=c.getContext('2d');
+  const W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Фон — светлое поле
+  const grad=ctx.createRadialGradient(W/2,H/2,20,W/2,H/2,W/2);
+  grad.addColorStop(0,'#2a2a1f');
+  grad.addColorStop(1,'#0a0a0a');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,W,H);
+
+  const s=SAMPLES[currentSample];
+  // Количество объектов зависит от увеличения
+  const count=currentZoom===40?8:currentZoom===100?15:currentZoom===400?35:70;
+  const baseSize=currentZoom===40?6:currentZoom===100?10:currentZoom===400?22:45;
+  const spreadFactor=currentZoom===40?1.4:currentZoom===100?1:currentZoom===400?.7:.5;
+
+  ctx.save();
+  ctx.translate(panX,panY);
+
+  for(let i=0;i<count;i++){
+    // Псевдослучайные позиции (детерминированные)
+    const seed=(i*9301+49297)%233280;
+    const r1=seed/233280;
+    const seed2=(i*4901+191)%233280;
+    const r2=seed2/233280;
+    const seed3=(i*7919+31)%233280;
+    const r3=seed3/233280;
+
+    const x=W/2+(r1-.5)*W*spreadFactor;
+    const y=H/2+(r2-.5)*H*spreadFactor;
+    const size=baseSize*(0.7+r3*.5);
+
+    // Свечение
+    const glow=ctx.createRadialGradient(x,y,0,x,y,size*1.5);
+    glow.addColorStop(0,s.color+'AA');
+    glow.addColorStop(1,s.color+'00');
+    ctx.fillStyle=glow;
+    ctx.beginPath();ctx.arc(x,y,size*1.5,0,6.28);ctx.fill();
+
+    // Тело
+    ctx.fillStyle=s.color;
+    ctx.globalAlpha=.85;
+    if(currentSample==='bacteria'){
+      ctx.beginPath();
+      ctx.ellipse(x,y,size,size*.5,r1*3,0,6.28);
+      ctx.fill();
+    } else if(currentSample==='sugar'){
+      ctx.beginPath();
+      const pts=6;
+      for(let j=0;j<pts;j++){
+        const ang=(j/pts)*6.28+r1;
+        const px=x+Math.cos(ang)*size;
+        const py=y+Math.sin(ang)*size*.7;
+        j===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      }
+      ctx.closePath();ctx.fill();
+      ctx.strokeStyle=s.color;ctx.lineWidth=1;ctx.stroke();
+    } else if(currentSample==='apple'){
+      ctx.beginPath();
+      ctx.arc(x,y,size*.7,0,6.28);
+      ctx.fill();
+      // Вакуоль
+      ctx.fillStyle='rgba(0,0,0,.3)';
+      ctx.beginPath();ctx.arc(x-size*.2,y-size*.1,size*.3,0,6.28);ctx.fill();
+    } else if(currentSample==='starch'){
+      ctx.beginPath();
+      ctx.ellipse(x,y,size,size*.75,r1*6,0,6.28);
+      ctx.fill();
+      // Слоистость
+      ctx.strokeStyle='rgba(0,0,0,.25)';ctx.lineWidth=.7;
+      for(let k=1;k<4;k++){
+        ctx.beginPath();
+        ctx.ellipse(x,y,size*k/4,size*.75*k/4,r1*6,0,6.28);
+        ctx.stroke();
+      }
+    } else {
+      // Дрожжи — овальные клетки с почкованием
+      ctx.beginPath();
+      ctx.arc(x,y,size,0,6.28);ctx.fill();
+      if(r3>.6){
+        ctx.beginPath();
+        ctx.arc(x+size*.9,y-size*.6,size*.5,0,6.28);ctx.fill();
+      }
+    }
+    ctx.globalAlpha=1;
+  }
+  ctx.restore();
+
+  $('microInfo').textContent=currentZoom+'×';
+  $('microScale').textContent=s.sizeLabel+' = '+(s.size*currentZoom/40).toFixed(1)+' усл.';
+}
+
+$('zoomBtns').querySelectorAll('.zoom-btn').forEach(b=>b.addEventListener('click',()=>{
+  currentZoom=+b.dataset.zoom;
+  $('zoomBtns').querySelectorAll('.zoom-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  drawMicro();sfx('click');vib(15);
+  speak('Увеличение '+currentZoom+' крат');
+}));
+
+/* PAN */
+let isDragging=false,dragStartX=0,dragStartY=0;
+const stage=$('microStage');
+stage.addEventListener('pointerdown',e=>{
+  isDragging=true;dragStartX=e.clientX-panX;dragStartY=e.clientY-panY;
+  stage.setPointerCapture(e.pointerId);
+});
+stage.addEventListener('pointermove',e=>{
+  if(!isDragging)return;
+  panX=e.clientX-dragStartX;
+  panY=e.clientY-dragStartY;
+  const limit=120;
+  panX=Math.max(-limit,Math.min(limit,panX));
+  panY=Math.max(-limit,Math.min(limit,panY));
+  drawMicro();
+});
+stage.addEventListener('pointerup',()=>{isDragging=false});
+stage.addEventListener('pointercancel',()=>{isDragging=false});
+
+renderSampleTabs();
+drawMicro();
+
+/* ============================================================
+   СПЕКТРОФОТОМЕТР
+   ============================================================ */
+const ANALYTES={
+  protein:{
+    name:'Белок (биуретовый метод)',
+    lambda:540,
+    unit:'мг/мл',
+    epsilon:0.25,
+    standard:[0,0.5,1,1.5,2,2.5],  // концентрации стандартов
+    color:'#c084fc',
+    desc:'Биуретовый реактив + Cu²⁺ образует комплекс с пептидными связями. Поглощение при 540 нм.'
+  },
+  vitc:{
+    name:'Витамин C (2,6-ДХФИФ)',
+    lambda:520,
+    unit:'мг/100г',
+    epsilon:0.08,
+    standard:[0,5,10,15,20,25],
+    color:'#4ade80',
+    desc:'Титрование 2,6-дихлорфенолиндофенолом. Поглощение при 520 нм.'
+  },
+  nitrite:{
+    name:'Нитриты (реактив Грисса)',
+    lambda:540,
+    unit:'мг/кг',
+    epsilon:0.15,
+    standard:[0,10,20,40,80,120],
+    color:'#f87171',
+    desc:'Диазотирование + азосочетание. Розовая окраска, поглощение при 540 нм.'
+  },
+  sugar:{
+    name:'Редуцирующие сахара (ферицианид)',
+    lambda:420,
+    unit:'%',
+    epsilon:0.35,
+    standard:[0,0.5,1,1.5,2,2.5],
+    color:'#fbbf24',
+    desc:'Восстановление феррицианида. Поглощение при 420 нм.'
+  }
+};
+let currentAnalyte=null;
+let currentLambda=540;
+
+$('wlSlider').addEventListener('input',e=>{
+  currentLambda=+e.target.value;
+  $('wlLabel').textContent=currentLambda+' нм';
+  $('specLambda').textContent='λ = '+currentLambda+' нм';
+  updateSpecDisplay();
+});
+
+function updateSpecDisplay(){
+  if(!currentAnalyte){
+    $('specValue').textContent='0.000';
+    $('specBeam').style.width='60%';
+    return;
+  }
+  const a=ANALYTES[currentAnalyte];
+  // Поглощение максимально при λ = a.lambda
+  const delta=Math.abs(currentLambda-a.lambda);
+  const efficiency=Math.exp(-Math.pow(delta/40,2));
+  // Измерение с шумом
+  const baseConc=a.standard[3];
+  const absorbance=a.epsilon*baseConc*efficiency;
+  const noise=(Math.random()-.5)*0.008;
+  const reading=Math.max(0,absorbance+noise);
+
+  $('specValue').textContent=reading.toFixed(3);
+  $('specBeam').style.width=(30+efficiency*50)+'%';
+}
+
+$('specSamples').querySelectorAll('[data-analyte]').forEach(b=>b.addEventListener('click',()=>{
+  currentAnalyte=b.dataset.analyte;
+  currentLambda=ANALYTES[currentAnalyte].lambda;
+  $('wlSlider').value=currentLambda;
+  $('wlLabel').textContent=currentLambda+' нм';
+  $('specLambda').textContent='λ = '+currentLambda+' нм';
+  updateSpecDisplay();
+  renderSpecCalibration();
+  sfx('click');vib(15);
+  speak(ANALYTES[currentAnalyte].name);
+}));
+
+function renderSpecCalibration(){
+  if(!currentAnalyte){$('specContent').innerHTML='';return}
+  const a=ANALYTES[currentAnalyte];
+  const eff=Math.exp(-Math.pow(Math.abs(currentLambda-a.lambda)/40,2));
+  // Стандарты с шумом
+  const stds=a.standard.map(c=>({
+    c:c, a:Math.max(0,a.epsilon*c*eff + (Math.random()-.5)*0.01)
+  }));
+
+  // Линейная регрессия
+  const n=stds.length;
+  const sumX=stds.reduce((s,x)=>s+x.c,0);
+  const sumY=stds.reduce((s,x)=>s+x.a,0);
+  const sumXY=stds.reduce((s,x)=>s+x.c*x.a,0);
+  const sumX2=stds.reduce((s,x)=>s+x.c*x.c,0);
+  const slope=(n*sumXY-sumX*sumY)/(n*sumX2-sumX*sumX);
+  const intercept=(sumY-slope*sumX)/n;
+  const r2num=Math.pow(n*sumXY-sumX*sumY,2);
+  const r2den=(n*sumX2-sumX*sumX)*(n*stds.reduce((s,x)=>s+x.a*x.a,0)-sumY*sumY);
+  const r2=r2den?r2num/r2den:0;
+
+  // График
+  const W=560,H=140,pad=30;
+  const maxC=Math.max(...a.standard);
+  const maxA=Math.max(0.5,...stds.map(s=>s.a))*1.15;
+  const px=c=>pad+(c/maxC)*(W-2*pad);
+  const py=av=>H-pad-(av/maxA)*(H-2*pad);
+
+  const pointsSvg=stds.map(s=>`<circle cx="${px(s.c)}" cy="${py(s.a)}" r="4" fill="${a.color}" stroke="#04210f" stroke-width="1.5"/>`).join('');
+  const lineSvg=`<line x1="${px(0)}" y1="${py(intercept)}" x2="${px(maxC)}" y2="${py(intercept+slope*maxC)}" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+
+  // Измеренное значение неизвестного
+  const unknown={c:a.standard[3],a:0};
+  unknown.a=a.epsilon*unknown.c*eff + (Math.random()-.5)*0.01;
+  const unknownSvg=`<circle cx="${px(unknown.c)}" cy="${py(unknown.a)}" r="6" fill="#fbbf24" stroke="#04210f" stroke-width="2"/>`;
+
+  // Расчёт по калибровке
+  const measuredConc=(unknown.a-intercept)/slope;
+  const ok=measuredConc>0.3*maxC&&measuredConc<0.9*maxC;
+
+  $('specContent').innerHTML=`
+    <div class="chart-box">
+      <div style="font-size:.55rem;color:var(--acc2);text-transform:uppercase;
+        letter-spacing:.5px;font-weight:800;margin-bottom:5px;
+        display:flex;justify-content:space-between">
+        <span>Калибровочная кривая</span>
+        <span>R² = ${r2.toFixed(4)}</span>
+      </div>
+      <svg viewBox="0 0 ${W} ${H}">
+        <line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="rgba(74,222,128,.3)" stroke-width="1"/>
+        <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}" stroke="rgba(74,222,128,.3)" stroke-width="1"/>
+        <text x="${pad-4}" y="${H-pad+12}" fill="#8fbfae" font-size="8" text-anchor="middle" font-family="monospace">0</text>
+        <text x="${px(maxC)}" y="${H-pad+12}" fill="#8fbfae" font-size="8" text-anchor="middle" font-family="monospace">${maxC}</text>
+        <text x="${pad-4}" y="${py(maxA/2)+3}" fill="#8fbfae" font-size="8" text-anchor="end" font-family="monospace">${(maxA/2).toFixed(2)}</text>
+        <text x="${W/2}" y="${H-4}" fill="#5f8f7d" font-size="8" text-anchor="middle" font-family="monospace">C, ${a.unit}</text>
+        <text x="12" y="${H/2}" fill="#5f8f7d" font-size="8" text-anchor="middle" transform="rotate(-90 12 ${H/2})" font-family="monospace">A</text>
+        ${lineSvg}
+        ${pointsSvg}
+        ${unknownSvg}
+      </svg>
+      <div style="display:flex;gap:8px;font-size:.5rem;color:var(--dim);
+        font-family:var(--mono);margin-top:5px">
+        <span><span style="display:inline-block;width:8px;height:8px;
+          background:${a.color};border-radius:50%"></span> Стандарты</span>
+        <span><span style="display:inline-block;width:8px;height:8px;
+          background:#fbbf24;border-radius:50%"></span> Образец</span>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-header">📋 Результат измерения</div>
+      <div class="result-value">
+        <div class="result-num ${ok?'':'warn'}">${measuredConc.toFixed(2)}</div>
+        <div class="result-unit">${a.unit}</div>
+      </div>
+      <div class="result-verdict ${ok?'ok':'warn'}">
+        ${ok?'✅ Концентрация в рабочем диапазоне':'⚠️ Концентрация на границе калибровки'}
+      </div>
+      <div class="result-formula">
+        <b>Закон Бера:</b> A = ε · c · l<br>
+        <b>Калибровка:</b> A = ${intercept.toFixed(3)} + ${slope.toFixed(3)} · C<br>
+        <b>R² = ${r2.toFixed(4)}</b> (норма ≥ 0.995)<br>
+        <b>Образец:</b> A = ${unknown.a.toFixed(3)} → C = (A − b)/k = <b>${measuredConc.toFixed(2)} ${a.unit}</b>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   ПЦР
+   ============================================================ */
+let pcrRunning=false;
+let pcrCycle=0;
+
+$('pcrStart').addEventListener('click',()=>{
+  if(pcrRunning)return;
+  pcrRunning=true;pcrCycle=0;
+  $('pcrStart').disabled=true;
+  $('gelContainer').innerHTML='';
+  $('pcrStatus').textContent='Денатурация 95°C...';
+  sfx('beep');vib(20);
+  speak('Запуск полимеразной цепной реакции. Тридцать циклов');
+  runCycle();
+});
+
+function runCycle(){
+  if(pcrCycle>=30){
+    pcrRunning=false;
+    $('pcrStatus').textContent='30 циклов завершено. Готовим гель...';
+    sfx('coin');vib(40);
+    speak('Реакция завершена. Загружаем образцы в гель');
+    setTimeout(renderGel,600);
+    return;
+  }
+  pcrCycle++;
+  $('pcrProgress').style.width=(pcrCycle/30*100)+'%';
+
+  // Фазы цикла
+  const phases=[
+    {id:'temp1',t:'Денатурация 95°C',dur:120},
+    {id:'temp2',t:'Отжиг 55°C',dur:120},
+    {id:'temp3',t:'Элонгация 72°C',dur:200}
+  ];
+
+  phases.forEach((p,i)=>{
+    setTimeout(()=>{
+      document.querySelectorAll('.pcr-temp').forEach(x=>x.classList.remove('active'));
+      $(p.id).classList.add('active');
+      $('pcrStatus').textContent='Цикл '+pcrCycle+'/30 · '+p.t;
+      sfx('beep');vib(8);
+      if(i===2)setTimeout(runCycle,p.dur);
+    },i*150);
+  });
+}
+
+function renderGel(){
+  // Случайно определяем, есть ли ГМО в образцах
+  const gmo1=Math.random()>0.4;
+  const gmo2=Math.random()>0.6;
+
+  // Ladder (маркер длин) — фиксированные полосы
+  const ladder=[10,25,50,80,120,150];
+
+  const lane=(bands,label,isLadder)=>{
+    return `<div>
+      <div class="gel-lane">
+        ${bands.map(y=>`<div class="gel-band ${isLadder?'ladder':''}" style="top:${y}px"></div>`).join('')}
+      </div>
+      <div class="gel-label">${label}</div>
+    </div>`;
+  };
+
+  // Полосы для К+ (контроль — всегда положительный) и К- (отрицательный, если есть)
+  const posCtrlBands=[40];
+  const negCtrlBands=[];
+  const sample1Bands=gmo1?[40]:[];
+  const sample2Bands=gmo2?[40]:[];
+
+  $('gelContainer').innerHTML=`
+    <div class="result-box" style="border-color:rgba(59,130,246,.5)">
+      <div class="result-header">🧬 Результат гель-электрофореза</div>
+      <div class="gel-stage">
+        <div style="font-size:.55rem;color:#93c5fd;text-transform:uppercase;
+          letter-spacing:.5px;font-weight:800;margin-bottom:5px;
+          display:flex;justify-content:space-between">
+          <span>⚡ Напряжение: 100 В · 40 мин</span>
+          <span>Агароза 1.5%</span>
+        </div>
+        <div class="gel-lanes">
+          ${lane(ladder,'Маркер',true)}
+          ${lane(posCtrlBands,'К+<br>(ГМО)')}
+          ${lane(negCtrlBands,'К−<br>(без ГМО)')}
+          ${lane(sample1Bands,'Образец 1')}
+          ${lane(sample2Bands,'Образец 2')}
+        </div>
+      </div>
+
+      <div style="margin-top:12px;font-size:.7rem;line-height:1.6;font-family:var(--mono)">
+        <b style="color:var(--acc2)">Интерпретация:</b><br>
+        <b>Полоса ~195 п.н.</b> = фрагмент промотора 35S CaMV (маркер ГМО)<br>
+        <b style="color:${sample1Bands.length?'var(--red)':'var(--acc)'}">
+          Образец 1: ${sample1Bands.length?'⚠️ ОБНАРУЖЕН ГМО':'✅ ГМО не обнаружен'}
+        </b><br>
+        <b style="color:${sample2Bands.length?'var(--red)':'var(--acc)'}">
+          Образец 2: ${sample2Bands.length?'⚠️ ОБНАРУЖЕН ГМО':'✅ ГМО не обнаружен'}
+        </b>
+      </div>
+
+      <div class="result-verdict ${(sample1Bands.length||sample2Bands.length)?'warn':'ok'}">
+        ${(sample1Bands.length||sample2Bands.length)?'⚠️ Есть образцы с ГМО — требуется маркировка':'✅ Все образцы без ГМО — обычная соя'}
+      </div>
+    </div>
+  `;
+
+  // Анимация полос
+  document.querySelectorAll('.gel-band').forEach((b,i)=>{
+    b.style.animationDelay=(i*0.1)+'s';
+  });
+
+  speak((sample1Bands.length||sample2Bands.length)?'Обнаружен ГМО в образцах':'ГМО не обнаружен');
+  $('pcrStart').disabled=false;
+}
+
+/* ============================================================
+   СЕРТИФИКАТ
+   ============================================================ */
+$('certBtn').addEventListener('click',()=>{
+  $('certModal').classList.remove('hide');
+  sfx('click');
+  speak('Генератор сертификата. Введи имя');
+  setTimeout(()=>$('certName').focus(),300);
+  drawCert();
+});
+
+$('certName').addEventListener('input',drawCert);
+
+$('certClose').addEventListener('click',()=>{
+  $('certModal').classList.add('hide');
+  sfx('click');
+});
+
+function drawCert(){
+  const c=$('certCanvas'),ctx=c.getContext('2d');
+  const W=c.width,H=c.height;
+
+  // Фон — состаренная бумага
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#fef9e7');
+  g.addColorStop(1,'#f5e6c8');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  // Рамка
+  ctx.strokeStyle='#0d4a2c';ctx.lineWidth=4;
+  ctx.strokeRect(28,28,W-56,H-56);
+  ctx.strokeStyle='#d4a04a';ctx.lineWidth=2;
+  ctx.strokeRect(40,40,W-80,H-80);
+
+  // Уголки
+  const corner=(x,y,dx,dy)=>{
+    ctx.strokeStyle='#d4a04a';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(x+dx*30,y);ctx.lineTo(x,y);ctx.lineTo(x,y+dy*30);ctx.stroke();
+  };
+  corner(40,40,1,1);corner(W-40,40,-1,1);
+  corner(40,H-40,1,-1);corner(W-40,H-40,-1,-1);
+
+  // Заголовок — ДОННУЭТ
+  ctx.fillStyle='#0d4a2c';
+  ctx.font='bold 20px Georgia,serif';
+  ctx.textAlign='center';
+  ctx.fillText('ФГБОУ ВО «ДОННУЭТ»',W/2,90);
+  ctx.font='13px Georgia,serif';
+  ctx.fillStyle='#1a6b3d';
+  ctx.fillText('Кафедра товароведения продовольственных товаров',W/2,114);
+  ctx.fillText('и экспертизы продукции сельского хозяйства',W/2,132);
+
+  // Декоративная линия
+  ctx.strokeStyle='#d4a04a';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(W/2-200,150);ctx.lineTo(W/2+200,150);ctx.stroke();
+
+  // Название
+  ctx.fillStyle='#0d4a2c';
+  ctx.font='bold 48px Georgia,serif';
+  ctx.fillText('СЕРТИФИКАТ',W/2,230);
+
+  ctx.font='italic 18px Georgia,serif';
+  ctx.fillStyle='#4a7c59';
+  ctx.fillText('настоящим подтверждается, что',W/2,270);
+
+  // Имя
+  const name=($('certName').value||'Иван Иванов').trim();
+  ctx.fillStyle='#b45309';
+  ctx.font='bold 40px Georgia,serif';
+  ctx.fillText(name,W/2,330);
+
+  // Линия под именем
+  ctx.strokeStyle='#b45309';ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(W/2-Math.max(200,ctx.measureText(name).width/2+30),350);
+  ctx.lineTo(W/2+Math.max(200,ctx.measureText(name).width/2+30),350);
+  ctx.stroke();
+
+  // Текст
+  ctx.fillStyle='#1a3d2c';
+  ctx.font='italic 15px Georgia,serif';
+  ctx.fillText('прошёл стажировку в виртуальной лаборатории',W/2,390);
+  ctx.fillText('«БиоЭкоКомбинат PRO — Биоэкономика пищевых систем»',W/2,415);
+
+  // Ранг
+  const ranks=['🌱 Стажёр','🥉 Лаборант','🥈 Товаровед-эксперт','🥇 Старший эксперт','👑 Эксперт ДОННУЭТ'];
+  const rank=ranks[Math.floor(Math.random()*ranks.length)];
+  ctx.fillStyle='#0d4a2c';
+  ctx.font='bold 26px Georgia,serif';
+  ctx.fillText('присвоено звание:',W/2,465);
+  ctx.fillStyle='#b45309';
+  ctx.font='bold 34px Georgia,serif';
+  ctx.fillText(rank,W/2,510);
+
+  // Дата
+  const today=new Date();
+  const dateStr=today.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+  ctx.fillStyle='#4a7c59';
+  ctx.font='italic 14px Georgia,serif';
+  ctx.fillText('Дата: '+dateStr,W/2,555);
+
+  // Подпись — завкафедрой
+  ctx.strokeStyle='#1a3d2c';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(120,595);ctx.lineTo(340,595);ctx.stroke();
+  ctx.font='12px Georgia,serif';
+  ctx.fillStyle='#1a3d2c';
+  ctx.fillText('Зав. кафедрой',230,615);
+
+  // Подпись — директор
+  ctx.beginPath();ctx.moveTo(W-340,595);ctx.lineTo(W-120,595);ctx.stroke();
+  ctx.fillText('Директор комбината',W-230,615);
+
+  // Печать (круглая)
+  ctx.strokeStyle='rgba(180,60,60,.7)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(W-200,530,42,0,6.28);ctx.stroke();
+  ctx.beginPath();ctx.arc(W-200,530,35,0,6.28);ctx.stroke();
+  ctx.fillStyle='rgba(180,60,60,.75)';
+  ctx.font='bold 9px Georgia,serif';
+  ctx.fillText('ДОННУЭТ',W-200,522);
+  ctx.fillText('ЛАБОРАТОРИЯ',W-200,534);
+  ctx.fillText('★ 2025 ★',W-200,546);
+
+  // Логотипы — текстовая имитация (PNG-лого не загружаем в canvas)
+  ctx.font='44px sans-serif';
+  ctx.fillText('🎓',120,530);
+  ctx.fillText('⚖️',120,585);
+}
+
+$('certDownload').addEventListener('click',()=>{
+  try{
+    const url=$('certCanvas').toDataURL('image/png');
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='ДОННУЭТ-сертификат.png';
+    a.click();
+    toast('✅ Сертификат скачан','epic');
+    sfx('coin');vib(30);
+    speak('Сертификат сохранён');
+  }catch(e){
+    toast('Ошибка при скачивании','bad');
+  }
+});
+
+/* ФОН */
+(function(){
+  const c=$('bg'),ctx=c.getContext('2d');
+  let W,H,parts=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
+  resize();addEventListener('resize',resize);
+  for(let i=0;i<40;i++)parts.push({x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:1+Math.random()*2,
+    o:.15+Math.random()*.35,c:Math.random()<.5?'74,222,128':'34,211,238'});
+  (function loop(){ctx.clearRect(0,0,W,H);
+    for(const p of parts){p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+      g.addColorStop(0,'rgba('+p.c+','+p.o+')');g.addColorStop(1,'rgba('+p.c+',0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r*6,0,6.28);ctx.fill()}
+    requestAnimationFrame(loop)})();
+})();
+
+initA();
+</script>
+</body>
+</html>
