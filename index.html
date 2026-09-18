@@ -25,7 +25,6 @@ body{
 .app.shake{animation:shake .4s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 
-/* HEADER */
 .header{
   display:flex;justify-content:space-between;align-items:center;gap:8px;
   padding:8px 10px;margin-bottom:8px;
@@ -35,8 +34,13 @@ body{
   box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(74,222,128,.15);
 }
 .brand{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
-.brand-logo{flex-shrink:0;width:40px;height:40px;
-  filter:drop-shadow(0 0 8px rgba(74,222,128,.35))}
+.brand-img{
+  flex-shrink:0;width:48px;height:48px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 8px rgba(74,222,128,.35));
+  transition:.3s;
+}
+.brand-img:hover{transform:scale(1.08)}
 .brand h1{
   font-size:.82rem;font-weight:900;letter-spacing:.3px;
   background:linear-gradient(90deg,var(--acc),var(--acc2));
@@ -57,7 +61,6 @@ body{
   color:var(--acc);white-space:nowrap;
 }
 
-/* RESOURCES */
 .res-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:7px}
 @media(min-width:640px){.res-bar{grid-template-columns:repeat(6,1fr)}}
 .res{
@@ -77,7 +80,6 @@ body{
 .res.warn-pulse{animation:warnP .9s infinite}
 @keyframes warnP{0%,100%{border-color:rgba(251,191,36,.4)}50%{border-color:rgba(251,191,36,1);box-shadow:0 0 10px rgba(251,191,36,.4)}}
 
-/* ECO */
 .eco-wrap{background:var(--card2);border:1px solid var(--line);border-radius:10px;
   padding:5px 10px;margin-bottom:8px;display:flex;align-items:center;gap:8px;
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
@@ -91,7 +93,6 @@ body{
 @keyframes flow{0%{background-position:0 0}100%{background-position:200% 0}}
 .eco-num{font-weight:900;font-size:.75rem;min-width:26px;text-align:right;font-family:var(--mono)}
 
-/* TABS */
 .tabs{display:flex;gap:3px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;
   -webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
@@ -102,7 +103,6 @@ body{
   color:var(--acc);border-color:var(--acc)}
 .tab:active{transform:scale(.95)}
 
-/* PANEL */
 .panel{
   background:linear-gradient(170deg,rgba(16,48,39,.82),rgba(12,35,29,.92));
   border:1px solid var(--line);border-radius:13px;padding:10px;
@@ -115,24 +115,17 @@ body{
 .panel h3{font-size:.6rem;color:var(--gold);margin:10px 0 5px;
   text-transform:uppercase;letter-spacing:.5px;font-weight:800}
 
-/* GRID */
 .grid{display:grid;grid-template-columns:1fr;gap:6px}
 @media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
 
-/* CARDS */
 .card{
   background:linear-gradient(160deg,rgba(20,58,47,.85),rgba(14,42,34,.9));
   border:1px solid rgba(33,88,69,.9);border-radius:11px;padding:8px;
   display:flex;flex-direction:column;gap:4px;transition:.2s;
 }
 .card.built{border-color:rgba(34,211,238,.55)}
-.card.ready{border-color:var(--gold);box-shadow:0 0 14px rgba(251,191,36,.35);
-  animation:glowReady 1.5s infinite}
-@keyframes glowReady{0%,100%{box-shadow:0 0 12px rgba(251,191,36,.3)}
-  50%{box-shadow:0 0 20px rgba(251,191,36,.6)}}
-.card.legendary{border-color:var(--purple);
-  box-shadow:0 0 18px rgba(192,132,252,.4)}
+.card.ready{border-color:var(--gold);box-shadow:0 0 14px rgba(251,191,36,.35)}
 .chead{display:flex;align-items:center;gap:5px}
 .chead .ci{font-size:1.15rem}
 .chead .cn{font-size:.68rem;font-weight:800;flex:1;line-height:1.15}
@@ -155,7 +148,6 @@ body{
 .cbtn.orange{background:linear-gradient(90deg,#d97706,#f59e0b);color:#2b1600}
 .cbtn.purple{background:linear-gradient(90deg,#9333ea,#c084fc);color:#2a0845}
 
-/* LOG */
 .log{
   background:rgba(5,22,17,.9);border:1px solid var(--line);border-radius:10px;
   padding:7px;height:140px;overflow-y:auto;font-size:.58rem;
@@ -164,8 +156,7 @@ body{
 .log::-webkit-scrollbar{width:4px}
 .log::-webkit-scrollbar-thumb{background:#1f5a47;border-radius:3px}
 .le{padding:4px 7px;border-radius:6px;background:rgba(14,43,35,.9);
-  border-left:2px solid #2b6b56;line-height:1.4;
-  animation:logIn .3s}
+  border-left:2px solid #2b6b56;line-height:1.4;animation:logIn .3s}
 @keyframes logIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
 .le.good{border-color:var(--acc)}
 .le.bad{border-color:var(--red)}
@@ -173,7 +164,6 @@ body{
 .le.info{border-color:var(--acc2)}
 .le.epic{border-color:var(--purple)}
 
-/* NEXT */
 .next-btn{
   position:fixed;left:8px;right:8px;bottom:8px;z-index:40;
   border:none;border-radius:12px;padding:14px;
@@ -187,7 +177,6 @@ body{
 .next-btn:disabled{background:rgba(42,58,52,.9);color:#5d7a6e;
   box-shadow:none;cursor:not-allowed}
 
-/* OVERLAY */
 .overlay{position:fixed;inset:0;background:rgba(3,12,9,.95);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   display:flex;align-items:center;justify-content:center;padding:10px;
@@ -210,14 +199,15 @@ body{
 .modal ul{margin:0 0 9px 15px;font-size:.68rem;color:#b8dfcd;line-height:1.5}
 .modal li{margin-bottom:3px}
 .modal .hl{color:var(--gold);font-weight:800}
-.modal .code{background:rgba(8,37,29,.9);border:1px solid var(--line);
-  border-radius:4px;padding:1px 5px;font-family:var(--mono);
-  font-size:.64rem;color:var(--acc)}
-.modal-logo{display:flex;justify-content:center;align-items:center;gap:14px;
+.modal-logo{display:flex;justify-content:center;align-items:center;gap:16px;
   margin:6px 0 14px;flex-wrap:wrap}
-.modal-logo svg{filter:drop-shadow(0 4px 12px rgba(74,222,128,.3))}
-.modal-logo .lg-uni{width:60px;height:60px}
-.modal-logo .lg-kaf{width:70px;height:44px}
+.modal-logo img{
+  filter:drop-shadow(0 4px 12px rgba(74,222,128,.3));
+  transition:.3s;
+}
+.modal-logo img:hover{transform:scale(1.08)}
+.modal-logo .lg-uni{width:80px;height:80px;object-fit:contain}
+.modal-logo .lg-kaf{width:120px;height:76px;object-fit:contain}
 .startbtn{
   width:100%;border:none;border-radius:12px;padding:13px;
   cursor:pointer;font-family:inherit;font-size:.9rem;font-weight:900;
@@ -230,7 +220,6 @@ body{
 .startbtn.sec{background:rgba(8,37,29,.9);border:1px solid var(--line);
   color:var(--txt);box-shadow:none}
 
-/* RESULTS */
 .score-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}
 .score-item{background:rgba(10,35,28,.9);border:1px solid var(--line);
   border-radius:10px;padding:8px;text-align:center}
@@ -245,7 +234,6 @@ body{
   animation:flow 3s linear infinite;margin:5px 0;font-family:var(--mono)}
 .rank{text-align:center;font-size:.82rem;margin-bottom:8px;color:#b8dfcd;font-weight:700}
 
-/* TOASTS */
 #toasts{position:fixed;top:8px;left:50%;transform:translateX(-50%);
   z-index:200;display:flex;flex-direction:column;gap:4px;
   pointer-events:none;width:calc(100% - 16px);max-width:360px}
@@ -263,7 +251,6 @@ body{
 @keyframes tin{from{opacity:0;transform:translateY(-14px) scale(.92)}to{opacity:1;transform:none}}
 @keyframes tout{to{opacity:0;transform:translateY(-14px) scale(.94)}}
 
-/* FX */
 #fx{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
 .flt{position:absolute;font-weight:900;font-size:.95rem;
   text-shadow:0 2px 10px rgba(0,0,0,.9);
@@ -277,7 +264,6 @@ body{
   pointer-events:none;animation:cfall linear forwards}
 @keyframes cfall{to{transform:translateY(105vh) rotate(720deg);opacity:.3}}
 
-/* BATCH */
 .batch-card{
   background:linear-gradient(160deg,rgba(251,191,36,.12),rgba(13,37,29,.94));
   border:1px solid rgba(251,191,36,.5);border-radius:12px;padding:10px;
@@ -300,7 +286,6 @@ body{
 .bbtn.cyan{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03202a;border-color:#22d3ee}
 .bbtn.red{background:rgba(46,20,20,.9);color:#f87171;border-color:rgba(248,113,113,.6)}
 
-/* PROTOCOL */
 .protocol{
   background:rgba(5,22,17,.95);border-radius:9px;padding:9px;
   margin-top:6px;border:1px solid rgba(74,222,128,.25);
@@ -315,7 +300,6 @@ body{
 .pval.ok{color:var(--acc)}.pval.warn{color:var(--gold)}.pval.bad{color:var(--red)}
 .pnorm{font-size:.5rem;color:var(--dim);text-align:right}
 
-/* FARM */
 .fields{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 @media(min-width:560px){.fields{grid-template-columns:repeat(4,1fr)}}
 .field{
@@ -325,6 +309,8 @@ body{
 }
 .field.sown{border-color:rgba(217,119,6,.6)}
 .field.ready{border-color:var(--gold);animation:glowReady 1.5s infinite}
+@keyframes glowReady{0%,100%{box-shadow:0 0 12px rgba(251,191,36,.3)}
+  50%{box-shadow:0 0 20px rgba(251,191,36,.6)}}
 .fnum{font-size:.5rem;color:var(--dim);text-transform:uppercase;
   letter-spacing:.5px;font-weight:800;font-family:var(--mono)}
 .fcrop{font-size:1.3rem;text-align:center;line-height:1}
@@ -340,7 +326,6 @@ body{
   border:1px solid var(--line);border-radius:6px;padding:5px;
   font-size:.58rem;font-family:inherit;font-weight:700;margin-top:2px}
 
-/* LAB */
 .lab-mini{
   background:rgba(5,22,17,.9);border-radius:10px;padding:10px;
   border:1px solid rgba(34,211,238,.3);
@@ -354,11 +339,9 @@ body{
 }
 .method-btn:not(:disabled):active{transform:scale(.95)}
 .method-btn:disabled{opacity:.5;cursor:not-allowed}
-.method-btn.selected{border-color:var(--acc);background:rgba(74,222,128,.15)}
 .method-btn.done{border-color:var(--acc2);background:rgba(34,211,238,.12)}
 .method-emoji{font-size:1.3rem;display:block;margin-bottom:3px}
 
-/* ACH */
 .ach-grid{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
 .ach{
   background:rgba(41,20,58,.5);border:1px solid rgba(192,132,252,.35);
@@ -367,7 +350,6 @@ body{
 }
 .ach.locked{opacity:.3;filter:grayscale(1)}
 
-/* STATS */
 .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;
   margin-bottom:8px}
 @media(min-width:520px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
@@ -377,10 +359,8 @@ body{
   font-family:var(--mono)}
 .stat-item .sl{font-size:.48rem;color:var(--dim);text-transform:uppercase;
   letter-spacing:.3px;margin-top:1px}
-.stat-item.warn .sv{color:var(--gold)}
 .stat-item.bad .sv{color:var(--red)}
 
-/* CHART */
 .chart-box{background:rgba(5,22,17,.9);border:1px solid var(--line);
   border-radius:9px;padding:8px;margin-bottom:6px}
 .chart-box svg{width:100%;height:120px;display:block}
@@ -392,7 +372,6 @@ body{
 .chart-legend span{display:flex;align-items:center;gap:3px}
 .chart-legend i{display:inline-block;width:10px;height:2px;border-radius:1px}
 
-/* PARETO */
 .par-row{display:grid;grid-template-columns:1fr auto;gap:5px;
   padding:3px 0;border-bottom:1px dotted rgba(74,222,128,.1);font-size:.58rem}
 .par-name{color:#b8dfcd}
@@ -402,7 +381,6 @@ body{
   border-radius:3px;transition:width .6s}
 .par-val{font-weight:900;color:var(--gold);font-family:var(--mono);font-size:.58rem}
 
-/* ACADEMY */
 .lesson{
   background:rgba(5,22,17,.9);border:1px solid var(--line);
   border-radius:10px;padding:10px;margin-bottom:7px;
@@ -417,10 +395,8 @@ body{
 }
 .lesson-opt:hover:not(:disabled){border-color:var(--acc)}
 .lesson-opt:disabled{cursor:not-allowed;opacity:.7}
-.lesson-opt.correct{border-color:var(--acc);
-  background:rgba(74,222,128,.2);font-weight:800}
-.lesson-opt.wrong{border-color:var(--red);
-  background:rgba(248,113,113,.15)}
+.lesson-opt.correct{border-color:var(--acc);background:rgba(74,222,128,.2);font-weight:800}
+.lesson-opt.wrong{border-color:var(--red);background:rgba(248,113,113,.15)}
 .lesson-exp{margin-top:8px;padding:8px 10px;border-radius:8px;
   background:rgba(34,211,238,.08);border-left:2px solid var(--acc2);
   font-size:.66rem;color:#c4e6d6;line-height:1.55}
@@ -440,30 +416,8 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
 <div class="app" id="appRoot">
   <header class="header">
     <div class="brand">
-      <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="kafGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#1a6b3d"/>
-            <stop offset="1" stop-color="#0d4a2c"/>
-          </linearGradient>
-        </defs>
-        <path d="M 50 52 C 50 30, 12 30, 12 52 C 12 74, 50 74, 50 52 C 50 30, 88 30, 88 52 C 88 74, 50 74, 50 52 Z"
-              fill="none" stroke="url(#kafGrad)" stroke-width="11" stroke-linecap="round"/>
-        <path d="M 50 52 C 50 30, 12 30, 12 52 C 12 74, 50 74, 50 52 C 50 30, 88 30, 88 52 C 88 74, 50 74, 50 52 Z"
-              fill="none" stroke="#7cbf8e" stroke-width="3" stroke-linecap="round"/>
-        <polygon points="50,10 30,22 50,34 70,22" fill="#0e7c7c"/>
-        <polygon points="44,26 50,29 56,26 56,42 44,42" fill="#0e7c7c"/>
-        <g transform="translate(20, 52)">
-          <line x1="-11" y1="-5" x2="11" y2="-5" stroke="#1a3d5c" stroke-width="1.8"/>
-          <line x1="0" y1="-9" x2="0" y2="0" stroke="#1a3d5c" stroke-width="1.8"/>
-          <polygon points="-11,-5 -7,1 -15,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.9"/>
-          <polygon points="11,-5 7,1 15,1" fill="#d4a04a" stroke="#1a3d5c" stroke-width="0.9"/>
-        </g>
-        <g transform="translate(80, 52)">
-          <path d="M -6 -7 L -7 4 L 7 4 L 6 -7 Z" fill="#f4f4f4" stroke="#1a3d5c" stroke-width="1"/>
-          <path d="M -7 -3 L 7 -3 L 7 4 L -7 4 Z" fill="#4ade80" opacity="0.7"/>
-        </g>
-      </svg>
+      <img src="logo-kafedra.png" alt="Кафедра" class="brand-img"
+           onerror="this.style.display='none'">
       <div>
         <h1>🌿 БиоЭкоКомбинат PRO</h1>
         <div class="sub">ФГБОУ ВО «ДОННУЭТ» · кафедра товароведения продовольственных товаров и экспертизы продукции сельского хозяйства</div>
@@ -492,7 +446,7 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
     <button class="tab" data-tab="batch">📦 Партии</button>
     <button class="tab" data-tab="contracts">💼 Контракты</button>
     <button class="tab" data-tab="stats">📊 Анализ</button>
-    <button class="tab" data-tab="academy">🎓 Академия</button>
+    <button class="tab" data-tab="academy">📚 Уроки</button>
   </div>
 
   <div id="tab-farm" class="tab-content">
@@ -501,7 +455,7 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
       <div class="fields" id="fieldsGrid"></div>
     </div>
     <div class="panel">
-      <h2>📋 Журнал</h2>
+      <h2>📋 Журнал событий</h2>
       <div class="log" id="log"></div>
     </div>
   </div>
@@ -543,7 +497,7 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
 
   <div id="tab-academy" class="tab-content" style="display:none">
     <div class="panel">
-      <h2>🎓 Обучающие задания</h2>
+      <h2>📚 Обучающие задания <span style="color:var(--dim);font-size:.5rem;text-transform:none;letter-spacing:0">(дополнительно, +30 000 ₽ за верный ответ)</span></h2>
       <div id="academyContent"></div>
     </div>
   </div>
@@ -560,40 +514,24 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
 <div class="overlay" id="startScreen">
   <div class="modal">
     <div class="modal-logo">
-      <svg class="lg-uni" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="uniGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#1a3d8c"/><stop offset="1" stop-color="#0d2456"/>
-        </linearGradient></defs>
-        <path d="M 50 8 L 85 22 L 85 60 Q 85 85 50 95 Q 15 85 15 60 L 15 22 Z"
-              fill="url(#uniGrad)" stroke="#d4a04a" stroke-width="2.5"/>
-        <circle cx="50" cy="45" r="20" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
-        <ellipse cx="50" cy="45" rx="20" ry="8" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
-        <ellipse cx="50" cy="45" rx="8" ry="20" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
-        <path d="M 38 62 Q 50 58 50 62 Q 50 58 62 62 L 62 72 Q 50 68 50 72 Q 50 68 38 72 Z"
-              fill="#f4f4f4" stroke="#d4a04a" stroke-width="0.8"/>
-        <text x="50" y="18" text-anchor="middle" fill="#f4f4f4" font-size="6" font-weight="bold">ДОННУЭТ</text>
-      </svg>
-      <svg class="lg-kaf" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 50 30 C 50 15, 20 15, 20 30 C 20 45, 50 45, 50 30 C 50 15, 80 15, 80 30 C 80 45, 50 45, 50 30 Z"
-              fill="none" stroke="#0d4a2c" stroke-width="7" stroke-linecap="round"/>
-        <path d="M 50 30 C 50 15, 20 15, 20 30 C 20 45, 50 45, 50 30 C 50 15, 80 15, 80 30 C 80 45, 50 45, 50 30 Z"
-              fill="none" stroke="#7cbf8e" stroke-width="2" stroke-linecap="round"/>
-        <polygon points="50,5 40,11 50,17 60,11" fill="#0e7c7c"/>
-      </svg>
+      <img src="logo-donnuet.png" class="lg-uni" alt="ДОННУЭТ"
+           onerror="this.outerHTML='<div style=\'width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:2rem\'>🎓</div>'">
+      <img src="logo-kafedra.png" class="lg-kaf" alt="Кафедра"
+           onerror="this.outerHTML='<div style=\'width:120px;height:76px;display:flex;align-items:center;justify-content:center;font-size:2rem\'>⚖️</div>'">
     </div>
     <h2>🌿 БиоЭкоКомбинат PRO</h2>
-    <p>Комплексный тренажёр-симулятор: <b>сельское хозяйство</b> + <b>биоэкономика</b> + <b>лабораторная экспертиза</b> продовольственных товаров.</p>
-    <h3>Ты управляешь:</h3>
+    <p><b>Симулятор</b> сельского хозяйства, биоэкономики и лабораторной экспертизы продовольственных товаров.</p>
+    <h3>Что ты будешь делать</h3>
     <ul>
-      <li>🌾 <b>Фермой</b> — 4 поля, 6 культур с ГОСТ, сезонность</li>
-      <li>🏭 <b>12 модулями</b> — от биогаза до солнечной станции</li>
-      <li>🔬 <b>Лабораторией</b> — проводи реальные испытания</li>
-      <li>📦 <b>Партиями</b> — принимай решения по ГОСТ</li>
-      <li>💼 <b>Контрактами</b> — выполняй заказы покупателей</li>
-      <li>🎓 <b>Академией</b> — учись на мини-уроках</li>
+      <li>🌾 Сеять и собирать урожай 6 культур с ГОСТ</li>
+      <li>🏭 Строить 12 модулей: биогаз, солнечная станция, лаборатория…</li>
+      <li>🔬 Проводить испытания образцов методом органолептики, физ-химии, микробиологии</li>
+      <li>📦 Принимать решения по партиям от поставщиков</li>
+      <li>💼 Выполнять контракты школ, больниц, сети «Магнит»</li>
+      <li>📊 Строить карты Шухарта и диаграммы Парето</li>
     </ul>
     <h3>Цель</h3>
-    <p>За <b>30 недель</b> набрать максимум очков и получить звание <span class="hl">«Эксперт ДОННУЭТ»</span>.</p>
+    <p>За <b>30 недель</b> набрать максимум очков и получить звание <b>«Эксперт ДОННУЭТ»</b>.</p>
     <button class="startbtn" id="startBtn">▶ НАЧАТЬ РАБОТУ</button>
   </div>
 </div>
@@ -603,15 +541,19 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
   <div class="modal">
     <h2>📖 Справочник</h2>
     <h3>🌾 Ферма</h3>
-    <p>4 поля, 6 культур. Выбирай под сезон: 🌸×1.0 · ☀️×1.3 · 🍂×1.4 · ❄️×0.6.</p>
+    <p>4 поля, 6 культур. Сезоны: 🌸×1.0 · ☀️×1.3 · 🍂×1.4 · ❄️×0.6.</p>
     <h3>🏭 Модули</h3>
-    <p>12 зданий: ферма, теплица, биогаз, переработка, биопластик, солнечная станция, лаборатории, логистика и др.</p>
+    <p>12 зданий. Ключевые: биогазовый реактор, солнечная станция, перерабатывающий цех, испытательная лаборатория.</p>
     <h3>🔬 Лаборатория</h3>
-    <p>Выбирай образец → проводи методы испытаний (органолептика, физ-химия, микробиология) → получай протокол.</p>
+    <p>Выбираешь образец (15 000 ₽) → проводишь 3 метода: органолептика, физ-химия, микробиология → получаешь вердикт +20 000 ₽.</p>
     <h3>📦 Партии</h3>
-    <p>Раз в 3 недели — новая партия. Принять вслепую / провести экспертизу / отклонить.</p>
-    <h3>🎓 Академия</h3>
-    <p>Мини-уроки по группам товаров с проверкой. +XP за правильные ответы.</p>
+    <p>Раз в 3 недели. Можно: принять вслепую (риск), провести экспертизу (40 000 ₽ / 15 000 ₽ с лабораторией / бесплатно с ОКК), отклонить.</p>
+    <h3>💼 Контракты</h3>
+    <p>Автоматически появляются. Продавай еду с прибылью.</p>
+    <h3>📊 Анализ</h3>
+    <p>Карта Шухарта — контроль стабильности процесса. Диаграмма Парето — где 80% дефектов.</p>
+    <h3>📚 Уроки</h3>
+    <p>Мини-тесты для тренировки знаний. +30 000 ₽ за верный ответ.</p>
     <button class="startbtn" id="helpClose">Понятно</button>
   </div>
 </div>
@@ -629,14 +571,8 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
 <div class="overlay hide" id="endScreen">
   <div class="modal">
     <div class="modal-logo">
-      <svg class="lg-uni" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 50 8 L 85 22 L 85 60 Q 85 85 50 95 Q 15 85 15 60 L 15 22 Z"
-              fill="#1a3d8c" stroke="#d4a04a" stroke-width="2.5"/>
-        <circle cx="50" cy="45" r="20" fill="none" stroke="#7cbf8e" stroke-width="0.8" opacity="0.7"/>
-        <path d="M 38 62 Q 50 58 50 62 Q 50 58 62 62 L 62 72 Q 50 68 50 72 Q 50 68 38 72 Z"
-              fill="#f4f4f4" stroke="#d4a04a" stroke-width="0.8"/>
-        <text x="50" y="18" text-anchor="middle" fill="#f4f4f4" font-size="6" font-weight="bold">ДОННУЭТ</text>
-      </svg>
+      <img src="logo-donnuet.png" class="lg-uni" alt="ДОННУЭТ"
+           onerror="this.style.display='none'">
     </div>
     <h2 id="endTitle">🏁 Итоги сезона</h2>
     <div class="final" id="finalScore">0</div>
@@ -648,7 +584,6 @@ footer .kaf{font-size:.52rem;color:#a7e8c8;margin-top:3px;line-height:1.4}
 </div>
 
 <script>
-/* ==================== ДАННЫЕ ==================== */
 const CROPS={
   wheat:{n:'Пшеница озимая',i:'🌾',cost:60000,weeks:5,yield:5,gost:'ГОСТ 9353'},
   corn:{n:'Кукуруза',i:'🌽',cost:45000,weeks:4,yield:8,gost:'ГОСТ 13634'},
@@ -783,7 +718,7 @@ const LESSONS=[
    o:['≥35%','≥55%','≥70%','≥90%'],
    c:1,e:'По ГОСТ 31721-2012 горький шоколад — не менее 55% какао-продуктов.'},
   {q:'Что такое КМАФАнМ?',
-   o:['Кислотно-молочный анализ','Количество мезофильных аэробных и факультативно-анаэробных микроорганизмов','Комплексный метод физико-химических исследований','Коэффициент массовой активности'],
+   o:['Кислотно-молочный анализ','Количество мезофильных аэробных и факультативно-анаэробных микроорганизмов','Комплексный метод','Коэффициент массовой активности'],
    c:1,e:'КМАФАнМ — общая микробная обсеменённость (КОЕ/г). Ключевой показатель безопасности (ГОСТ 10444.15).'},
   {q:'Что регулирует ТР ТС 021/2011?',
    o:['Маркировку','Безопасность пищевой продукции','Молоко','Перевозку грузов'],
@@ -822,17 +757,14 @@ const ACHS=[
   {id:'contract3',i:'💼',t:'3 контракта',ck:s=>s.contractsDone>=3},
   {id:'contract8',i:'🎯',t:'8 контрактов',ck:s=>s.contractsDone>=8},
   {id:'academy3',i:'🎓',t:'3 урока',ck:s=>s.lessonsDone>=3},
-  {id:'academy7',i:'📚',t:'7 уроков',ck:s=>s.lessonsDone>=7},
   {id:'allcrops',i:'🌾',t:'Все 6 культур',ck:s=>Object.keys(s.cropsGrown||{}).length>=6}
 ];
 
-/* ==================== СОСТОЯНИЕ ==================== */
 let state, soundOn=true, currentTab='farm';
 const $=id=>document.getElementById(id);
 const fN=v=>Math.round(v).toLocaleString('ru-RU')+' ₽';
 const fSp=v=>Math.round(v).toLocaleString('ru-RU');
 const r1=v=>Math.round(v*10)/10;
-const r2=v=>Math.round(v*100)/100;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
 function resetState(){
@@ -861,7 +793,6 @@ function resetState(){
   };
 }
 
-/* ==================== АУДИО ==================== */
 let actx;
 function initA(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}}
 function sfx(type){
@@ -885,7 +816,6 @@ function sfx(type){
 }
 function vib(ms){if(navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}}
 
-/* ==================== ЭФФЕКТЫ ==================== */
 function toast(txt,cls=''){
   const el=document.createElement('div');el.className='toast '+cls;el.textContent=txt;
   $('toasts').appendChild(el);
@@ -908,7 +838,6 @@ function confetti(){
 function shakeS(){const a=$('appRoot');a.classList.remove('shake');void a.offsetWidth;
   a.classList.add('shake');setTimeout(()=>a.classList.remove('shake'),500)}
 
-/* ==================== ФОН ==================== */
 (function(){
   const c=$('bg'),ctx=c.getContext('2d');let W,H,parts=[];
   const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
@@ -925,14 +854,12 @@ function shakeS(){const a=$('appRoot');a.classList.remove('shake');void a.offset
     requestAnimationFrame(loop)})();
 })();
 
-/* ==================== ЛОГ ==================== */
 function addLog(text,cls=''){
   state.log.unshift({text,cls});
   if(state.log.length>60)state.log.pop();
   $('log').innerHTML=state.log.map(l=>`<div class="le ${l.cls}">${l.text}</div>`).join('');
 }
 
-/* ==================== РЕНДЕР РЕСУРСОВ ==================== */
 const RES_META=[
   {k:'money',i:'💰',l:'Касса',money:true},
   {k:'biomass',i:'🌾',l:'Биомасса, т'},
@@ -969,7 +896,6 @@ function renderRes(){
   $('turnChip').textContent=state.turn+'/'+state.maxTurns;
 }
 
-/* ==================== ФЕРМА ==================== */
 function renderFarm(){
   const g=$('fieldsGrid');
   g.innerHTML=state.fields.map((f,i)=>{
@@ -1049,7 +975,6 @@ function harvestField(i){
   checkAch();renderAll();
 }
 
-/* ==================== МОДУЛИ ==================== */
 function costOf(k,lvl){return Math.round(BUILDINGS[k].cost*Math.pow(1.55,lvl)/1000)*1000}
 
 function effText(k,lvl){
@@ -1094,19 +1019,18 @@ function buy(k,btn){
   checkAch();renderAll();
 }
 
-/* ==================== ЛАБОРАТОРИЯ ==================== */
 function renderLab(){
   const c=$('labContent');
   if(!state.lab.sample){
     c.innerHTML=`
       <p style="font-size:.7rem;color:#c4e6d6;margin-bottom:8px;line-height:1.55">
-        Выбери образец для исследования. Каждый опыт даёт <b>XP</b>, знания и небольшие бонусы.
+        Выбери образец. Проведёшь 3 метода — получишь вердикт. <b>15 000 ₽</b> за образец, <b>+20 000 ₽</b> при завершении.
       </p>
       <div class="lab-mini">
         <h3 style="font-size:.62rem;color:var(--gold);margin-bottom:6px;text-transform:uppercase">Доступные образцы</h3>
         <div class="grid" id="labSamples">
           ${BATCH_POOL.slice(0,6).map((b,i)=>`
-            <button class="cbtn ${state.money>=15000?'':'disabled'}" data-lab-pick="${i}" ${state.money>=15000?'':'disabled'} style="padding:10px">
+            <button class="cbtn" data-lab-pick="${i}" ${state.money<15000?'disabled':''} style="padding:10px">
               ${b.i} ${b.n}<br><span style="font-size:.5rem;opacity:.7">15 000 ₽</span>
             </button>
           `).join('')}
@@ -1121,7 +1045,7 @@ function renderLab(){
       state.lab.sample={...sample,quality:q};
       state.lab.methods={organo:false,fizhim:false,micro:false};
       state.lab.result=null;
-      sfx('exam');addLog(`🔬 Взят образец: ${sample.n}, Q≈${q}`,'info');
+      sfx('exam');addLog(`🔬 Взят образец: ${sample.n}`,'info');
       renderAll();
     }));
     return;
@@ -1138,7 +1062,7 @@ function renderLab(){
           <div class="bdocs">Методов проведено: ${doneCount}/3</div>
         </div>
       </div>
-      <div class="bdesc">Выбери методы испытаний. Каждый метод раскрывает часть показателей.</div>
+      <div class="bdesc">Проведи 3 метода испытаний — получишь итоговый вердикт.</div>
       <div class="method-grid">
         <button class="method-btn ${state.lab.methods.organo?'done':''}" data-method="organo" ${state.lab.methods.organo?'disabled':''}>
           <span class="method-emoji">👁️</span>Органолептика
@@ -1150,22 +1074,19 @@ function renderLab(){
           <span class="method-emoji">🧬</span>Микробиология
         </button>
         <button class="method-btn" data-lab-reset style="border-color:var(--red);color:var(--red)">
-          <span class="method-emoji">🔄</span>Сменить образец
+          <span class="method-emoji">🔄</span>Сменить
         </button>
       </div>
       ${state.lab.result?`<div style="margin-top:10px">
-        <div style="font-size:.6rem;color:var(--acc2);text-transform:uppercase;letter-spacing:.5px;font-weight:800;margin-bottom:5px">📋 Итоговый вердикт</div>
+        <div style="font-size:.6rem;color:var(--acc2);text-transform:uppercase;letter-spacing:.5px;font-weight:800;margin-bottom:5px">📋 Вердикт</div>
         <div class="protocol">
-          <div style="font-size:.62rem;margin-bottom:5px;color:var(--gold);font-weight:800">
-            Q = ${state.lab.result.q}/100
-          </div>
+          <div style="font-size:.62rem;margin-bottom:5px;color:var(--gold);font-weight:800">Q = ${state.lab.result.q}/100</div>
           <div style="color:${state.lab.result.q>=70?'var(--acc)':state.lab.result.q>=40?'var(--gold)':'var(--red)'};font-weight:800;font-size:.68rem">
             ${state.lab.result.q>=90?'✅ Премиум-качество':state.lab.result.q>=70?'✅ Соответствует':state.lab.result.q>=40?'⚠️ Условно годен':'❌ Не соответствует'}
           </div>
         </div>
       </div>`:''}
-    </div>
-  `;
+    </div>`;
   c.querySelectorAll('[data-method]').forEach(btn=>btn.addEventListener('click',()=>{
     const m=btn.dataset.method;
     if(state.lab.methods[m])return;
@@ -1174,15 +1095,13 @@ function renderLab(){
     sfx('exam');vib(20);
     const exp={organo:'👁️ Органолептика: внешний вид, вкус, запах, консистенция',
       fizhim:'🧪 Физико-химия: титрование, рефрактометрия, фотоколориметрия',
-      micro:'🧬 Микробиология: КМАФАнМ, БГКП, патогены, токсичные элементы'}[m];
+      micro:'🧬 Микробиология: КМАФАнМ, БГКП, патогены'}[m];
     addLog(`🔬 ${exp}`,'info');
-    // проверить завершение
     if(Object.values(state.lab.methods).every(Boolean)&&!state.lab.result){
       state.lab.result={q:state.lab.sample.quality};
-      const xp=Math.round(40+state.lab.sample.quality/2);
       state.money+=20000;
       state.eco=clamp(state.eco+1,0,100);
-      addLog(`✅ Испытания завершены. Q=${state.lab.sample.quality}/100, +20 000 ₽, +XP`,'good');
+      addLog(`✅ Испытания завершены. Q=${state.lab.sample.quality}/100, +20 000 ₽`,'good');
       toast('✅ Опыт завершён! +20 000 ₽','epic');
       floatNum($('res-money'),'+20 000 ₽','plus');
       sfx('coin');
@@ -1196,7 +1115,6 @@ function renderLab(){
   }));
 }
 
-/* ==================== ПАРТИИ ==================== */
 function spawnBatch(){
   const t=BATCH_POOL[Math.floor(Math.random()*BATCH_POOL.length)];
   const q=20+Math.floor(Math.random()*76);
@@ -1230,9 +1148,7 @@ function renderBatch(){
             <div class="bdocs">📜 ${b.gost} · ${b.trts}</div>
           </div>
         </div>
-        <div class="bdesc">
-          Требуется решение по партии. Принять вслепую — риск. Провести экспертизу — увидишь протокол.
-        </div>
+        <div class="bdesc">Принять вслепую — риск. Провести экспертизу — увидишь протокол.</div>
         <div class="bactions">
           <button class="bbtn green" data-batch="accept">✅ Принять вслепую</button>
           <button class="bbtn cyan" data-batch="exam">⚗️ Экспертиза · ${fN(cost)}</button>
@@ -1240,7 +1156,6 @@ function renderBatch(){
         </div>
       </div>`;
   } else {
-    // Показать протокол
     const q=b.quality;
     const indicators=b.inds.map(ind=>{
       const dev=q/100-.5;
@@ -1266,7 +1181,7 @@ function renderBatch(){
           <span class="bicon">${b.i}</span>
           <div style="flex:1">
             <div class="btitle">${b.n}</div>
-            <div class="bsub">${fSp(b.size)} ед. · Q=${q}/100</div>
+            <div class="bsub">Q = ${q}/100</div>
           </div>
         </div>
         <div class="protocol">
@@ -1304,7 +1219,7 @@ function handleBatch(action){
   if(action==='reject'||action==='reject_final'){
     state.rejectedBatches++;state.batchesDone++;
     state.eco=clamp(state.eco+1,0,100);
-    addLog(`🛡️ Партия «${b.n}» отклонена. Эко +1`,'info');
+    addLog(`🛡️ Партия «${b.n}» отклонена`,'info');
     toast('🛡️ Отклонено','warn');
     state.batch=null;checkAch();renderAll();return;
   }
@@ -1341,12 +1256,11 @@ function handleBatch(action){
   }
 }
 
-/* ==================== КОНТРАКТЫ ==================== */
 function renderContracts(){
   const c=$('contractsContent');
   if(!state.contracts.length){
     c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--dim);font-size:.72rem">
-      Договоры появятся в течение недель (автоматически).<br>
+      Договоры появятся автоматически в течение недель.<br>
       Пока производите еду — она продаётся сама.
     </div>`;
     return;
@@ -1374,7 +1288,7 @@ function spawnContract(){
   const t=CONTRACT_POOL[Math.floor(Math.random()*CONTRACT_POOL.length)];
   const reward=Math.round(t.amt*state.foodPrice*t.mul/1000)*1000;
   state.contracts.push({...t,id:'c'+Date.now()+Math.random(),reward,deadline:state.turn+t.ddl});
-  addLog(`📝 Договор: ${t.buyer} — ${t.amt} т, ${t.reward?fN(t.reward):fN(reward)}`,'info');
+  addLog(`📝 Договор: ${t.buyer} — ${t.amt} т, ${fN(reward)}`,'info');
   toast('📝 Новый договор: '+t.buyer);sfx('coin');
 }
 
@@ -1392,12 +1306,11 @@ function completeContract(id){
   checkAch();renderAll();
 }
 
-/* ==================== АНАЛИЗ ==================== */
 function renderStats(){
   const c=$('statsContent');
   if(state.spcData.length<2){
     c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--dim);font-size:.72rem">
-      Недостаточно данных для анализа.<br>Проводи испытания партий и опытов, чтобы построить графики.
+      Недостаточно данных для анализа.<br>Проводи испытания партий — построятся графики.
     </div>`;
     return;
   }
@@ -1406,7 +1319,6 @@ function renderStats(){
   const sd=Math.sqrt(vals.reduce((a,b)=>a+Math.pow(b-mean,2),0)/(vals.length-1||1));
   const ucl=mean+3*sd,lcl=mean-3*sd;
 
-  // SPC Chart
   const W=600,H=170,pad=28;
   const minV=Math.min(lcl,...vals)-2,maxV=Math.max(ucl,...vals)+2;
   const range=maxV-minV||1;
@@ -1426,7 +1338,6 @@ function renderStats(){
     ${pts.map(p=>{const ooc=p.v>ucl||p.v<lcl;return `<circle cx="${p.x}" cy="${p.y}" r="${ooc?4:3}" fill="${ooc?'#f87171':'#4ade80'}" stroke="#04210f" stroke-width="1"/>`}).join('')}
   </svg>`;
 
-  // Pareto
   const entries=Object.entries(state.defects).sort((a,b)=>b[1]-a[1]);
   const total=entries.reduce((a,b)=>a+b[1],0)||1;
   let cum=0;
@@ -1446,13 +1357,13 @@ function renderStats(){
       <div class="chart-legend">
         <span><i style="background:#4ade80"></i>x̄ ${r1(mean)}</span>
         <span><i style="background:#22d3ee"></i>CL</span>
-        <span><i style="background:#f87171"></i>±3σ (UCL/LCL)</span>
+        <span><i style="background:#f87171"></i>±3σ</span>
       </div>
     </div>
     <div class="stat-grid">
       <div class="stat-item"><div class="sv">${r1(mean)}</div><div class="sl">x̄</div></div>
       <div class="stat-item"><div class="sv">${r1(sd)}</div><div class="sl">σ</div></div>
-      <div class="stat-item ${vals.filter(v=>v>ucl||v<lcl).length?'bad':''}"><div class="sv">${vals.filter(v=>v>ucl||v<lcl).length}</div><div class="sl">выходов за 3σ</div></div>
+      <div class="stat-item ${vals.filter(v=>v>ucl||v<lcl).length?'bad':''}"><div class="sv">${vals.filter(v=>v>ucl||v<lcl).length}</div><div class="sl">за 3σ</div></div>
       <div class="stat-item"><div class="sv">${state.examsDone}</div><div class="sl">испытаний</div></div>
     </div>
     <div style="background:rgba(5,22,17,.9);border-radius:9px;padding:8px;
@@ -1467,7 +1378,6 @@ function renderStats(){
   `;
 }
 
-/* ==================== АКАДЕМИЯ ==================== */
 function renderAcademy(){
   const c=$('academyContent');
   const lesson=LESSONS[state.lessonIdx%LESSONS.length];
@@ -1489,7 +1399,8 @@ function renderAcademy(){
         }).join('')}
       </div>
       ${answered?`<div class="lesson-exp">
-        ${answered.correct?'✅ Верно! +XP':'❌ Правильный: '+String.fromCharCode(65+lesson.c)}<br>
+        ${answered.correct?'✅ Верно! +30 000 ₽':''+''}
+        ${!answered.correct?'❌ Правильный: '+String.fromCharCode(65+lesson.c):''}<br>
         ${lesson.e}
       </div>
       <button class="startbtn" data-lesson-next>Следующий урок ▶</button>`:''}
@@ -1500,7 +1411,7 @@ function renderAcademy(){
     if(state.lessonAnswered[state.lessonIdx])return;
     const correct=i===lesson.c;
     if(correct){state.lessonsDone++;state.money+=30000;state.eco=clamp(state.eco+1,0,100);
-      sfx('coin');vib(25);addLog(`🎓 Урок ${state.lessonIdx+1}: верно! +30 000 ₽, +1 эко`,'good')}
+      sfx('coin');vib(25);addLog(`📚 Урок ${state.lessonIdx+1}: верно! +30 000 ₽`,'good')}
     else{sfx('error');vib([40,30,40])}
     state.lessonAnswered[state.lessonIdx]={picked:i,correct};
     checkAch();renderAll();
@@ -1511,7 +1422,6 @@ function renderAcademy(){
   }));
 }
 
-/* ==================== ДОСТИЖЕНИЯ ==================== */
 function checkAch(){
   ACHS.forEach(a=>{
     if(!state.achievements.has(a.id)&&a.ck(state)){
@@ -1529,13 +1439,11 @@ function renderAch(){
   }).join('');
 }
 
-/* ==================== ХОД ==================== */
 function nextTurn(){
   const btn=$('nextBtn');
   btn.disabled=true;
   sfx('turn');vib(12);
 
-  // Поля
   state.fields.forEach(f=>{
     if(f.crop&&!f.ready){
       f.weeks++;
@@ -1543,7 +1451,6 @@ function nextTurn(){
     }
   });
 
-  // Модули
   const B=state.buildings;
   const labBonus=1+0.05*B.lab;
   const season=Math.floor((state.turn-1)/7)%4;
@@ -1583,7 +1490,6 @@ function nextTurn(){
   state.eco=clamp(state.eco+delta.eco,0,100);
   state.food=Math.max(0,state.food+delta.food);
 
-  // Продажа еды
   const logBonus=1+.15*B.logistics;
   const ecoBonus=1+(state.eco-50)/200;
   const price=Math.max(1500,Math.round(state.foodPrice*logBonus*ecoBonus));
@@ -1597,7 +1503,6 @@ function nextTurn(){
     sfx('coin');floatNum($('res-money'),'+'+fN(rev),'plus');
   }
 
-  // Отходы
   if(state.waste>30){
     const pen=Math.ceil((state.waste-30)/10);
     state.eco=clamp(state.eco-pen,0,100);
@@ -1607,7 +1512,6 @@ function nextTurn(){
     addLog('🌿 Замкнутый цикл. Эко +1','good');
   }
 
-  // Событие
   if(Math.random()<0.4){
     const e=EVENTS[Math.floor(Math.random()*EVENTS.length)];
     e.f(state);
@@ -1619,7 +1523,6 @@ function nextTurn(){
     else if(e.cls==='epic'){sfx('levelup');confetti()}
   }
 
-  // Просроченные контракты
   const failed=state.contracts.filter(c=>state.turn>=c.deadline&&state.food<c.amt);
   failed.forEach(c=>{
     state.contractsFailed++;
@@ -1629,15 +1532,12 @@ function nextTurn(){
   });
   state.contracts=state.contracts.filter(c=>!failed.includes(c));
 
-  // Новый контракт
   if(state.contracts.length<3&&Math.random()<0.5)spawnContract();
 
-  // Цена
   state.foodPrice=Math.round((3800+Math.random()*1800)/100)*100;
 
   state.turn++;
 
-  // Партия каждые 3 недели
   if(!state.batch&&state.turn>1&&(state.turn-2)%3===0)spawnBatch();
 
   checkAch();renderAll();
@@ -1650,7 +1550,6 @@ function nextTurn(){
   btn.disabled=false;
 }
 
-/* ==================== ФИНАЛ ==================== */
 function endGame(failed){
   $('nextBtn').disabled=true;
   const moneyScore=Math.round(Math.max(0,state.money)/400);
@@ -1665,13 +1564,13 @@ function endGame(failed){
 
   $('finalScore').textContent=fSp(total);
   let rank,comment;
-  if(failed){rank='⚠️ Комбинат не выжил';comment='Повтори опыт с учётом ошибок.'}
+  if(failed){rank='⚠️ Комбинат не выжил';comment='Повтори с учётом ошибок.'}
   else if(total>=9000){rank='👑 Легенда ДОННУЭТ';comment='Образцовая работа!'}
   else if(total>=6500){rank='🏆 Эксперт ДОННУЭТ';comment='Блестящий результат!'}
   else if(total>=4500){rank='🥇 Старший эксперт';comment='Отличная работа!'}
   else if(total>=2500){rank='🥈 Товаровед-эксперт';comment='Хороший результат.'}
   else if(total>=1200){rank='🥉 Лаборант-исследователь';comment='Неплохо для старта.'}
-  else {rank='🌱 Стажёр';comment='Первый опыт. Изучи справочник.'}
+  else {rank='🌱 Стажёр';comment='Первый опыт.'}
 
   $('endTitle').textContent=failed?'💀 Игра окончена':'🏁 Итоги 30 недель';
   $('rankText').textContent=rank;
@@ -1682,7 +1581,7 @@ function endGame(failed){
     <div class="score-item"><div class="sv">${fSp(ecoScore)}</div><div class="sl">🌍 Эко (${Math.round(state.eco)})</div></div>
     <div class="score-item"><div class="sv">${fSp(expertBonus)}</div><div class="sl">⚗️ Экспертизы (${state.examsDone})</div></div>
     <div class="score-item"><div class="sv">${fSp(contractBonus)}</div><div class="sl">💼 Контракты (${state.contractsDone})</div></div>
-    <div class="score-item"><div class="sv">${fSp(lessonBonus)}</div><div class="sl">🎓 Уроки (${state.lessonsDone})</div></div>
+    <div class="score-item"><div class="sv">${fSp(lessonBonus)}</div><div class="sl">📚 Уроки (${state.lessonsDone})</div></div>
     <div class="score-item"><div class="sv">${fSp(achBonus)}</div><div class="sl">🏆 Достижения (${state.achievements.size})</div></div>
     <div class="score-item"><div class="sv">${fSp(wasteBonus)}</div><div class="sl">♻️ Чистота</div></div>
   `;
@@ -1690,7 +1589,6 @@ function endGame(failed){
   if(!failed){confetti();sfx('win');vib([80,40,80,40,150])}
 }
 
-/* ==================== TABS ==================== */
 function switchTab(name){
   currentTab=name;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
@@ -1703,7 +1601,6 @@ function switchTab(name){
   if(name==='academy')renderAcademy();
 }
 
-/* ==================== RENDER ALL ==================== */
 function renderAll(){
   renderRes();
   renderFarm();
@@ -1715,7 +1612,6 @@ function renderAll(){
   if(currentTab==='academy')renderAcademy();
 }
 
-/* ==================== СТАРТ ==================== */
 function startGame(){
   initA();
   if(actx&&actx.state==='suspended')actx.resume();
@@ -1731,7 +1627,6 @@ function startGame(){
   sfx('coin');
 }
 
-/* ==================== BIND ==================== */
 $('startBtn').addEventListener('click',startGame);
 $('restartBtn').addEventListener('click',startGame);
 $('nextBtn').addEventListener('click',nextTurn);
@@ -1746,7 +1641,6 @@ $('achClose').addEventListener('click',()=>$('achScreen').classList.add('hide'))
 
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
 
-/* старт */
 resetState();
 renderRes();
 </script>
